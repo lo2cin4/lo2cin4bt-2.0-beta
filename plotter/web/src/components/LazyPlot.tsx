@@ -1,9 +1,11 @@
 import { lazy, Suspense } from 'react'
 
-const PlotlyChart = lazy(() => import('react-plotly.js'))
+(globalThis as any).global ??= globalThis
+
+const PlotlyChart = lazy(() => import('./PlotlyBundle'))
 
 export function preloadPlotly() {
-  void import('react-plotly.js')
+  void import('./PlotlyBundle')
 }
 
 export function Plot(props: any) {

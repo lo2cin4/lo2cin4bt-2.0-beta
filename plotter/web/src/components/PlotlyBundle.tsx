@@ -1,13 +1,10 @@
-import PlotlyCore from 'plotly.js/lib/core'
-import bar from 'plotly.js/lib/bar'
-import candlestick from 'plotly.js/lib/candlestick'
-import contour from 'plotly.js/lib/contour'
-import heatmap from 'plotly.js/lib/heatmap'
-import histogram from 'plotly.js/lib/histogram'
-import pie from 'plotly.js/lib/pie'
-import scatter from 'plotly.js/lib/scatter'
-import createPlotlyComponent from 'react-plotly.js/factory'
+import type { ComponentType } from 'react'
+import * as ReactPlotly from 'react-plotly.js'
 
-PlotlyCore.register([scatter, bar, heatmap, contour, histogram, pie, candlestick])
+const Plot = (
+  (ReactPlotly as any).default?.default ??
+  (ReactPlotly as any).default ??
+  ReactPlotly
+) as ComponentType<any>
 
-export default createPlotlyComponent(PlotlyCore)
+export default Plot
