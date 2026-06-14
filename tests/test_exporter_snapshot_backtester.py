@@ -358,7 +358,7 @@ def test_exporter_chunks_large_audit_json_and_audit_reader_can_reload(tmp_path) 
 
     exporter.export_to_parquet()
 
-    parquet_path = next(tmp_path.glob("*.parquet"))
+    parquet_path = next(path for path in tmp_path.glob("*.parquet") if not path.stem.endswith("_audit"))
     audit_json_path = parquet_path.with_name(parquet_path.stem + "_audit.json")
     audit_manifest = json.loads(audit_json_path.read_text(encoding="utf-8"))
     assert audit_manifest["audit_rows_inline"] is False

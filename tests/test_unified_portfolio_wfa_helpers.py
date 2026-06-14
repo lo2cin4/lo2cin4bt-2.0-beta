@@ -85,13 +85,13 @@ def test_wfa_helper_acceptance_allows_explicit_fallback_when_oos_is_strong() -> 
     assert accepted["reasons"] == ["selection_constraints_fallback explicitly allowed"]
 
 
-def test_wfa_helper_strategy_max_lookback_scans_domains_features_and_params() -> None:
+def test_wfa_helper_strategy_max_lookback_scans_domains_computed_fields_and_params() -> None:
     config = {
         "parameter_domains": {
             "fast_window": {"type": "range", "start": 5, "end": 15, "step": 5},
             "slow_period": [20, 40],
         },
-        "features": [
+        "computed_fields": [
             {"name": "fast_ma", "period": {"param_ref": "fast_window"}},
             {"name": "slow_ma", "lookback": {"param_ref": "slow_period"}},
             {"name": "literal_ma", "sma_period": 30},

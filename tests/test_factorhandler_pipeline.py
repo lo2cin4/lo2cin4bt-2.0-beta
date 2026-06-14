@@ -175,7 +175,7 @@ def test_multi_asset_engine_can_rank_by_factorhandler_score():
         "strategy_id": "factor_score_top1",
         "universe": {"symbols": ["AAA", "BBB", "CCC", "DDD"]},
         "factor_pipeline": _pipeline(),
-        "features": [],
+        "computed_fields": [],
         "rebalance": {"trigger": {"op": "calendar.every_session"}},
         "selection": {
             "eligible": {"field": "composite_factor_score", "op": "gt", "value": -10},
@@ -184,7 +184,7 @@ def test_multi_asset_engine_can_rank_by_factorhandler_score():
             "top_n": 1,
         },
         "allocation": {"method": "equal_weight", "position_limit": 1.0},
-        "execution": {"cost": {"transaction_cost": 0.0, "slippage": 0.0}},
+        "fill_model": {"cost": {"transaction_cost": 0.0, "slippage": 0.0}},
     }
 
     result = MultiAssetPortfolioEngineBacktester(_factor_frames(), config).run()

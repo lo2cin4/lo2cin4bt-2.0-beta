@@ -74,8 +74,13 @@ def test_manifest_registry_loads_core_and_workspace_extension_aliases():
 
     backend_spec = data["family_backend_specs"]["DUAL"]
     assert backend_spec["language"] == "python"
-    assert backend_spec["artifact_full_path"].endswith(
-        "workspace\\indicators\\extensions\\dual_threshold\\indicator.py"
+    artifact_path = Path(backend_spec["artifact_full_path"])
+    assert artifact_path.parts[-5:] == (
+        "workspace",
+        "indicators",
+        "extensions",
+        "dual_threshold",
+        "indicator.py",
     )
     assert data["extension_manifests_loaded"] >= 1
 

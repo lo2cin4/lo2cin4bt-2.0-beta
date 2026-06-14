@@ -104,10 +104,10 @@
       ],
       "implementation": {
         "path": "backtester/MultiAssetPortfolioEngine_backtester.py",
-        "source_hash": "772a275535b0b3a74a1ff5a56958961032f89a16800e36fd1586a165c7cac14f",
+        "source_hash": "d7309c33b2f193723b8fd2da62debb81e307eb36fa323c00bff4a92d4c79b0b3",
         "source_hashes": {
-          "backtester/MultiAssetPortfolioEngine_backtester.py": "7f826117ad40c30d3ce0af1687fc203e4cd36fcd6dc5f59dfef243620643151e",
-          "backtester/NodeIRExecutor_backtester.py": "690baac2fd4c26e535784934752f73b712289b3018e6ce8e68c7a15f70e19028"
+          "backtester/MultiAssetPortfolioEngine_backtester.py": "efbeb38b47bce33418d7252aaa87299feef63b8b2cc2693d5204471432ab2580",
+          "backtester/NodeIRExecutor_backtester.py": "58b63fa7e91a52611587be3f8c4115f4577827d58bc41d74bceafe48b1c9aa1d"
         },
         "symbols": [
           "MultiAssetPortfolioEngine._evaluate_condition",
@@ -2117,10 +2117,10 @@
       ],
       "implementation": {
         "path": "backtester/MultiAssetPortfolioEngine_backtester.py",
-        "source_hash": "772a275535b0b3a74a1ff5a56958961032f89a16800e36fd1586a165c7cac14f",
+        "source_hash": "d7309c33b2f193723b8fd2da62debb81e307eb36fa323c00bff4a92d4c79b0b3",
         "source_hashes": {
-          "backtester/MultiAssetPortfolioEngine_backtester.py": "7f826117ad40c30d3ce0af1687fc203e4cd36fcd6dc5f59dfef243620643151e",
-          "backtester/NodeIRExecutor_backtester.py": "690baac2fd4c26e535784934752f73b712289b3018e6ce8e68c7a15f70e19028"
+          "backtester/MultiAssetPortfolioEngine_backtester.py": "efbeb38b47bce33418d7252aaa87299feef63b8b2cc2693d5204471432ab2580",
+          "backtester/NodeIRExecutor_backtester.py": "58b63fa7e91a52611587be3f8c4115f4577827d58bc41d74bceafe48b1c9aa1d"
         },
         "symbols": [
           "MultiAssetPortfolioEngine._evaluate_condition",
@@ -2239,10 +2239,10 @@
       ],
       "implementation": {
         "path": "backtester/MultiAssetPortfolioEngine_backtester.py",
-        "source_hash": "772a275535b0b3a74a1ff5a56958961032f89a16800e36fd1586a165c7cac14f",
+        "source_hash": "d7309c33b2f193723b8fd2da62debb81e307eb36fa323c00bff4a92d4c79b0b3",
         "source_hashes": {
-          "backtester/MultiAssetPortfolioEngine_backtester.py": "7f826117ad40c30d3ce0af1687fc203e4cd36fcd6dc5f59dfef243620643151e",
-          "backtester/NodeIRExecutor_backtester.py": "690baac2fd4c26e535784934752f73b712289b3018e6ce8e68c7a15f70e19028"
+          "backtester/MultiAssetPortfolioEngine_backtester.py": "efbeb38b47bce33418d7252aaa87299feef63b8b2cc2693d5204471432ab2580",
+          "backtester/NodeIRExecutor_backtester.py": "58b63fa7e91a52611587be3f8c4115f4577827d58bc41d74bceafe48b1c9aa1d"
         },
         "symbols": [
           "MultiAssetPortfolioEngine._evaluate_condition",
@@ -2361,10 +2361,10 @@
       ],
       "implementation": {
         "path": "backtester/MultiAssetPortfolioEngine_backtester.py",
-        "source_hash": "772a275535b0b3a74a1ff5a56958961032f89a16800e36fd1586a165c7cac14f",
+        "source_hash": "d7309c33b2f193723b8fd2da62debb81e307eb36fa323c00bff4a92d4c79b0b3",
         "source_hashes": {
-          "backtester/MultiAssetPortfolioEngine_backtester.py": "7f826117ad40c30d3ce0af1687fc203e4cd36fcd6dc5f59dfef243620643151e",
-          "backtester/NodeIRExecutor_backtester.py": "690baac2fd4c26e535784934752f73b712289b3018e6ce8e68c7a15f70e19028"
+          "backtester/MultiAssetPortfolioEngine_backtester.py": "efbeb38b47bce33418d7252aaa87299feef63b8b2cc2693d5204471432ab2580",
+          "backtester/NodeIRExecutor_backtester.py": "58b63fa7e91a52611587be3f8c4115f4577827d58bc41d74bceafe48b1c9aa1d"
         },
         "symbols": [
           "MultiAssetPortfolioEngine._evaluate_condition",
@@ -2483,10 +2483,10 @@
       ],
       "implementation": {
         "path": "backtester/MultiAssetPortfolioEngine_backtester.py",
-        "source_hash": "772a275535b0b3a74a1ff5a56958961032f89a16800e36fd1586a165c7cac14f",
+        "source_hash": "d7309c33b2f193723b8fd2da62debb81e307eb36fa323c00bff4a92d4c79b0b3",
         "source_hashes": {
-          "backtester/MultiAssetPortfolioEngine_backtester.py": "7f826117ad40c30d3ce0af1687fc203e4cd36fcd6dc5f59dfef243620643151e",
-          "backtester/NodeIRExecutor_backtester.py": "690baac2fd4c26e535784934752f73b712289b3018e6ce8e68c7a15f70e19028"
+          "backtester/MultiAssetPortfolioEngine_backtester.py": "efbeb38b47bce33418d7252aaa87299feef63b8b2cc2693d5204471432ab2580",
+          "backtester/NodeIRExecutor_backtester.py": "58b63fa7e91a52611587be3f8c4115f4577827d58bc41d74bceafe48b1c9aa1d"
         },
         "symbols": [
           "MultiAssetPortfolioEngine._evaluate_condition",
@@ -2605,10 +2605,10 @@
       ],
       "implementation": {
         "path": "backtester/MultiAssetPortfolioEngine_backtester.py",
-        "source_hash": "772a275535b0b3a74a1ff5a56958961032f89a16800e36fd1586a165c7cac14f",
+        "source_hash": "d7309c33b2f193723b8fd2da62debb81e307eb36fa323c00bff4a92d4c79b0b3",
         "source_hashes": {
-          "backtester/MultiAssetPortfolioEngine_backtester.py": "7f826117ad40c30d3ce0af1687fc203e4cd36fcd6dc5f59dfef243620643151e",
-          "backtester/NodeIRExecutor_backtester.py": "690baac2fd4c26e535784934752f73b712289b3018e6ce8e68c7a15f70e19028"
+          "backtester/MultiAssetPortfolioEngine_backtester.py": "efbeb38b47bce33418d7252aaa87299feef63b8b2cc2693d5204471432ab2580",
+          "backtester/NodeIRExecutor_backtester.py": "58b63fa7e91a52611587be3f8c4115f4577827d58bc41d74bceafe48b1c9aa1d"
         },
         "symbols": [
           "MultiAssetPortfolioEngine._evaluate_condition",
@@ -2727,9 +2727,9 @@
       ],
       "implementation": {
         "path": "backtester/MultiAssetPortfolioEngine_backtester.py",
-        "source_hash": "214c5758364021450151b748399360aecfc5630b7be5d5b69ef8c4a9cbcdc851",
+        "source_hash": "913ab3a2a2339d980694985b26b40ec9195e98029077a72a68f2ea9be2d0e4fa",
         "source_hashes": {
-          "backtester/MultiAssetPortfolioEngine_backtester.py": "7f826117ad40c30d3ce0af1687fc203e4cd36fcd6dc5f59dfef243620643151e"
+          "backtester/MultiAssetPortfolioEngine_backtester.py": "efbeb38b47bce33418d7252aaa87299feef63b8b2cc2693d5204471432ab2580"
         },
         "symbols": [
           "MultiAssetFeatureBuilder._compute_uncached",
@@ -2879,9 +2879,9 @@
       ],
       "implementation": {
         "path": "backtester/MultiAssetPortfolioEngine_backtester.py",
-        "source_hash": "214c5758364021450151b748399360aecfc5630b7be5d5b69ef8c4a9cbcdc851",
+        "source_hash": "913ab3a2a2339d980694985b26b40ec9195e98029077a72a68f2ea9be2d0e4fa",
         "source_hashes": {
-          "backtester/MultiAssetPortfolioEngine_backtester.py": "7f826117ad40c30d3ce0af1687fc203e4cd36fcd6dc5f59dfef243620643151e"
+          "backtester/MultiAssetPortfolioEngine_backtester.py": "efbeb38b47bce33418d7252aaa87299feef63b8b2cc2693d5204471432ab2580"
         },
         "symbols": [
           "MultiAssetFeatureBuilder._compute_uncached"
@@ -3024,9 +3024,9 @@
       ],
       "implementation": {
         "path": "backtester/MultiAssetPortfolioEngine_backtester.py",
-        "source_hash": "214c5758364021450151b748399360aecfc5630b7be5d5b69ef8c4a9cbcdc851",
+        "source_hash": "913ab3a2a2339d980694985b26b40ec9195e98029077a72a68f2ea9be2d0e4fa",
         "source_hashes": {
-          "backtester/MultiAssetPortfolioEngine_backtester.py": "7f826117ad40c30d3ce0af1687fc203e4cd36fcd6dc5f59dfef243620643151e"
+          "backtester/MultiAssetPortfolioEngine_backtester.py": "efbeb38b47bce33418d7252aaa87299feef63b8b2cc2693d5204471432ab2580"
         },
         "symbols": [
           "MultiAssetFeatureBuilder._compute_uncached"
@@ -3152,9 +3152,9 @@
       ],
       "implementation": {
         "path": "backtester/MultiAssetPortfolioEngine_backtester.py",
-        "source_hash": "214c5758364021450151b748399360aecfc5630b7be5d5b69ef8c4a9cbcdc851",
+        "source_hash": "913ab3a2a2339d980694985b26b40ec9195e98029077a72a68f2ea9be2d0e4fa",
         "source_hashes": {
-          "backtester/MultiAssetPortfolioEngine_backtester.py": "7f826117ad40c30d3ce0af1687fc203e4cd36fcd6dc5f59dfef243620643151e"
+          "backtester/MultiAssetPortfolioEngine_backtester.py": "efbeb38b47bce33418d7252aaa87299feef63b8b2cc2693d5204471432ab2580"
         },
         "symbols": [
           "MultiAssetFeatureBuilder._compute_uncached"
@@ -3310,9 +3310,9 @@
       ],
       "implementation": {
         "path": "backtester/MultiAssetPortfolioEngine_backtester.py",
-        "source_hash": "214c5758364021450151b748399360aecfc5630b7be5d5b69ef8c4a9cbcdc851",
+        "source_hash": "913ab3a2a2339d980694985b26b40ec9195e98029077a72a68f2ea9be2d0e4fa",
         "source_hashes": {
-          "backtester/MultiAssetPortfolioEngine_backtester.py": "7f826117ad40c30d3ce0af1687fc203e4cd36fcd6dc5f59dfef243620643151e"
+          "backtester/MultiAssetPortfolioEngine_backtester.py": "efbeb38b47bce33418d7252aaa87299feef63b8b2cc2693d5204471432ab2580"
         },
         "symbols": [
           "MultiAssetFeatureBuilder._compute_uncached"
@@ -3438,9 +3438,9 @@
       ],
       "implementation": {
         "path": "backtester/MultiAssetPortfolioEngine_backtester.py",
-        "source_hash": "214c5758364021450151b748399360aecfc5630b7be5d5b69ef8c4a9cbcdc851",
+        "source_hash": "913ab3a2a2339d980694985b26b40ec9195e98029077a72a68f2ea9be2d0e4fa",
         "source_hashes": {
-          "backtester/MultiAssetPortfolioEngine_backtester.py": "7f826117ad40c30d3ce0af1687fc203e4cd36fcd6dc5f59dfef243620643151e"
+          "backtester/MultiAssetPortfolioEngine_backtester.py": "efbeb38b47bce33418d7252aaa87299feef63b8b2cc2693d5204471432ab2580"
         },
         "symbols": [
           "MultiAssetFeatureBuilder._compute_uncached"
@@ -3573,9 +3573,9 @@
       ],
       "implementation": {
         "path": "backtester/MultiAssetPortfolioEngine_backtester.py",
-        "source_hash": "214c5758364021450151b748399360aecfc5630b7be5d5b69ef8c4a9cbcdc851",
+        "source_hash": "913ab3a2a2339d980694985b26b40ec9195e98029077a72a68f2ea9be2d0e4fa",
         "source_hashes": {
-          "backtester/MultiAssetPortfolioEngine_backtester.py": "7f826117ad40c30d3ce0af1687fc203e4cd36fcd6dc5f59dfef243620643151e"
+          "backtester/MultiAssetPortfolioEngine_backtester.py": "efbeb38b47bce33418d7252aaa87299feef63b8b2cc2693d5204471432ab2580"
         },
         "symbols": [
           "MultiAssetFeatureBuilder._compute_uncached"
@@ -3701,10 +3701,10 @@
       ],
       "implementation": {
         "path": "backtester/MultiAssetPortfolioEngine_backtester.py",
-        "source_hash": "772a275535b0b3a74a1ff5a56958961032f89a16800e36fd1586a165c7cac14f",
+        "source_hash": "d7309c33b2f193723b8fd2da62debb81e307eb36fa323c00bff4a92d4c79b0b3",
         "source_hashes": {
-          "backtester/MultiAssetPortfolioEngine_backtester.py": "7f826117ad40c30d3ce0af1687fc203e4cd36fcd6dc5f59dfef243620643151e",
-          "backtester/NodeIRExecutor_backtester.py": "690baac2fd4c26e535784934752f73b712289b3018e6ce8e68c7a15f70e19028"
+          "backtester/MultiAssetPortfolioEngine_backtester.py": "efbeb38b47bce33418d7252aaa87299feef63b8b2cc2693d5204471432ab2580",
+          "backtester/NodeIRExecutor_backtester.py": "58b63fa7e91a52611587be3f8c4115f4577827d58bc41d74bceafe48b1c9aa1d"
         },
         "symbols": [
           "MultiAssetFeatureBuilder._compute_uncached",
@@ -3831,9 +3831,9 @@
       ],
       "implementation": {
         "path": "backtester/MultiAssetPortfolioEngine_backtester.py",
-        "source_hash": "214c5758364021450151b748399360aecfc5630b7be5d5b69ef8c4a9cbcdc851",
+        "source_hash": "913ab3a2a2339d980694985b26b40ec9195e98029077a72a68f2ea9be2d0e4fa",
         "source_hashes": {
-          "backtester/MultiAssetPortfolioEngine_backtester.py": "7f826117ad40c30d3ce0af1687fc203e4cd36fcd6dc5f59dfef243620643151e"
+          "backtester/MultiAssetPortfolioEngine_backtester.py": "efbeb38b47bce33418d7252aaa87299feef63b8b2cc2693d5204471432ab2580"
         },
         "symbols": [
           "MultiAssetFeatureBuilder._compute_uncached"
@@ -3963,9 +3963,9 @@
       ],
       "implementation": {
         "path": "backtester/MultiAssetPortfolioEngine_backtester.py",
-        "source_hash": "214c5758364021450151b748399360aecfc5630b7be5d5b69ef8c4a9cbcdc851",
+        "source_hash": "913ab3a2a2339d980694985b26b40ec9195e98029077a72a68f2ea9be2d0e4fa",
         "source_hashes": {
-          "backtester/MultiAssetPortfolioEngine_backtester.py": "7f826117ad40c30d3ce0af1687fc203e4cd36fcd6dc5f59dfef243620643151e"
+          "backtester/MultiAssetPortfolioEngine_backtester.py": "efbeb38b47bce33418d7252aaa87299feef63b8b2cc2693d5204471432ab2580"
         },
         "symbols": [
           "MultiAssetFeatureBuilder._compute_uncached"
@@ -4091,10 +4091,10 @@
       ],
       "implementation": {
         "path": "backtester/MultiAssetPortfolioEngine_backtester.py",
-        "source_hash": "772a275535b0b3a74a1ff5a56958961032f89a16800e36fd1586a165c7cac14f",
+        "source_hash": "d7309c33b2f193723b8fd2da62debb81e307eb36fa323c00bff4a92d4c79b0b3",
         "source_hashes": {
-          "backtester/MultiAssetPortfolioEngine_backtester.py": "7f826117ad40c30d3ce0af1687fc203e4cd36fcd6dc5f59dfef243620643151e",
-          "backtester/NodeIRExecutor_backtester.py": "690baac2fd4c26e535784934752f73b712289b3018e6ce8e68c7a15f70e19028"
+          "backtester/MultiAssetPortfolioEngine_backtester.py": "efbeb38b47bce33418d7252aaa87299feef63b8b2cc2693d5204471432ab2580",
+          "backtester/NodeIRExecutor_backtester.py": "58b63fa7e91a52611587be3f8c4115f4577827d58bc41d74bceafe48b1c9aa1d"
         },
         "symbols": [
           "MultiAssetPortfolioEngine._evaluate_condition",
@@ -4213,10 +4213,10 @@
       ],
       "implementation": {
         "path": "backtester/MultiAssetPortfolioEngine_backtester.py",
-        "source_hash": "772a275535b0b3a74a1ff5a56958961032f89a16800e36fd1586a165c7cac14f",
+        "source_hash": "d7309c33b2f193723b8fd2da62debb81e307eb36fa323c00bff4a92d4c79b0b3",
         "source_hashes": {
-          "backtester/MultiAssetPortfolioEngine_backtester.py": "7f826117ad40c30d3ce0af1687fc203e4cd36fcd6dc5f59dfef243620643151e",
-          "backtester/NodeIRExecutor_backtester.py": "690baac2fd4c26e535784934752f73b712289b3018e6ce8e68c7a15f70e19028"
+          "backtester/MultiAssetPortfolioEngine_backtester.py": "efbeb38b47bce33418d7252aaa87299feef63b8b2cc2693d5204471432ab2580",
+          "backtester/NodeIRExecutor_backtester.py": "58b63fa7e91a52611587be3f8c4115f4577827d58bc41d74bceafe48b1c9aa1d"
         },
         "symbols": [
           "MultiAssetPortfolioEngine._evaluate_condition",
@@ -4335,10 +4335,10 @@
       ],
       "implementation": {
         "path": "backtester/MultiAssetPortfolioEngine_backtester.py",
-        "source_hash": "772a275535b0b3a74a1ff5a56958961032f89a16800e36fd1586a165c7cac14f",
+        "source_hash": "d7309c33b2f193723b8fd2da62debb81e307eb36fa323c00bff4a92d4c79b0b3",
         "source_hashes": {
-          "backtester/MultiAssetPortfolioEngine_backtester.py": "7f826117ad40c30d3ce0af1687fc203e4cd36fcd6dc5f59dfef243620643151e",
-          "backtester/NodeIRExecutor_backtester.py": "690baac2fd4c26e535784934752f73b712289b3018e6ce8e68c7a15f70e19028"
+          "backtester/MultiAssetPortfolioEngine_backtester.py": "efbeb38b47bce33418d7252aaa87299feef63b8b2cc2693d5204471432ab2580",
+          "backtester/NodeIRExecutor_backtester.py": "58b63fa7e91a52611587be3f8c4115f4577827d58bc41d74bceafe48b1c9aa1d"
         },
         "symbols": [
           "MultiAssetPortfolioEngine._evaluate_condition",
@@ -4455,10 +4455,10 @@
       ],
       "implementation": {
         "path": "backtester/MultiAssetPortfolioEngine_backtester.py",
-        "source_hash": "772a275535b0b3a74a1ff5a56958961032f89a16800e36fd1586a165c7cac14f",
+        "source_hash": "d7309c33b2f193723b8fd2da62debb81e307eb36fa323c00bff4a92d4c79b0b3",
         "source_hashes": {
-          "backtester/MultiAssetPortfolioEngine_backtester.py": "7f826117ad40c30d3ce0af1687fc203e4cd36fcd6dc5f59dfef243620643151e",
-          "backtester/NodeIRExecutor_backtester.py": "690baac2fd4c26e535784934752f73b712289b3018e6ce8e68c7a15f70e19028"
+          "backtester/MultiAssetPortfolioEngine_backtester.py": "efbeb38b47bce33418d7252aaa87299feef63b8b2cc2693d5204471432ab2580",
+          "backtester/NodeIRExecutor_backtester.py": "58b63fa7e91a52611587be3f8c4115f4577827d58bc41d74bceafe48b1c9aa1d"
         },
         "symbols": [
           "MultiAssetPortfolioEngine._evaluate_condition",
@@ -4573,10 +4573,10 @@
       ],
       "implementation": {
         "path": "backtester/MultiAssetPortfolioEngine_backtester.py",
-        "source_hash": "772a275535b0b3a74a1ff5a56958961032f89a16800e36fd1586a165c7cac14f",
+        "source_hash": "d7309c33b2f193723b8fd2da62debb81e307eb36fa323c00bff4a92d4c79b0b3",
         "source_hashes": {
-          "backtester/MultiAssetPortfolioEngine_backtester.py": "7f826117ad40c30d3ce0af1687fc203e4cd36fcd6dc5f59dfef243620643151e",
-          "backtester/NodeIRExecutor_backtester.py": "690baac2fd4c26e535784934752f73b712289b3018e6ce8e68c7a15f70e19028"
+          "backtester/MultiAssetPortfolioEngine_backtester.py": "efbeb38b47bce33418d7252aaa87299feef63b8b2cc2693d5204471432ab2580",
+          "backtester/NodeIRExecutor_backtester.py": "58b63fa7e91a52611587be3f8c4115f4577827d58bc41d74bceafe48b1c9aa1d"
         },
         "symbols": [
           "MultiAssetPortfolioEngine._evaluate_condition",
@@ -4702,11 +4702,11 @@
       ],
       "implementation": {
         "path": "backtester/MultiAssetPortfolioEngine_backtester.py",
-        "source_hash": "42bc6987c343e0be25c7892c27814c0ba13d53110b021a4b982aeb5643ec6278",
+        "source_hash": "4ae0904f111628838218ef7683245878f7e1560ffec656b59620660a1e8b4e18",
         "source_hashes": {
-          "backtester/MultiAssetPortfolioEngine_backtester.py": "7f826117ad40c30d3ce0af1687fc203e4cd36fcd6dc5f59dfef243620643151e",
-          "backtester/NodeIRExecutor_backtester.py": "690baac2fd4c26e535784934752f73b712289b3018e6ce8e68c7a15f70e19028",
-          "backtester/TradeSimulator_backtester.py": "cd55f837c0ef4fab7cda65143b8e917eea1cbce2becbf55c3c2580714e7ca30b"
+          "backtester/MultiAssetPortfolioEngine_backtester.py": "efbeb38b47bce33418d7252aaa87299feef63b8b2cc2693d5204471432ab2580",
+          "backtester/NodeIRExecutor_backtester.py": "58b63fa7e91a52611587be3f8c4115f4577827d58bc41d74bceafe48b1c9aa1d",
+          "backtester/TradeSimulator_backtester.py": "6692a9e40306e597fe530f2b77835bd91e5936d90c151b003778821ece4d3d7d"
         },
         "symbols": [
           "MultiAssetPortfolioEngine._execution_is_same_session",
@@ -4822,9 +4822,9 @@
       ],
       "implementation": {
         "path": "backtester/MultiAssetPortfolioEngine_backtester.py",
-        "source_hash": "214c5758364021450151b748399360aecfc5630b7be5d5b69ef8c4a9cbcdc851",
+        "source_hash": "913ab3a2a2339d980694985b26b40ec9195e98029077a72a68f2ea9be2d0e4fa",
         "source_hashes": {
-          "backtester/MultiAssetPortfolioEngine_backtester.py": "7f826117ad40c30d3ce0af1687fc203e4cd36fcd6dc5f59dfef243620643151e"
+          "backtester/MultiAssetPortfolioEngine_backtester.py": "efbeb38b47bce33418d7252aaa87299feef63b8b2cc2693d5204471432ab2580"
         },
         "symbols": [
           "MultiAssetPortfolioEngine._rebalance_dates",
@@ -5745,10 +5745,10 @@
       ],
       "implementation": {
         "path": "backtester/MultiAssetPortfolioEngine_backtester.py",
-        "source_hash": "772a275535b0b3a74a1ff5a56958961032f89a16800e36fd1586a165c7cac14f",
+        "source_hash": "d7309c33b2f193723b8fd2da62debb81e307eb36fa323c00bff4a92d4c79b0b3",
         "source_hashes": {
-          "backtester/MultiAssetPortfolioEngine_backtester.py": "7f826117ad40c30d3ce0af1687fc203e4cd36fcd6dc5f59dfef243620643151e",
-          "backtester/NodeIRExecutor_backtester.py": "690baac2fd4c26e535784934752f73b712289b3018e6ce8e68c7a15f70e19028"
+          "backtester/MultiAssetPortfolioEngine_backtester.py": "efbeb38b47bce33418d7252aaa87299feef63b8b2cc2693d5204471432ab2580",
+          "backtester/NodeIRExecutor_backtester.py": "58b63fa7e91a52611587be3f8c4115f4577827d58bc41d74bceafe48b1c9aa1d"
         },
         "symbols": [
           "MultiAssetPortfolioEngine._split_timer_exit_condition",
