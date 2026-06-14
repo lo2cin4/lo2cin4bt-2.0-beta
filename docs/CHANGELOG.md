@@ -8,6 +8,17 @@ Version policy follows `MAJOR.MINOR.PATCH`:
 - MINOR: meaningful user-facing feature changes.
 - MAJOR: large compatibility-breaking changes.
 
+## 2.0.2 - Version Badge And Windows Shortcut
+
+Release type: patch release for the public beta.
+
+### Added
+
+- Added an in-app sidebar version badge showing `version: 2.0.2 beta`.
+- Added README update instructions for users who already cloned the repo.
+- Added optional Windows desktop shortcut scripts.
+- Added a lo2cin4bt desktop icon asset for the Windows shortcut.
+
 ## 2.0.1 - Metrics Page Rendering Fix
 
 Release type: patch release for the public beta.

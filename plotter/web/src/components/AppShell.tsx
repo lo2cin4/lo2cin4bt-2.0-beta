@@ -10,6 +10,8 @@ const NAV_ITEMS = [
   { to: '/wfa', labelKey: 'nav.walkForward' },
 ] as const
 
+const APP_VERSION = '2.0.2 beta'
+
 export function AppShell() {
   const pathname = useRouterState({ select: (state) => state.location.pathname })
   const language = useAppStore((state) => state.language)
@@ -21,6 +23,7 @@ export function AppShell() {
       <aside className="app-sidebar">
         <div className="brand-wrap">
           <div className="brand-title">lo2cin4bt</div>
+          <div className="brand-version">version: {APP_VERSION}</div>
         </div>
         <nav className="nav-stack">
           {NAV_ITEMS.map((item) => (

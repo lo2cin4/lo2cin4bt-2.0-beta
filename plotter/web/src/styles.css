@@ -143,6 +143,23 @@ input {
   text-shadow: 0 0 24px rgba(var(--brand-champagne-rgb), 0.2);
 }
 
+.brand-version {
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
+  min-height: 34px;
+  margin-top: 12px;
+  padding: 5px 12px;
+  border: 2px solid rgba(var(--brand-champagne-rgb), 0.92);
+  border-radius: 8px;
+  color: var(--text-bright);
+  background: rgba(var(--brand-champagne-rgb), 0.08);
+  box-shadow: 0 0 18px rgba(var(--brand-champagne-rgb), 0.16);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
 .nav-stack {
   display: flex;
   flex-direction: column;

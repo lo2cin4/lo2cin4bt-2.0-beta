@@ -227,5 +227,7 @@ reference/
 !/assets/lo2cin4btneon.jpg
 !/assets/readme/
 !/assets/readme/**
+!/assets/desktop/
+!/assets/desktop/**
 .project_runtime.json
 .project_context.json
