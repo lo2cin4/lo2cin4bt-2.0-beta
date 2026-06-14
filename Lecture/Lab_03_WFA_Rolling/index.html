@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lab 03 WFA 滾動驗證</title>
+  <link rel="stylesheet" href="../assets/lecture.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand"><strong>Lo2cin4BT Lecture</strong><span>Lab 03</span></div>
+      <input class="search" data-search placeholder="搜尋章節">
+      <nav class="nav-list" data-nav></nav>
+    </aside>
+    <main class="content">
+      <article class="module">
+        <p class="kicker">Lab 03</p>
+        <h1>WFA 滾動驗證</h1>
+        <ol>
+          <li>選 QQQ MA 或 VOO/GLD 這類有 parameter domains 的 WFA config。</li>
+          <li>選 fixed annual allocation validation config，確認它是 Rolling Validation 滾動驗證。</li>
+          <li>在 WFA 頁讀 <code>train_start</code>、<code>test_start</code>、objective、selection metric、OOS portfolio evidence。</li>
+          <li>檢查 allocation by window、asset contribution、實際再平衡、exposure、turnover、risk gate event counts。</li>
+        </ol>
+        <p>驗收句：每個 IS window 先選一個 policy，再把那一個 policy 放到對應 OOS。</p>
+        <section class="evidence">
+          <h2>專案證據</h2>
+          <ul>
+            <li><code>workspace/wfa/</code></li>
+            <li><code>wfanalyser/UnifiedPortfolioWFARunner_wfanalyser.py</code></li>
+          </ul>
+        </section>
+        <div class="pager">
+          <a href="../Lab_02_Parameter_Matrix/index.html">上一個 Lab</a>
+          <a href="../Lab_04_Provider_Check/index.html">下一個 Lab</a>
+        </div>
+      </article>
+    </main>
+  </div>
+  <script src="../assets/lecture.js"></script>
+</body>
+</html>

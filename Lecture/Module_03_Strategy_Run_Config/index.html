@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>03 StrategyRun Config</title>
+  <link rel="stylesheet" href="../assets/lecture.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand"><strong>Lo2cin4BT Lecture</strong><span>Module 03</span></div>
+      <input class="search" data-search placeholder="搜尋章節">
+      <nav class="nav-list" data-nav></nav>
+    </aside>
+
+    <main class="content">
+      <article class="module">
+        <p class="kicker">Module 03</p>
+        <h1>StrategyRun Config</h1>
+        <p>
+          strategy run config 是 Lo2cin4BT 目前偏好的回測設定格式。它的目標很簡單：
+          用同一份 config 描述資料、資產、策略邏輯、交易成本、風險限制、參數搜尋和輸出，讓單資產、
+          日曆事件、多資產投資組合都能走同一個執行合約。
+        </p>
+
+        <div class="notice">
+          <strong>核心規則：</strong>
+          <span>config 只描述策略與工作流；真正計算由 dataloader、factorhandler、backtester、WFA、statanalyser 各自負責。</span>
+        </div>
+
+        <section class="mermaid-panel">
+          <h2>Config 到報告的路徑</h2>
+          <pre class="mermaid">
+flowchart LR
+  User["用戶策略描述"] --> AI["AI 按 Manual 判斷&lt;br/&gt;支援 / 要追問 / 不支援"]
+  AI --> Config["strategy run config"]
+  Config --> Data["data + universe"]
+  Config --> Logic["computed_fields + signals + selection"]
+  Config --> Portfolio["allocation + rebalance + risk"]
+  Data --> Runner["Unified Backtest Runner"]
+  Logic --> Runner
+  Portfolio --> Runner
+  Runner --> Artifacts["managed artifacts&lt;br/&gt;parquet / json payload"]
+  Artifacts --> Report["Backtests 回測 / Metrics 概覽"]
+  Artifacts --> Matrix["Parameter Matrix 參數矩陣"]
+  Artifacts --> WFA["WFA 滾動驗證"]
+          </pre>
+          <p class="diagram-caption">讀 config 時不用一次背完所有欄位；先分成資料、策略邏輯、投資組合、驗證輸出四組，會易讀很多。</p>
+        </section>
+
+        <h2>Config 的主要區塊</h2>
+        <div class="table-scroll">
+          <table class="detail-table">
+            <tr>
+              <th>區塊</th>
+              <th>用途</th>
+              <th>常見可調位置</th>
+              <th>前端會用到哪裡</th>
+            </tr>
+            <tr>
+              <td><code>platform</code></td>
+              <td>標記策略模式、工作流、run type。</td>
+              <td><code>strategy_mode_id</code>、<code>workflow_id</code>、label。</td>
+              <td>Run Center 執行中心、Metrics file selection、Strategy Rules。</td>
+            </tr>
+            <tr>
+              <td><code>data</code></td>
+              <td>指定 provider、頻率、calendar、timezone、benchmark。</td>
+              <td><code>yfinance</code>、<code>binance</code>、<code>coinbase</code>、<code>file</code>、benchmark。</td>
+              <td>Data Health（資料健康）、Benchmark、Effective Start（有效起始日）。</td>
+            </tr>
+            <tr>
+              <td><code>universe</code></td>
+              <td>策略可交易資產池。</td>
+              <td>單一 symbol 或多資產列表。</td>
+              <td>Strategy Rules、Portfolio Context、Holdings。</td>
+            </tr>
+            <tr>
+              <td><code>computed_fields</code> / <code>signals</code></td>
+              <td>計算 SMA、momentum、RSI、MACD、calendar mask 或 入場 / 出場 signal。</td>
+              <td>indicator period、price field、cross rule、交易日曆規則。</td>
+              <td>Strategy Rules、Parameter Matrix 參數矩陣、WFA domain。</td>
+            </tr>
+            <tr>
+              <td><code>selection</code></td>
+              <td>多資產策略用來決定哪些資產入選。</td>
+              <td><code>eligible</code>、<code>rank_by</code>、<code>top_n</code>、rank order。</td>
+              <td>Allocation Timeline、Target Holdings、Asset Contribution。</td>
+            </tr>
+            <tr>
+              <td><code>allocation</code></td>
+              <td>把 signal 或 selection 轉成 目標權重。</td>
+              <td>equal weight、fixed weights、position limit、cash policy。</td>
+              <td>Portfolio Equity、Scheduled Rebalances、Allocation Changes。</td>
+            </tr>
+            <tr>
+              <td><code>rebalance</code></td>
+              <td>決定何時檢查或調整 portfolio。</td>
+              <td>every session、month start、year start、event date、signal change。</td>
+              <td>Active Rebalances、Checkpoints、Turnover。</td>
+            </tr>
+            <tr>
+              <td><code>fill_model</code></td>
+              <td>定義成交時間、價格、交易成本和滑點。</td>
+              <td>open/close、next bar、transaction cost、slippage。</td>
+              <td>Trade Return、Cost Drag、Net-vs-gross future analysis。</td>
+            </tr>
+            <tr>
+              <td><code>risk</code></td>
+              <td>可選的風險閘門。</td>
+              <td>max positions、max daily loss、max order size、max MDD。</td>
+              <td>Risk Gate Audit。</td>
+            </tr>
+            <tr>
+              <td><code>parameter_domains</code></td>
+              <td>描述可搜尋參數範圍。</td>
+              <td>MA period、weekday、ordinal、lookback、allocation profile。</td>
+              <td>Parameter Matrix 參數矩陣、WFA optimization。</td>
+            </tr>
+          </table>
+        </div>
+
+        <h2>最小範例：BTC / ETH 均線策略</h2>
+        <pre><code>{
+  "schema_version": "strategy_run",
+  "platform": {
+    "strategy_mode_id": "multi_asset_portfolio",
+    "workflow_id": "parameter_matrix",
+    "run_type": "test"
+  },
+  "data": {
+    "provider": "binance",
+    "frequency": "1D",
+    "calendar": "CRYPTO_24_7",
+    "timezone": "UTC",
+    "benchmark": "BTCUSDT"
+  },
+  "universe": {
+    "symbols": ["BTCUSDT", "ETHUSDT"]
+  },
+  "computed_fields": [
+    {
+      "name": "sma",
+      "op": "indicator.sma",
+      "source": "close",
+      "period": {"param_ref": "ma_period"}
+    }
+  ],
+  "signals": {
+    "target": {
+      "op": "price_above_feature",
+      "price_field": "close",
+      "feature": "sma",
+      "weight": 1.0
+    }
+  },
+  "rebalance": {
+    "trigger": {"op": "signal.change"}
+  },
+  "fill_model": {
+    "entry_price": "open",
+    "entry_delay_bars": 1,
+    "exit_price": "close",
+    "exit_delay_bars": 0,
+    "cost": {"transaction_cost": 0.001, "slippage": 0.0005}
+  },
+  "parameter_domains": {
+    "ma_period": {"type": "range", "start": 10, "end": 500, "step": 10}
+  }
+}</code></pre>
+
+        <h2>Mode 與 Workflow 要分開理解</h2>
+        <div class="grid two">
+          <section class="card">
+            <h3>strategy_mode_id</h3>
+            <p>描述策略形態，例如單資產 signal、多資產 portfolio、日曆事件、動態配置。</p>
+            <ul>
+              <li><code>single_asset_signal</code></li>
+              <li><code>multi_factor_entry_exit_roles</code></li>
+              <li><code>calendar_event_session</code></li>
+              <li><code>multi_asset_portfolio</code></li>
+            </ul>
+            <p><code>multi_asset_trigger_selection</code> 和 <code>dynamic_allocation_rules</code> 目前是 planned / reserved mode。AI 不應把它們寫成可執行 config，除非 schema、support checker、runtime、oracle test 和 QuantReview 都確認支援。</p>
+          </section>
+          <section class="card">
+            <h3>workflow_id</h3>
+            <p>描述這次要產生什麼結果，例如單次回測、參數矩陣、WFA、滾動驗證。</p>
+            <ul>
+              <li><code>single_backtest</code></li>
+              <li><code>parameter_matrix</code></li>
+              <li><code>walk_forward_analysis</code></li>
+              <li><code>rolling_validation</code></li>
+              <li><code>statanalyser</code></li>
+            </ul>
+          </section>
+        </div>
+
+        <h2>產生 config 時的處理原則</h2>
+        <ul>
+          <li>用戶描述可以很自由；AI 將會轉換成本專案已支援的 config 合約。</li>
+          <li>如果某策略無法用現有合約表達，AI 將會明確說明「目前 Lo2cin4BT 不支援」，不會硬寫成看似可跑的 config。</li>
+          <li>有參數範圍才使用 <code>parameter_matrix</code> 或 WFA optimization；固定策略會使用 single backtest 或滾動驗證。</li>
+          <li>benchmark、provider、calendar、timezone 會以市場口徑檢查；AI 不會在未說明下猜測市場。</li>
+          <li>成本、滑點、<code>fill_model</code> timing 要顯示在 Strategy Rules，方便用戶審核。</li>
+          <li>使用外部資料時，feature contract 必須寫 <code>data_availability</code>，包括 <code>observed_at</code>、<code>usable_from</code>、<code>point_in_time</code> 和 <code>revision_policy</code>。</li>
+        </ul>
+
+        <section class="evidence">
+          <h2>專案證據</h2>
+          <ul>
+            <li><code>backtester/contracts/strategy/strategy-run.schema.json</code></li>
+            <li><code>backtester/StrategyRunConfig_backtester.py</code></li>
+            <li><code>workspace/runs/*.json</code></li>
+            <li><code>docs/ai/AI_MANUAL_SKILL.md</code></li>
+          </ul>
+        </section>
+
+        <div class="pager">
+          <a href="../Module_02_Data_Providers/index.html">上一章</a>
+          <a href="../Module_04_Backtest_Basics/index.html">下一章</a>
+        </div>
+      </article>
+    </main>
+  </div>
+  <script src="../assets/lecture.js"></script>
+</body>
+</html>

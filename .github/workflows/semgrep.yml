@@ -1,0 +1,20 @@
+name: Semgrep
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  semgrep:
+    runs-on: ubuntu-latest
+    container:
+      image: semgrep/semgrep:1.100.0
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run repo-local Semgrep rules
+        run: semgrep scan --config .semgrep/lo2cin4bt.yml --error

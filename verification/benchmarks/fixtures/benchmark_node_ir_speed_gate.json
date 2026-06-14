@@ -1,0 +1,43 @@
+{
+  "benchmark_id": "benchmark_node_ir_speed_gate",
+  "description": "Speed gate for semantic node_ir execution backends (python baseline, auto, rust).",
+  "inline_config": {
+    "dataloader": {
+      "source": "file",
+      "start_date": "2020-01-01",
+      "frequency": "1D",
+      "file_config": {
+        "file_path": "workspace/datasets/price.csv",
+        "time_column": "time",
+        "open_column": "open",
+        "high_column": "high",
+        "low_column": "low",
+        "close_column": "close",
+        "volume_column": "volume"
+      },
+      "predictor_config": {
+        "skip_predictor": true
+      }
+    },
+    "backtester": {
+      "strategy_mode": "semantic",
+      "strategy_contract_path": "workspace/strategies/strategy-vix-regime-ma-cross-sweep.user.json",
+      "feature_contract_path": "workspace/features/feature-contract-vix-price-v1.user.json",
+      "selected_predictor": "X",
+      "trading_params": {
+        "transaction_cost": 0.001,
+        "slippage": 0.0005,
+        "trade_delay": 1,
+        "trade_price": "open",
+        "auto_rust_min_combos": 64
+      }
+    }
+  },
+  "modes": [
+    "node_ir_python_numba",
+    "node_ir_auto",
+    "node_ir_rust_kernel"
+  ],
+  "warmup_runs": 1,
+  "repeat": 5
+}

@@ -1,0 +1,56 @@
+name: Bug report
+description: Report a reproducible lo2cin4bt bug.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug. Do not include API keys, broker passwords, account screenshots, private datasets, or personal information.
+
+        感謝你回報 bug。請不要貼上 API key、券商密碼、帳戶截圖、私人資料集或個人資料。
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary / 摘要
+      description: What went wrong? / 發生了甚麼問題？
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce / 重現步驟
+      description: List the exact steps, command, config, or page.
+      value: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior / 預期行為
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior / 實際行為
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment / 環境
+      description: OS, Python version, Node version, browser, and commit if known.
+      placeholder: "Windows 11, Python 3.12, Node 22, Chrome, commit ..."
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety check / 安全確認
+      options:
+        - label: I did not include secrets, account details, private keys, or broker credentials.
+          required: true
+        - label: This is not a request for live trading, order placement, fund movement, or investment advice.
+          required: true

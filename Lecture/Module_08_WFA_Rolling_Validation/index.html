@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>08 WFA 滾動驗證</title>
+  <link rel="stylesheet" href="../assets/lecture.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand"><strong>Lo2cin4BT Lecture</strong><span>Module 08</span></div>
+      <input class="search" data-search placeholder="搜尋章節">
+      <nav class="nav-list" data-nav></nav>
+    </aside>
+
+    <main class="content">
+      <article class="module">
+        <p class="kicker">Module 08</p>
+        <h1>WFA 滾動驗證</h1>
+        <p>
+          Walk-Forward Analysis 的正式定義是：在每個 in-sample window 內尋找最佳參數，
+          然後只把該 window 選出的最佳參數放到 paired out-of-sample window 測試。
+          它不是把 Parameter Matrix 參數矩陣的全局最佳解直接拿去跑 window，也不是把所有候選都當成已選中。
+        </p>
+
+        <div class="notice">
+          <strong>一句話：</strong>
+          <span>Parameter Matrix 參數矩陣看「整段樣本是否存在穩定區域」；WFA 滾動驗證看「每段 IS 找出的最佳參數，在下一段 OOS 是否仍然有效」。</span>
+        </div>
+
+        <section class="mermaid-panel">
+          <h2>WFA 與 Rolling 的差別</h2>
+          <pre class="mermaid">
+flowchart TB
+  Start["策略 config"] --> HasParam{"有 parameter_domains？"}
+  HasParam -- "有" --> Split["切 IS / OOS windows"]
+  Split --> Search["每段 IS 搜尋候選參數"]
+  Search --> Pick["選出 rank-1 optimum"]
+  Pick --> Test["只用該 optimum 跑 paired OOS"]
+  Test --> WFAReport["WFA selected optimum timeline"]
+
+  HasParam -- "沒有" --> Fixed["固定 policy"]
+  Fixed --> Roll["切 OOS windows"]
+  Roll --> Validate["逐段驗證固定策略"]
+  Validate --> RollingReport["Rolling validation report"]
+          </pre>
+          <p class="diagram-caption">WFA 的重點是「先選，再測」；Rolling Validation 的重點是「固定策略，分段檢查」。</p>
+        </section>
+
+        <section class="mermaid-panel">
+          <h2>一個 window 內發生什麼事</h2>
+          <pre class="mermaid">
+sequenceDiagram
+  participant Window as Rolling Window
+  participant IS as In-Sample
+  participant Optimizer as Optimizer
+  participant OOS as Out-of-Sample
+  participant Artifact as WFA Artifact
+  Window->>IS: 取 train_start 到 train_end
+  IS->>Optimizer: 在 parameter_domains 內測候選
+  Optimizer-->>IS: 回傳 rank=1 selected optimum
+  IS->>OOS: 只傳 selected optimum
+  OOS-->>Artifact: 記錄 OOS metrics 與 window dates
+  Artifact-->>Artifact: 每個 window + objective 只保留一行 selected_optimum
+          </pre>
+          <p class="diagram-caption">
+            這張圖是 WFA 的核心約束：候選 grid 可以保存為 diagnostics，但正式 WFA 主結果只代表 IS 選出的那一組參數。
+          </p>
+        </section>
+
+        <h2>WFA 正式流程</h2>
+        <ol class="workflow">
+          <li>
+            <strong>切 window</strong>
+            <span>用 rolling 或 expanding window 生成多段 IS/OOS。</span>
+          </li>
+          <li>
+            <strong>IS 尋優</strong>
+            <span>在當前 IS window 內枚舉或搜尋 <code>parameter_domains</code>。</span>
+          </li>
+          <li>
+            <strong>選 rank-1</strong>
+            <span>按 Sharpe、Calmar 或指定 objective 選出一組 selected optimum。</span>
+          </li>
+          <li>
+            <strong>OOS 驗證</strong>
+            <span>只用該 selected optimum 跑 對應 OOS，不混入 candidate grid。</span>
+          </li>
+          <li>
+            <strong>輸出結論</strong>
+            <span>主 artifact 每個 <code>window_id + objective</code> 只保留一行 selected optimum。</span>
+          </li>
+        </ol>
+
+        <h2>WFA output 應該怎樣看</h2>
+        <div class="grid two">
+          <section class="card">
+            <h3>Window Optimum Timeline</h3>
+            <p>按 window 順序顯示每段 IS 選中的參數，以及該參數在 OOS 的表現。這是 WFA 最核心的時間序列。</p>
+          </section>
+          <section class="card">
+            <h3>IS Parameter Sets</h3>
+            <p>把被 IS 選中的參數分組，查看某組參數被選中多少次、平均 IS/OOS 表現如何。</p>
+          </section>
+          <section class="card">
+            <h3>Parameter Family / Cluster Summary</h3>
+            <p>把相近參數歸為 family，幫助判斷最佳參數是否集中在相似區域，而不是每個 window 都亂跳。</p>
+          </section>
+          <section class="card">
+            <h3>Candidate Diagnostics</h3>
+            <p>候選 grid 只屬診斷資料，不會被當成正式 pass/fail evidence。舊 artifact 若混入 grid row，前端會標記 legacy。</p>
+          </section>
+        </div>
+
+        <h2>Rolling Validation 不是 WFA optimization</h2>
+        <p>
+          如果策略沒有 tunable parameters，例如固定 30/10/20/20/20 allocation，
+          系統會把它視為 Rolling Validation，而不是 WFA optimization。這類策略可以用同一套 window runner 做滾動驗證：
+          每段 OOS 只驗證固定 policy 的穩定性，不做 IS 尋優。
+        </p>
+
+        <div class="table-scroll">
+          <table class="detail-table">
+            <tr>
+              <th>情況</th>
+              <th>使用方式</th>
+              <th>原因</th>
+            </tr>
+            <tr>
+              <td>MA period、weekday、lookback、allocation profile 有範圍</td>
+              <td>WFA optimization</td>
+              <td>每段 IS 可以搜尋並選出最佳參數。</td>
+            </tr>
+            <tr>
+              <td>固定權重、固定日期、無參數</td>
+              <td>Rolling validation</td>
+              <td>沒有「尋優」這一步，只能檢查分段穩定性。</td>
+            </tr>
+            <tr>
+              <td>舊 WFA artifact 混入 candidate grid</td>
+              <td>Legacy / diagnostic only</td>
+              <td>只作診斷，不作正式 pass/fail 結論。</td>
+            </tr>
+          </table>
+        </div>
+
+        <h2>WFA config 與 Strategy config 的關係</h2>
+        <p>
+          WFA config 不重複策略本身。它引用一份 strategy config，只描述 windowing、optimizer、objective、
+          acceptance gate 和輸出選項。
+        </p>
+        <pre><code>{
+  "schema_version": "wfa_run",
+  "strategy_config_path": "workspace/runs/backtest_xxx.json",
+  "windowing": {
+    "mode": "rolling",
+    "target_window_count": 10,
+    "train_ratio": 0.6,
+    "test_ratio": 0.2
+  },
+  "optimizer": {
+    "type": "grid",
+    "objectives": ["sharpe", "calmar"]
+  },
+  "acceptance": {
+    "require_positive_oos": true,
+    "min_oos_sharpe": 0,
+    "min_oos_calmar": 0
+  }
+}</code></pre>
+
+        <h2>Pass / Review 的基本原則</h2>
+        <ul>
+          <li>OOS metric 本身需要達標；不會只靠 OOS / IS ratio 判斷通過。</li>
+          <li>如果 IS 或 OOS 是負數，ratio 只會作為診斷資訊，不會單獨構成 pass。</li>
+          <li>多資產 WFA 也遵守同一定義：IS 選 投資組合策略，OOS 只測該 policy。</li>
+          <li>固定策略的滾動驗證只能說明分段穩定性，不代表有參數尋優能力。</li>
+        </ul>
+
+        <section class="evidence">
+          <h2>專案證據</h2>
+          <ul>
+            <li><code>backtester/contracts/strategy/wfa-run.schema.json</code></li>
+            <li><code>wfanalyser/UnifiedPortfolioWFARunner_wfanalyser.py</code></li>
+            <li><code>wfanalyser/ResultsExporter_wfanalyser.py</code></li>
+            <li><code>workspace/wfa/*.json</code></li>
+          </ul>
+        </section>
+
+        <div class="pager">
+          <a href="../Module_07_Backtests_Report/index.html">上一章</a>
+          <a href="../Module_09_Accounting_Risk_Invariants/index.html">下一章</a>
+        </div>
+      </article>
+    </main>
+  </div>
+  <script src="../assets/lecture.js"></script>
+</body>
+</html>

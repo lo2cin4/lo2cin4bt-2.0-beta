@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>04 回測入門</title>
+  <link rel="stylesheet" href="../assets/lecture.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand"><strong>Lo2cin4BT Lecture</strong><span>Module 04</span></div>
+      <input class="search" data-search placeholder="搜尋章節">
+      <nav class="nav-list" data-nav></nav>
+    </aside>
+
+    <main class="content">
+      <article class="module">
+        <p class="kicker">Module 04</p>
+        <h1>回測入門</h1>
+        <p>
+          Lo2cin4BT 的回測不是單純畫一條資金曲線。系統會先讀取策略設定，載入資料，
+          產生 features、signals 或 target weights，再用投資組合記帳核心逐步計算現金、
+          持倉、市值、費用、turnover、equity 與 benchmark。
+        </p>
+
+        <div class="flow-strip" aria-label="回測流程摘要">
+          <span>選 config</span>
+          <span>載入資料</span>
+          <span>產生訊號 / 權重</span>
+          <span>逐步記帳</span>
+          <span>輸出 artifacts</span>
+          <span>前端閱讀</span>
+        </div>
+
+        <section class="mermaid-panel">
+          <h2>Backtest Workflow</h2>
+          <pre class="mermaid">
+flowchart LR
+  Config["strategy_run<br/>策略設定"] --> Validate["驗證與標準化"]
+  Validate --> Data["dataloader<br/>價格 / 成交量 / benchmark"]
+  Data --> Vector["vector precompute<br/>SMA / momentum / calendar mask"]
+  Vector --> Target["target weight frame<br/>每日期望持倉"]
+  Target --> Accounting["sequential accounting<br/>cash / positions / fees / equity"]
+  Accounting --> Artifacts["managed artifacts<br/>metrics / equity / holdings / audit"]
+  Artifacts --> UI["Metrics 概覽 / Backtests 回測 UI"]
+          </pre>
+          <p class="diagram-caption">
+            可一次計算的 signal、indicator、ranking 會先向量化；涉及現金、持倉、費用和風控狀態的部分，會逐步記帳。
+          </p>
+        </section>
+
+        <h2>單資產如何進入統一引擎</h2>
+        <p>
+          單資產策略會被視為「只有一個資產的投資組合」。例如 QQQ 均線策略：
+          入場訊號把 QQQ target weight 設為 100%，離場訊號把 target weight 設為 0%。
+          這樣它可以與多資產投資組合共用同一套 equity、fee、turnover、risk gate 與 invariant 檢查。
+        </p>
+
+        <section class="concept-flow">
+          <h2>實務操作順序</h2>
+          <ol>
+            <li>
+              <strong>啟動平台</strong>
+              <span>執行 <code>python main.py</code>，打開 <code>http://127.0.0.1:2424/</code>。</span>
+            </li>
+            <li>
+              <strong>選擇 Run Center 執行中心 config</strong>
+              <span>從 <code>workspace/runs/</code> 選 backtest config；有參數範圍時會是 Parameter Matrix 參數矩陣，無參數時是 Single Backtest 單次回測。</span>
+            </li>
+            <li>
+              <strong>閱讀 Metrics 概覽</strong>
+              <span>先看 equity、benchmark、Total Return、CAGR、Sharpe、MDD、Calmar。</span>
+            </li>
+            <li>
+              <strong>進入 Backtests 回測</strong>
+              <span>檢查 Strategy Table、Selected Strategy Summary、Portfolio Context、Risk Gate Audit、Allocation Changes。</span>
+            </li>
+          </ol>
+        </section>
+
+        <h2>回測前檢查</h2>
+        <div class="learning-rail">
+          <div class="rail-item"><strong>Config schema</strong><span>使用 <code>strategy_run</code>，或可被 normalizer 轉換。</span></div>
+          <div class="rail-item"><strong>資料完整性</strong><span>確認資產、benchmark、頻率、有效起始日都能載入。</span></div>
+          <div class="rail-item"><strong>Parameter domain</strong><span>有可調參數才會生成 Parameter Matrix 參數矩陣。</span></div>
+          <div class="rail-item"><strong>策略類型</strong><span>固定配置策略應看 Rolling Validation，不應誤稱 WFA optimization。</span></div>
+        </div>
+
+        <section class="evidence">
+          <h2>專案證據</h2>
+          <ul>
+            <li><code>backtester/UnifiedBacktestRunner_backtester.py</code></li>
+            <li><code>backtester/SingleAssetPortfolioAdapter_backtester.py</code></li>
+            <li><code>backtester/MultiAssetPortfolioEngine_backtester.py</code></li>
+            <li><code>backtester/PortfolioInvariant_backtester.py</code></li>
+          </ul>
+        </section>
+
+        <div class="pager">
+          <a href="../Module_03_Strategy_Run_Config/index.html">上一章</a>
+          <a href="../Module_05_Strategy_Semantics/index.html">下一章</a>
+        </div>
+      </article>
+    </main>
+  </div>
+  <script src="../assets/lecture.js"></script>
+</body>
+</html>

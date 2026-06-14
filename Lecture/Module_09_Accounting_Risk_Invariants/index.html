@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>09 Accounting / Risk / Invariant</title>
+  <link rel="stylesheet" href="../assets/lecture.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand"><strong>Lo2cin4BT Lecture</strong><span>Module 09</span></div>
+      <input class="search" data-search placeholder="搜尋章節">
+      <nav class="nav-list" data-nav></nav>
+    </aside>
+
+    <main class="content">
+      <article class="module">
+        <p class="kicker">Module 09</p>
+        <h1>Portfolio Accounting / Risk Gate / Invariant</h1>
+        <p>
+          投資組合記帳必須逐步處理，因為現金、持倉、費用、漂移權重、turnover、risk gate 介入都會依賴上一個時間點。
+          Invariant checker 的用途，是在回測和測試中確認 cash、positions、market value、equity、fees 之間永遠自洽。
+        </p>
+
+        <section class="mermaid-panel">
+          <h2>Accounting 與風控檢查流程</h2>
+          <pre class="mermaid">
+flowchart LR
+  Target["target weights<br/>策略期望配置"] --> Drift["drifted weights<br/>市場變動後配置"]
+  Drift --> Delta["trade delta<br/>需要買賣的權重"]
+  Delta --> Cost["cost / slippage<br/>交易成本"]
+  Cost --> State["portfolio state<br/>cash + positions + fees"]
+  State --> Equity["equity curve<br/>cash + market value"]
+  State --> Risk["risk gate audit<br/>max position / loss / MDD"]
+  State --> Invariant["invariant checker<br/>自洽檢查"]
+  Risk --> State
+  Invariant --> Report["violations / skipped / ok"]
+          </pre>
+          <p class="diagram-caption">
+            Risk gate 可以改變目標配置；Invariant 不改變交易，只負責檢查結果是否合理。
+          </p>
+        </section>
+
+        <h2>Invariant 會檢查甚麼</h2>
+        <div class="table-scroll">
+          <table class="detail-table">
+            <tr><th>檢查</th><th>意思</th><th>為何重要</th></tr>
+            <tr><td><code>equity = cash + market_value</code></td><td>總權益必須等於現金加持倉市值。</td><td>防止資金憑空增加或消失。</td></tr>
+            <tr><td>market value 一致</td><td>持倉數量乘以最新價格，要等於記錄中的 market value。</td><td>防止價格或持倉欄位對不上。</td></tr>
+            <tr><td>fees 不可為負</td><td>交易費、滑價成本不能反向變成收益。</td><td>防止成本模型寫反。</td></tr>
+            <tr><td>NaN / inf 檢查</td><td>現金、權益、持倉、費用不能是無效數字。</td><td>防止圖表和排名被壞數據污染。</td></tr>
+            <tr><td>long-only 持倉限制</td><td>long-only 策略不應出現負持倉。</td><td>防止策略語義與記帳結果矛盾。</td></tr>
+            <tr><td>gross exposure 上限</td><td>如有設定，總曝險不可超過限制。</td><td>防止配置超過風險約束。</td></tr>
+          </table>
+        </div>
+
+        <h2>Risk Gate 是甚麼</h2>
+        <p>
+          Risk gate 是可選的安全閘。預設可以不啟用；啟用後，當 max positions、max daily loss、
+          max order size、max MDD 等條件被觸發，系統可選擇減倉、清倉、暫停交易或阻止新訂單。
+        </p>
+
+        <section class="concept-flow">
+          <h2>Risk Gate Audit 應該怎樣讀</h2>
+          <ol>
+            <li><strong>Triggered Events</strong><span>本次回測有多少次風控事件被觸發。0 代表沒有事件，不代表功能失效。</span></li>
+            <li><strong>Gates Triggered</strong><span>列出觸發過的 gate 名稱，例如 max_drawdown 或 max_positions。</span></li>
+            <li><strong>事件表</strong><span>顯示 timestamp、threshold、observed value、action、affected assets、resulting target weights。</span></li>
+          </ol>
+        </section>
+
+        <div class="callout success">
+          <strong>正常情況：</strong>
+          如果策略沒有設定 risk gates，或整段回測沒有觸發條件，Risk Gate Audit 顯示 0 events 是合理的。
+        </div>
+
+        <section class="evidence">
+          <h2>專案證據</h2>
+          <ul>
+            <li><code>backtester/PortfolioInvariant_backtester.py</code></li>
+            <li><code>backtester/RiskGate_backtester.py</code></li>
+            <li><code>tests/test_portfolio_invariant_backtester.py</code></li>
+            <li><code>tests/test_risk_gate_backtester.py</code></li>
+          </ul>
+        </section>
+
+        <div class="pager">
+          <a href="../Module_08_WFA_Rolling_Validation/index.html">上一章</a>
+          <a href="../Module_10_Data_Provider_Extension/index.html">下一章</a>
+        </div>
+      </article>
+    </main>
+  </div>
+  <script src="../assets/lecture.js"></script>
+</body>
+</html>

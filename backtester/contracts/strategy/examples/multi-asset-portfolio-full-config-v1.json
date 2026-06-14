@@ -1,0 +1,108 @@
+{
+  "schema_version": "multi_asset_portfolio.v1",
+  "strategy_id": "multi_asset_finlab_style_rotation_full",
+  "mode": "multi_asset_portfolio",
+  "engine_family": "multi_asset",
+  "workflow": "portfolio_backtest",
+  "data_context": {
+    "frequency": "1D",
+    "calendar": "XNYS",
+    "timezone": "America/New_York",
+    "price_adjustment": "split_dividend_adjusted",
+    "point_in_time_required": true
+  },
+  "universe": {
+    "symbols": ["AAPL", "MSFT", "NVDA", "QQQ", "SPY"],
+    "universe_policy": "point_in_time_snapshot",
+    "delisted_policy": "include_when_historically_tradable"
+  },
+  "data_sources": {
+    "prices": {
+      "adapter": "local_parquet",
+      "fields": ["open", "high", "low", "close", "volume"]
+    },
+    "fundamentals": {
+      "adapter": "reserved",
+      "fields": ["market_cap", "float_shares", "sector", "industry"]
+    }
+  },
+  "indicator_cache": {
+    "mode": "local_parquet",
+    "path": "workspace/cache/indicators",
+    "key_policy": "indicator_spec_hash"
+  },
+  "computed_fields": [
+    {"name": "rsi_14", "op": "indicator.rsi", "source": "close", "period": 14},
+    {
+      "name": "macd",
+      "op": "indicator.macd",
+      "source": "close",
+      "fastperiod": 12,
+      "slowperiod": 26,
+      "signalperiod": 9
+    },
+    {
+      "name": "macd_signal",
+      "op": "indicator.macd",
+      "source": "close",
+      "fastperiod": 12,
+      "slowperiod": 26,
+      "signalperiod": 9,
+      "output": "signal"
+    },
+    {"name": "sma_60", "op": "indicator.sma", "source": "close", "period": 60},
+    {"name": "momentum_63", "op": "indicator.momentum", "source": "close", "period": 63},
+    {"name": "volatility_20", "op": "indicator.volatility", "source": "close", "period": 20},
+    {"name": "volume_avg_20", "op": "indicator.sma", "source": "volume", "period": 20}
+  ],
+  "rebalance": {
+    "trigger": {"op": "calendar.month_start"},
+    "also_supported": [
+      {"op": "calendar.every_session"},
+      {"op": "calendar.month_end"},
+      {"op": "calendar.quarter_start"},
+      {"op": "calendar.quarter_end"},
+      {"op": "calendar.nth_weekday_of_month", "weekday": "friday", "ordinal": 3},
+      {"op": "calendar.event_date", "dates": ["2025-01-02"], "adjustment_policy": "previous_trading_day"}
+    ]
+  },
+  "selection": {
+    "eligible": {
+      "all": [
+        {"field": "rsi_14", "op": "gt", "value": 50},
+        {"field": "macd", "op": "gt", "right_field": "macd_signal"},
+        {"field": "close", "op": "gt", "right_field": "sma_60"},
+        {"field": "volume_avg_20", "op": "gt", "value": 300000}
+      ]
+    },
+    "rank_by": "rsi_14",
+    "rank_order": "desc",
+    "top_n": 10,
+    "tie_breaker": ["market_cap", "volume_avg_20", "symbol"]
+  },
+  "allocation": {
+    "method": "equal_weight",
+    "position_limit": 0.12,
+    "cash_policy": "keep_unallocated_cash",
+    "reserved_methods": ["score_weight", "inverse_volatility", "risk_parity", "regime_weight"]
+  },
+  "fill_model": {
+    "entry_price": "close", "exit_price": "close",
+    "cost": {
+      "transaction_cost": 0.001,
+      "slippage": 0.0005
+    }
+  },
+  "risk": {
+    "max_positions": 10,
+    "max_gross_exposure": 1.0,
+    "long_short": "long_only",
+    "reserved": ["short_leg", "gross_exposure", "net_exposure", "borrow_fee"]
+  },
+  "outputs": {
+    "equity_curve": true,
+    "rebalance_audit": true,
+    "holdings": true,
+    "indicator_cache_audit": true
+  }
+}

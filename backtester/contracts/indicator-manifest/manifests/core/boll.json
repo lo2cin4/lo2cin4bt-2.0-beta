@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0",
+  "indicator_id": "core.boll.family",
+  "family_code": "BOLL",
+  "name": "Bollinger Band Family",
+  "version": "1.0.0",
+  "api_version": "indicator-api-1",
+  "kind": "core",
+  "entry_supported": true,
+  "exit_supported": true,
+  "stateful_execution_required": false,
+  "aliases": ["BOLL1", "BOLL2", "BOLL3", "BOLL4"],
+  "signal_contract": {
+    "value_type": "int",
+    "allowed_values": [-1, 0, 1],
+    "semantics": {
+      "long_open": 1,
+      "short_open": -1,
+      "long_close": -1,
+      "short_close": 1
+    }
+  },
+  "params_schema": [
+    {"name": "ma_range", "type": "string", "required": true},
+    {"name": "sd_multi", "type": "string", "required": true}
+  ],
+  "implementation": {
+    "default_backend": "py-core",
+    "backends": [
+      {
+        "backend_id": "py-core",
+        "language": "python",
+        "entrypoint": "backtester.BollingerBand_Indicator_backtester:BollingerBandIndicator",
+        "priority": 10
+      }
+    ]
+  },
+  "tests": {
+    "unit_test_path": "tests/test_indicator_manifest_registry_backtester.py"
+  }
+}

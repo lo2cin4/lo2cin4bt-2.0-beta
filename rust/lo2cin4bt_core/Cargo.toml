@@ -1,0 +1,17 @@
+[package]
+name = "lo2cin4bt_core"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+
+[lib]
+name = "lo2cin4bt_core"
+crate-type = ["rlib"]
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+thiserror = "2.0"
+
+[dev-dependencies]
+approx = "0.5"

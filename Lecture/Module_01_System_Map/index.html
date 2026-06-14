@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>01 系統地圖</title>
+  <link rel="stylesheet" href="../assets/lecture.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand"><strong>Lo2cin4BT Lecture</strong><span>Module 01</span></div>
+      <input class="search" data-search placeholder="搜尋章節">
+      <nav class="nav-list" data-nav></nav>
+    </aside>
+
+    <main class="content">
+      <article class="module">
+        <p class="kicker">Module 01</p>
+        <h1>系統地圖</h1>
+        <p>
+          Lo2cin4BT 的主線可以先看成一條管線：
+          <code>dataloader -&gt; factorhandler -&gt; backtester -&gt; wfanalyser -&gt; statanalyser -&gt; app API/UI</code>。
+          每一層只負責自己的工作，讓策略研究、回測記帳、穩健性驗證和報告閱讀可以分開檢查。
+        </p>
+
+        <section class="mermaid-panel">
+          <h2>Runtime Map</h2>
+          <pre class="mermaid">
+flowchart LR
+  subgraph Input["輸入"]
+    Config["strategy_run&lt;br/&gt;策略設定"]
+    Source["市場資料&lt;br/&gt;yfinance / crypto / file"]
+  end
+
+  subgraph Core["核心處理"]
+    Loader["dataloader&lt;br/&gt;資料來源抽象"]
+    Factor["factorhandler&lt;br/&gt;因子執行基礎"]
+    Backtest["backtester&lt;br/&gt;統一回測與記帳"]
+    WFA["wfanalyser&lt;br/&gt;WFA 滾動驗證"]
+    Stats["statanalyser&lt;br/&gt;報告統計"]
+  end
+
+  subgraph Output["輸出"]
+    API["app.api"]
+    UI["plotter/web"]
+    Artifacts["workspace 輸出檔案"]
+  end
+
+  Source --> Loader
+  Config --> Factor
+  Config --> Backtest
+  Loader --> Factor
+  Factor --> Backtest
+  Backtest --> WFA
+  Backtest --> Stats
+  WFA --> Stats
+  Stats --> API
+  Stats --> Artifacts
+  API --> UI
+          </pre>
+          <p class="diagram-caption">如果某頁報告看起來怪，先沿着這張圖回頭查：資料、策略設定、回測記帳、WFA、統計輸出，各自是哪一層出問題。</p>
+        </section>
+
+        <h2>模組責任</h2>
+        <table>
+          <tr><th>模組</th><th>用途</th><th>注意事項</th></tr>
+          <tr><td><code>dataloader/</code></td><td>資料來源抽象層。</td><td>後續模組不會直接呼叫券商 / 交易所 API。</td></tr>
+          <tr><td><code>factorhandler/</code></td><td>factor 執行基礎。</td><td>完整 IC、Rank IC、Fama-MacBeth、risk model 屬尚未開發階段。</td></tr>
+          <tr><td><code>backtester/</code></td><td>統一的向量預計算與逐步投資組合記帳。</td><td>單資產可作為單資產投資組合。</td></tr>
+          <tr><td><code>wfanalyser/</code></td><td>WFA 被選中的最優參數與滾動驗證。</td><td>IS 尋優，OOS 只測被選中的策略。</td></tr>
+          <tr><td><code>app/api/</code>/<code>plotter/web/</code></td><td>FastAPI + React 報告平台。</td><td>Predictor Analysis 是舊別名；Factor Analysis 因子分析是前端目標命名。</td></tr>
+        </table>
+
+        <h2>統一回測引擎</h2>
+        <p>
+          <code>strategy_run</code> 表達單資產訊號、calendar/session、多資產投資組合、固定配置與輪動等已支援策略。
+          不同策略不再各自維護一套互不相干的回測邏輯，而是先把策略轉成同一種目標權重 / 投資組合策略，
+          再用同一套記帳計算 cash、fees、turnover、holdings、equity 與 benchmark。
+          特徵、signal、ranking、目標權重可向量化；cash、fees、turnover、holdings、drift、再平衡狀態由逐步記帳處理。
+        </p>
+
+        <section class="evidence">
+          <h2>專案證據</h2>
+          <ul>
+            <li><code>README.md</code> Runtime Map</li>
+            <li><code>docs/backtest-architecture.md</code></li>
+            <li><code>backtester/UnifiedBacktestRunner_backtester.py</code></li>
+          </ul>
+        </section>
+
+        <div class="pager">
+          <a href="../Module_00_Getting_Started/index.html">上一章</a>
+          <a href="../Module_02_Data_Providers/index.html">下一章</a>
+        </div>
+      </article>
+    </main>
+  </div>
+  <script src="../assets/lecture.js"></script>
+</body>
+</html>

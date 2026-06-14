@@ -1,0 +1,38 @@
+# Text defaults
+* text=auto
+.gitattributes text eol=lf
+.gitignore text eol=lf
+
+# Source and docs
+*.py text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.js text eol=lf
+*.jsx text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
+*.csv text eol=lf
+*.svg text eol=lf
+*.toml text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+
+# Shell scripts
+*.ps1 text eol=crlf
+*.bat text eol=crlf
+*.sh text eol=lf
+
+# Binary artifacts and sample files
+*.parquet binary
+*.pkl binary
+*.xlsx binary
+*.xls binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.egg binary
+*.pyd binary
+*.so binary
+*.dll binary

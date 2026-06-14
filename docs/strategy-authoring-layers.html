@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>lo2cin4bt 策略建立層級</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #080d12;
+      --panel: #111821;
+      --border: #26394b;
+      --text: #edf5ff;
+      --muted: #aab8c8;
+      --accent: #e4b96c;
+      --cyan: #5ed7d2;
+      --red: #ff8a7f;
+      --code: #101923;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Noto Sans TC", system-ui, sans-serif;
+      background: radial-gradient(circle at top left, #152439 0, var(--bg) 34rem);
+      color: var(--text);
+      line-height: 1.65;
+    }
+    main {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 40px 0 72px;
+    }
+    h1 { margin: 0; color: var(--accent); font-size: clamp(2rem, 4vw, 3.4rem); }
+    h2 { margin: 40px 0 12px; font-size: 1.55rem; }
+    h3 { margin: 0 0 8px; color: var(--accent); }
+    p { color: var(--muted); margin: 10px 0 0; }
+    code {
+      background: var(--code);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 1px 6px;
+      color: var(--text);
+      font-family: "Cascadia Mono", Consolas, monospace;
+    }
+    pre {
+      overflow-x: auto;
+      padding: 16px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #07101a;
+    }
+    .hero, .card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: rgba(17, 24, 33, 0.92);
+      padding: 24px;
+    }
+    .notice {
+      margin-top: 18px;
+      border-color: rgba(255, 138, 127, 0.6);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+    .step {
+      border: 1px solid rgba(94, 215, 210, 0.45);
+      border-radius: 8px;
+      padding: 16px;
+      background: #0b141d;
+    }
+    .tag { color: var(--cyan); font-weight: 700; }
+    ul { color: var(--muted); }
+  </style>
+</head>
+<body>
+<main>
+  <section class="hero">
+    <h1>策略建立層級</h1>
+    <p>這頁解釋 lo2cin4bt 如何把一句策略想法，變成可檢查、可回測、可由瀏覽器前端（frontend）顯示的本機研究流程。</p>
+    <div class="card notice">
+      <h3>安全邊界</h3>
+      <p>普通策略開發只應產生 <code>workspace/</code> 內的資料、特徵合約、自訂指標、策略配置檔（config）和筆記。核心引擎（engine）只有在明確提出引擎功能請求（engine feature request）時才修改。</p>
+    </div>
+  </section>
+
+  <h2>第一層：用戶 / AI 可寫的設定</h2>
+  <div class="grid">
+    <div class="card">
+      <h3><code>workspace/runs/</code></h3>
+      <p>可執行回測設定，使用 <code>schema_version: "strategy_run"</code>。</p>
+    </div>
+    <div class="card">
+      <h3><code>workspace/wfa/</code></h3>
+      <p>滾動驗證（WFA / walk-forward analysis）設定，使用 <code>schema_version: "wfa_run"</code>，並指向一份回測配置檔（run config）。</p>
+    </div>
+    <div class="card">
+      <h3><code>workspace/features/</code></h3>
+      <p>外部資料合約。每個特徵（feature）必須說明資料在現實中何時才知道，避免回測偷看未來。</p>
+    </div>
+    <div class="card">
+      <h3><code>workspace/indicators/extensions/</code></h3>
+      <p>自訂指標擴充（extension）。需要 <code>manifest.json</code> 和 <code>indicator.py</code>，並通過檢查器（doctor）；要真正跑回測，還需要執行層（runtime）支援調動該指標。</p>
+    </div>
+  </div>
+
+  <h2>第二層：策略設定欄位</h2>
+  <div class="card">
+    <p>新的公開寫作介面（authoring surface）使用以下欄位：</p>
+    <ul>
+      <li><code>computed_fields[]</code>：計算值，例如簡單移動平均（SMA）、相對強弱指標（RSI）、動量（momentum）、平均真實波幅（ATR）。</li>
+      <li><code>signals</code>：入場 / 出場訊號。</li>
+      <li><code>selection</code>：多資產排序與合資格條件（eligibility）。</li>
+      <li><code>allocation</code>：權重、前 N 名選取（top-N）、持倉上限。</li>
+      <li><code>rebalance</code>：定期、事件或訊號再平衡。</li>
+      <li><code>fill_model</code>：入場價、出場價、延遲 K 線數（delay bars）、成本、滑價。</li>
+    </ul>
+    <p>新的配置檔（config）不應使用頂層（top-level）<code>features</code>、頂層 <code>indicators</code> 或 <code>execution</code> 作為公開寫法。</p>
+  </div>
+
+  <h2>第三層：檢查與編譯</h2>
+  <div class="flow">
+    <div class="step"><span class="tag">1</span> 結構驗證（schema validation）</div>
+    <div class="step"><span class="tag">2</span> 工作區檢查器（workspace doctor）</div>
+    <div class="step"><span class="tag">3</span> 指標檢查器（indicator doctor）</div>
+    <div class="step"><span class="tag">4</span> 支援範圍檢查（support checker）</div>
+    <div class="step"><span class="tag">5</span> 執行層派發（runtime dispatch）</div>
+    <div class="step"><span class="tag">6</span> 前端顯示資料包（frontend display payload）</div>
+  </div>
+
+  <h2>偷看未來偏誤閘門（Look-Forward Bias Gate）</h2>
+  <div class="card">
+    <p>外部資料必須寫明：</p>
+    <pre><code>{
+  "data_availability": {
+    "observed_at": "bar_close",
+    "usable_from": "next_bar_open",
+    "point_in_time": true,
+    "revision_policy": "point_in_time"
+  }
+}</code></pre>
+    <p>如果資料在收盤後才知道，就不能用來做同一根 K 線開盤交易。若資料會修訂歷史（<code>revision_policy: "revised_history"</code>），它只代表可用於研究示範或需要再審查，不能說成已證明逐時點無偏誤。正式公開結論前必須留下量化審查（QuantReview）紀錄。</p>
+  </div>
+
+  <h2>不支援就要停下來</h2>
+  <div class="card">
+    <p>如果策略需要未支援的引擎（engine）行為，AI 應回覆 <code>unsupported_needs_new_building_block</code>，而不是用人造價格曲線、檔名猜測、或自然語言假裝已支援。</p>
+  </div>
+
+  <h2>維護者檢查</h2>
+  <div class="card">
+    <p>公開前維護者應跑：</p>
+    <pre><code>python scripts/workspace_doctor.py
+python scripts/indicator_doctor.py workspace/indicators/extensions
+python scripts/project_consistency_audit.py
+python scripts/frontend_payload_parity_audit.py
+python scripts/quality_gate.py --quick</code></pre>
+  </div>
+</main>
+</body>
+</html>

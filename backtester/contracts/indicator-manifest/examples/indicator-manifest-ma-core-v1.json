@@ -1,0 +1,77 @@
+{
+  "schema_version": "1.0",
+  "indicator_id": "example.core.ma.cross",
+  "family_code": "MA",
+  "name": "Moving Average Cross Family",
+  "version": "1.0.0",
+  "api_version": "indicator-api-1",
+  "kind": "core",
+  "category": "trend",
+  "entry_supported": true,
+  "exit_supported": true,
+  "stateful_execution_required": false,
+  "capabilities": {
+    "supports_multi_source": false,
+    "deterministic": true
+  },
+  "aliases": ["MA1", "MA2", "MA3", "MA4", "MA5", "MA6", "MA7", "MA8", "MA9", "MA10", "MA11", "MA12"],
+  "signal_contract": {
+    "value_type": "int",
+    "allowed_values": [-1, 0, 1],
+    "semantics": {
+      "long_open": 1,
+      "short_open": -1,
+      "long_close": -1,
+      "short_close": 1
+    }
+  },
+  "params_schema": [
+    {
+      "name": "ma_type",
+      "type": "enum",
+      "required": true,
+      "default": "SMA",
+      "enum_values": ["SMA", "EMA", "WMA"],
+      "description": "Moving average type"
+    },
+    {
+      "name": "ma_range",
+      "type": "string",
+      "required": false,
+      "description": "Range string start:end:step"
+    },
+    {
+      "name": "n_range",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "m_range",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "implementation": {
+    "default_backend": "py-core",
+    "backends": [
+      {
+        "backend_id": "py-core",
+        "language": "python",
+        "entrypoint": "backtester.MovingAverage_Indicator_backtester:MovingAverageIndicator",
+        "priority": 10
+      }
+    ]
+  },
+  "compatibility": {
+    "lo2cin4bt_min": "2.0.0"
+  },
+  "tests": {
+    "unit_test_path": "tests/test_indicator_manifest_registry_backtester.py"
+  },
+  "owner": {
+    "team": "trading",
+    "contact": "ProjectManager"
+  },
+  "license": "internal",
+  "description": "Core MA family wrapper manifest for unified registry."
+}

@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0",
+  "indicator_id": "core.hl.family",
+  "family_code": "HL",
+  "name": "High-Low Breakout Family",
+  "version": "1.0.0",
+  "api_version": "indicator-api-1",
+  "kind": "core",
+  "entry_supported": true,
+  "exit_supported": true,
+  "stateful_execution_required": false,
+  "aliases": ["HL1", "HL2", "HL3", "HL4"],
+  "signal_contract": {
+    "value_type": "int",
+    "allowed_values": [-1, 0, 1],
+    "semantics": {
+      "long_open": 1,
+      "short_open": -1,
+      "long_close": -1,
+      "short_close": 1
+    }
+  },
+  "params_schema": [
+    {"name": "n_range", "type": "string", "required": true},
+    {"name": "m_range", "type": "string", "required": true}
+  ],
+  "implementation": {
+    "default_backend": "py-core",
+    "backends": [
+      {
+        "backend_id": "py-core",
+        "language": "python",
+        "entrypoint": "backtester.HL_Indicator_backtester:HLIndicator",
+        "priority": 10
+      }
+    ]
+  },
+  "tests": {
+    "unit_test_path": "tests/test_indicator_manifest_registry_backtester.py"
+  }
+}

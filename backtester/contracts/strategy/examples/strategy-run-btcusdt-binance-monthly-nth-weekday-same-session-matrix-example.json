@@ -1,0 +1,123 @@
+{
+  "schema_version": "strategy_run",
+  "platform": {
+    "strategy_mode_id": "calendar_event_session",
+    "workflow_id": "parameter_matrix",
+    "run_type": "example",
+    "display_label": "Backtest | BTCUSDT | Monthly Nth Weekday Same Session Matrix | Binance | Example"
+  },
+  "data": {
+    "provider": "binance",
+    "frequency": "1D",
+    "interval": "1d",
+    "calendar": "CRYPTO_24_7",
+    "timezone": "UTC",
+    "start_date": "2017-08-17",
+    "start_policy": "common_available",
+    "benchmark": {
+      "provider": "binance",
+      "symbol": "BTCUSDT",
+      "label": "BTCUSDT buy and hold",
+      "interval": "1d"
+    }
+  },
+  "universe": {
+    "symbols": [
+      "BTCUSDT"
+    ],
+    "universe_policy": "single_asset",
+    "survivorship_policy": "single_crypto_pair_current_symbol_demo"
+  },
+  "computed_fields": [],
+  "signals": {
+    "entry": {
+      "op": "calendar.nth_weekday_of_month",
+      "ordinal": {
+        "param_ref": "month_week"
+      },
+      "weekday": {
+        "param_ref": "weekday"
+      }
+    },
+    "exit": {
+      "op": "session.same_session_close"
+    },
+    "side": "long",
+    "target_weight": 1,
+    "conflict_policy": "same_session_exit"
+  },
+  "selection": {},
+  "allocation": {
+    "method": "signal_target_weight",
+    "target_weight": 1,
+    "cash_policy": "keep_unallocated_cash"
+  },
+  "rebalance": {
+    "trigger": {
+      "op": "signal.change"
+    }
+  },
+  "fill_model": {
+    "timing": "same_session",
+    "entry_price": "open",
+    "entry_time": "00:00:00",
+    "exit_price": "close",
+    "exit_time": "23:59:59",
+    "session_scope": "same_session",
+    "same_session_exit": true,
+    "matrix_workers": 5,
+    "matrix_result_retention": 25,
+    "cost": {
+      "transaction_cost": 0.001,
+      "slippage": 0.0005
+    }
+  },
+  "risk": {
+    "max_positions": 1,
+    "max_gross_exposure": 1,
+    "long_short": "long_only",
+    "allow_short": false
+  },
+  "parameter_domains": {
+    "month_week": {
+      "type": "range",
+      "start": 1,
+      "end": 4,
+      "step": 1
+    },
+    "weekday": {
+      "type": "set",
+      "values": [
+        "monday",
+        "tuesday",
+        "wednesday",
+        "thursday",
+        "friday",
+        "saturday",
+        "sunday"
+      ]
+    }
+  },
+  "combo_limits": {
+    "warn_combos": 28,
+    "hard_cap_combos": 40
+  },
+  "outputs": {
+    "equity_curve": true,
+    "trade_summary": true,
+    "entry_exit_markers": true,
+    "rebalance_audit": true,
+    "holdings": true
+  },
+  "metadata": {
+    "example": true,
+    "local_research_only": true,
+    "strategy_id": "btcusdt_monthly_nth_weekday_same_session_binance_example",
+    "notes": [
+      "Parameter matrix: month_week 1-4 times weekday Monday-Sunday.",
+      "Each candidate buys BTCUSDT at 00:00:00 exchange time and closes at 23:59:59 on the same session.",
+      "This public example is for local research and contract testing only.",
+      "It is not a profitability claim, WFA pass, live-trading signal, broker instruction, or investment advice."
+    ]
+  }
+}

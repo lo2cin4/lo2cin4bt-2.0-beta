@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lab 05 績效分析</title>
+  <link rel="stylesheet" href="../assets/lecture.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand"><strong>lo2cin4bt Lecture</strong><span>Lab 05</span></div>
+      <input class="search" data-search placeholder="搜尋章節">
+      <nav class="nav-list" data-nav></nav>
+    </aside>
+    <main class="content">
+      <article class="module">
+        <p class="kicker">Lab 05</p>
+        <h1>績效分析</h1>
+        <p>目標是讀取前端已能顯示的回測、參數矩陣或 WFA 產物，用新手看得懂的順序解釋策略做了甚麼、結果如何、風險在哪、資料是否完整，以及哪些結論不能說。分析 agent 只解釋產物，不跑回測、不建立策略 config、不提供交易建議。</p>
+
+        <h2>PerformanceAnalysis 能做甚麼</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>範圍</th>
+              <th>新手想知道的問題</th>
+              <th>分析會怎樣回答</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>一句話總結</td>
+              <td>這次結果大概是好、壞、未完整，還是只可作示範？</td>
+              <td>先給一段白話總結，再提醒不是交易建議</td>
+            </tr>
+            <tr>
+              <td>策略做了甚麼</td>
+              <td>用哪個市場、甚麼規則、甚麼 benchmark、甚麼成本假設？</td>
+              <td>把 config 和前端 label 翻成普通語言</td>
+            </tr>
+            <tr>
+              <td>主要結果</td>
+              <td>總報酬、CAGR、Sharpe、Calmar、回撤和 benchmark 比較代表甚麼？</td>
+              <td>只解釋已生成欄位，缺欄位寫 not generated</td>
+            </tr>
+            <tr>
+              <td>實際變化</td>
+              <td>是否真的有交易、持倉、配置變化或再平衡？</td>
+              <td>讀 trade、holdings、rebalance 和 portfolio artifacts</td>
+            </tr>
+            <tr>
+              <td>成本與滑價</td>
+              <td>有沒有把交易成本計入？</td>
+              <td>分開「已設定成本」和「已生成成本影響」，不把 missing field 當零</td>
+            </tr>
+            <tr>
+              <td>前端資料完整性</td>
+              <td>Metrics、Backtests、Parameter Matrix、WFA、AI review pack 哪些有生成？</td>
+              <td>完整列出已生成、按需生成、未生成、不適用和需要重跑的頁面</td>
+            </tr>
+            <tr>
+              <td>結論邊界</td>
+              <td>能不能信？下一步做甚麼？</td>
+              <td>哪些只是本機研究證據，哪些需要 WFA、成本敏感度或 QuantReview</td>
+              <td>列「可以怎樣理解」、「不應怎樣理解」和下一步研究</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>不可做的事</h2>
+        <ul>
+          <li>不提供買入、賣出、持倉或實盤交易建議</li>
+          <li>不把回測、參數矩陣或 WFA 說成未來獲利證明</li>
+          <li>不把 missing field 當成零，也不靠想像補結論</li>
+          <li>不只看截圖；可讀 payload 和 manifest 時必須以產物為準</li>
+        </ul>
+
+        <h2>Agent / Skill 版</h2>
+        <pre><code>請使用 agents/lo2cin4bt_PerformanceAnalysisSubAgent.agent.md
+和 skills/lo2cin4bt-performance-analysis/SKILL.md。
+請分析 run_id：&lt;填入 run_id&gt;。
+請讀 run registry、chart payloads 內所有 JSON、AI review pack、artifact manifest、run snapshots 和 data lineage manifest。
+若 Backtests Detail 未在 chart_payloads 內但 backtest_result_index.json 有 backtest_id，先用本機 app API/service 生成或讀取。
+WFA 只在 WFA / rolling run 適用；single_backtest 寫 not applicable。
+請用新手可讀格式輸出：一句話總結、策略做了甚麼、本次分析使用哪一次回測、資料與基準、主要結果、風險與回撤、交易/持倉/再平衡證據、成本與滑價、前端資料完整性、可以怎樣理解、不應怎樣理解、下一步研究。
+技術附錄才列 payload、snapshot、manifest 和 missing fields。
+語氣要專業、精簡、以產物為準；不要使用對照式修辭。
+缺欄位請寫 not generated 或 not applicable；不要把缺欄位當零。
+本分析僅供學習用途，並非交易建議。</code></pre>
+
+        <section class="evidence">
+          <h2>專案證據</h2>
+          <ul>
+            <li><code>outputs/app/run_registry/</code></li>
+            <li><code>outputs/app/chart_payloads/&lt;run_id&gt;/</code></li>
+            <li><code>outputs/app/ai_review/&lt;run_id&gt;/ai_review_pack.json</code></li>
+            <li><code>outputs/app/artifact_manifests/&lt;run_id&gt;.json</code></li>
+            <li><code>outputs/app/run_snapshots/&lt;run_id&gt;/data_lineage_manifest.json</code></li>
+            <li><code>skills/lo2cin4bt-performance-analysis/SKILL.md</code></li>
+            <li><code>agents/lo2cin4bt_PerformanceAnalysisSubAgent.agent.md</code></li>
+          </ul>
+        </section>
+
+        <div class="pager">
+          <a href="../Lab_04_Provider_Check/index.html">上一個 Lab</a>
+          <a href="../Appendix/index.html">Appendix</a>
+        </div>
+      </article>
+    </main>
+  </div>
+  <script src="../assets/lecture.js"></script>
+</body>
+</html>

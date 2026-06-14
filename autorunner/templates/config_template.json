@@ -1,0 +1,39 @@
+{
+  "_version": "2.0.0",
+  "dataloader": {
+    "source": "file",
+    "start_date": "2020-01-01",
+    "file_config": {
+      "file_path": "workspace/datasets/price.csv",
+      "time_column": "time",
+      "open_column": "open",
+      "high_column": "high",
+      "low_column": "low",
+      "close_column": "close",
+      "volume_column": "volume"
+    },
+    "predictor_config": {
+      "skip_predictor": true
+    }
+  },
+  "backtester": {
+    "strategy_mode": "semantic",
+    "engine_mode": "auto",
+    "strategy_contract_path": "workspace/strategies/strategy-vix-regime-ma-cross.user.json",
+    "feature_contract_path": "workspace/features/feature-contract-vix-price-v1.user.json",
+    "trading_params": {
+      "transaction_cost": 0.001,
+      "slippage": 0.0005,
+      "trade_delay": 1,
+      "trade_price": "open"
+    },
+    "export_config": {
+      "export_parquet": true,
+      "export_csv": false,
+      "export_excel": false
+    }
+  },
+  "metricstracker": {
+    "enable_metrics_analysis": true
+  }
+}

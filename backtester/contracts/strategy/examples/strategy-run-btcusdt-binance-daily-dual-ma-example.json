@@ -1,0 +1,133 @@
+{
+  "schema_version": "strategy_run",
+  "platform": {
+    "strategy_mode_id": "single_asset_signal",
+    "workflow_id": "parameter_matrix",
+    "run_type": "public_example",
+    "display_label": "Backtest | BTCUSDT | Daily Dual MA | Binance | Public Example"
+  },
+  "data": {
+    "provider": "binance",
+    "frequency": "1D",
+    "interval": "1d",
+    "calendar": "CRYPTO_24_7",
+    "timezone": "UTC",
+    "start_date": "2020-01-01",
+    "start_policy": "common_available",
+    "benchmark": {
+      "provider": "binance",
+      "symbol": "BTCUSDT",
+      "label": "BTCUSDT buy and hold",
+      "interval": "1d"
+    }
+  },
+  "universe": {
+    "symbols": [
+      "BTCUSDT"
+    ],
+    "universe_policy": "single_asset",
+    "source_type": "exchange_symbol",
+    "source": "binance",
+    "survivorship_policy": "single_current_symbol_demo"
+  },
+  "computed_fields": [
+    {
+      "name": "short_ma",
+      "op": "indicator.sma",
+      "source": "close",
+      "period": {
+        "param_ref": "short_ma"
+      }
+    },
+    {
+      "name": "long_ma",
+      "op": "indicator.sma",
+      "source": "close",
+      "period": {
+        "param_ref": "long_ma"
+      }
+    }
+  ],
+  "signals": {
+    "entry": {
+      "field": "short_ma",
+      "op": "crosses_above",
+      "right_field": "long_ma"
+    },
+    "exit": {
+      "field": "short_ma",
+      "op": "crosses_below",
+      "right_field": "long_ma"
+    },
+    "target_weight": 1,
+    "conflict_policy": "exit_then_entry"
+  },
+  "selection": {},
+  "allocation": {
+    "method": "signal_state",
+    "target_weight": 1,
+    "cash_policy": "keep_unallocated_cash"
+  },
+  "rebalance": {
+    "trigger": {
+      "op": "signal.change"
+    }
+  },
+  "fill_model": {
+    "timing": "bar_offset",
+    "entry_price": "open",
+    "entry_delay_bars": 1,
+    "exit_price": "open",
+    "exit_delay_bars": 1,
+    "cost": {
+      "transaction_cost": 0.001,
+      "slippage": 0.0005
+    },
+    "matrix_workers": 4,
+    "matrix_result_retention": 50
+  },
+  "risk": {
+    "max_positions": 1,
+    "max_gross_exposure": 1,
+    "long_short": "long_only",
+    "allow_short": false
+  },
+  "parameter_domains": {
+    "short_ma": {
+      "type": "range",
+      "start": 10,
+      "end": 90,
+      "step": 5
+    },
+    "long_ma": {
+      "type": "range",
+      "start": 100,
+      "end": 150,
+      "step": 5
+    }
+  },
+  "combo_limits": {
+    "warn_combos": 187,
+    "hard_cap_combos": 200
+  },
+  "outputs": {
+    "equity_curve": true,
+    "trade_summary": true,
+    "entry_exit_markers": true,
+    "rebalance_audit": true,
+    "holdings": true,
+    "asset_contribution": true,
+    "ai_review_pack": true
+  },
+  "metadata": {
+    "example": true,
+    "public_example": true,
+    "strategy_id": "btcusdt_daily_dual_ma_binance_public_example",
+    "local_research_only": true,
+    "notes": [
+      "Beginner public example for a daily BTCUSDT dual-moving-average strategy: short_ma 10-90 step 5 and long_ma 100-150 step 5.",
+      "The full parameter grid has 187 combinations, so treat it as a local research sweep rather than a tiny smoke run.",
+      "This config is a research example only; it is not a profitability claim, WFA result, broker instruction, or live-trading setup."
+    ]
+  }
+}

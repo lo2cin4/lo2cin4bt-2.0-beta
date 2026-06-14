@@ -1,0 +1,77 @@
+schema_version: strategy_config_dsl.v1
+source_layer: strategy_config_dsl
+template_only: true
+do_not_run: true
+intent:
+  plain_language: "Buy QQQ when RSI(14) is below 20 and exit when RSI(14) is above 80."
+  local_research_only: true
+
+data:
+  provider: yfinance
+  frequency: 1d
+  calendar: XNAS
+  timezone: America/New_York
+  start_date: "2015-01-01"
+  benchmark: QQQ
+
+universe:
+  symbols:
+    - QQQ
+  universe_policy: explicit_symbols
+  survivorship_policy: static_user_supplied
+
+computed_fields:
+  - name: rsi_14
+    op: indicator.rsi
+    inputs:
+      source: close
+    params:
+      period: 14
+    output: value
+    availability: after_source_bar_close
+
+signals:
+  entry:
+    all:
+      - field: rsi_14
+        op: lt
+        value: 20
+  exit:
+    any:
+      - field: rsi_14
+        op: gt
+        value: 80
+
+selection:
+  rank_by: null
+  eligible: null
+  top_n: null
+  rank_order: descending
+
+allocation:
+  method: signal_state
+  target_weight: 1.0
+  cash_policy: hold_cash_when_flat
+
+rebalance:
+  trigger: signal_change
+  calendar: XNAS
+  timezone: America/New_York
+
+fill_model:
+  timing: bar_offset
+  entry_price: open
+  entry_delay_bars: 1
+  exit_price: open
+  exit_delay_bars: 1
+  cost:
+    transaction_cost: 0.001
+    slippage: 0.0005
+
+risk:
+  allow_short: false
+  max_gross_exposure: 1.0
+
+validation:
+  workflow: single_backtest
+  oracle_test_required_for_new_block: true

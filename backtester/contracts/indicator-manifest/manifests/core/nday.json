@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0",
+  "indicator_id": "core.nday.family",
+  "family_code": "NDAY",
+  "name": "N-Day Timer Family",
+  "version": "1.0.0",
+  "api_version": "indicator-api-1",
+  "kind": "core",
+  "entry_supported": false,
+  "exit_supported": true,
+  "stateful_execution_required": true,
+  "aliases": ["NDAY1", "NDAY2"],
+  "signal_contract": {
+    "value_type": "int",
+    "allowed_values": [-1, 0, 1],
+    "semantics": {
+      "long_open": 1,
+      "short_open": -1,
+      "long_close": -1,
+      "short_close": 1
+    }
+  },
+  "params_schema": [
+    {"name": "n_days", "type": "int", "required": true, "min": 1},
+    {"name": "n_days_range", "type": "string", "required": false}
+  ],
+  "implementation": {
+    "default_backend": "py-core",
+    "backends": [
+      {
+        "backend_id": "py-core",
+        "language": "python",
+        "entrypoint": "backtester.NDayCycle_Indicator_backtester:NDayCycleIndicator",
+        "priority": 10
+      }
+    ]
+  },
+  "tests": {
+    "unit_test_path": "tests/test_indicator_manifest_registry_backtester.py"
+  }
+}

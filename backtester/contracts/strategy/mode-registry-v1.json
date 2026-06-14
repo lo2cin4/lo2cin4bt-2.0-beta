@@ -1,0 +1,87 @@
+{
+  "schema_version": "1.0",
+  "contract_id": "lo2cin4bt-strategy-mode-registry-v1",
+  "description": "Canonical strategy structure mode registry for strategy-rule display. Workflow types such as Parameter Matrix and WFA are intentionally separate from strategy mode.",
+  "engine_families": [
+    {
+      "id": "single_asset_engine",
+      "description": "One tradable instrument and one position timeline."
+    },
+    {
+      "id": "multi_asset_portfolio_engine",
+      "description": "Multiple tradable instruments with portfolio accounting, selection, allocation, and max holding constraints."
+    }
+  ],
+  "execution_backends": [
+    "vector",
+    "non_vector",
+    "vector_hybrid"
+  ],
+  "capability_layers": [
+    {
+      "id": "factor_pipeline",
+      "label": "Factor pipeline",
+      "status": "contract_reserved",
+      "description": "Shared vector layer for factor construction, preprocessing, composite scoring, point-in-time audit, cache, and StatAnalyser outputs. It feeds existing single-asset or multi-asset modes rather than becoming a separate engine family."
+    }
+  ],
+  "workflow_ids": [
+    "single_backtest",
+    "parameter_matrix",
+    "walk_forward_analysis",
+    "rolling_validation",
+    "statanalyser"
+  ],
+  "modes": [
+    {
+      "id": "single_asset_signal",
+      "label": "Single-asset signal strategy",
+      "status": "active",
+      "scope": "single_asset",
+      "description": "One tradable instrument at a time. Parameter tests and WFA may be run on top, but they are workflows rather than modes."
+    },
+    {
+      "id": "multi_factor_entry_exit_roles",
+      "label": "Multi-factor entry/exit roles",
+      "status": "active",
+      "scope": "single_or_multi_asset",
+      "description": "Multiple predictive factors with explicit roles, such as one factor for entry and another factor for exit."
+    },
+    {
+      "id": "calendar_event_session",
+      "label": "Calendar/session event trading",
+      "status": "active_single_asset_daily",
+      "scope": "single_or_multi_asset",
+      "description": "Rules triggered by dates, weekdays, market sessions, opens, closes, holidays, or custom trading calendars. Daily single-asset same-session execution is active; portfolio use reuses the same calendar predicate layer."
+    },
+    {
+      "id": "multi_asset_portfolio",
+      "label": "Multi-asset portfolio",
+      "status": "mvp_implemented_integration_pending",
+      "scope": "multi_asset",
+      "description": "Multiple assets can be held together up to portfolio limits. MVP supports indicator matrices, calendar rebalance, eligibility, ranking, top-N selection, equal-weight allocation, position limits, costs, equity, holdings, and rebalance audit."
+    },
+    {
+      "id": "multi_asset_trigger_selection",
+      "label": "Multi-asset trigger selection",
+      "status": "planned",
+      "scope": "multi_asset",
+      "description": "Many assets are scanned; triggered assets are traded by first-trigger order or deterministic tie-break fields such as market cap, price, float, liquidity, volume, or score; max simultaneous holdings are enforced."
+    },
+    {
+      "id": "dynamic_allocation_rules",
+      "label": "Dynamic allocation",
+      "status": "planned",
+      "scope": "multi_asset_allocation",
+      "description": "Rule-driven portfolio weight changes across assets."
+    }
+  ],
+  "analysis_overlays": [
+    {
+      "id": "pattern_win_rate_scanner",
+      "label": "Pattern win-rate scanner",
+      "status": "planned",
+      "description": "Pure diagnostic overlay for counting pattern hit-rate without trade, holding, capital, or portfolio equity simulation. Trading triggered assets belongs to multi_asset_trigger_selection."
+    }
+  ]
+}

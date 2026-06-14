@@ -1,0 +1,43 @@
+name: Question
+description: Ask how to use lo2cin4bt or whether a strategy idea is supported.
+title: "[Question]: "
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Questions about setup, workspace usage, built-in examples, strategy support, and result interpretation are welcome.
+
+        歡迎詢問安裝、workspace 使用、內建範例、策略是否支援，以及如何理解回測結果。
+  - type: textarea
+    id: question
+    attributes:
+      label: Question / 問題
+      description: What would you like to understand or do?
+    validations:
+      required: true
+  - type: dropdown
+    id: topic
+    attributes:
+      label: Topic / 類型
+      options:
+        - Install or first run / 安裝或第一次啟動
+        - Workspace files / 工作區檔案
+        - Built-in examples / 內建範例
+        - Strategy idea support / 策略想法是否支援
+        - Backtest result interpretation / 回測結果解讀
+        - Other / 其他
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Context / 補充資料
+      description: Add commands, screenshots, or non-private config snippets if useful.
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety check / 安全確認
+      options:
+        - label: I understand lo2cin4bt is not investment advice, live-trading software, or an order-routing system.
+          required: true

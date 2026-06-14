@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Appendix</title><link rel="stylesheet" href="../assets/lecture.css"></head>
+<body><div class="layout"><aside class="sidebar"><div class="brand"><strong>Lo2cin4BT Lecture</strong><span>Appendix</span></div><input class="search" data-search placeholder="搜尋章節"><nav class="nav-list" data-nav></nav></aside><main class="content"><article class="module">
+<p class="kicker">Appendix</p><h1>常見問題與術語表</h1>
+
+<h2>常見問題</h2>
+<p><strong>我是否需要先懂程式？</strong> 不需要。新手可以先把策略想法交給 AI，讓 AI 按照 repo 內的 agent、skill 和設定檔規範工作。</p>
+<p><strong>我應該把自己的策略和資料放在哪裡？</strong> 一般策略研究應放在 <code>workspace/</code>。配置檔放 <code>workspace/runs/</code>，WFA 配置放 <code>workspace/wfa/</code>，本機資料放 <code>workspace/datasets/</code>。</p>
+<p><strong>把 CSV 放進 workspace 就會自動被使用嗎？</strong> 不會。資料需要被 <code>workspace/runs/</code> 設定檔或 <code>workspace/features/</code> 特徵合約明確引用時才會被調動。</p>
+<p><strong>lo2cin4bt 可以下單嗎？</strong> 不可以。lo2cin4bt 目前不是實盤交易或下單系統；券商或交易所帳戶只可作讀取行情資料用途。</p>
+<p><strong>回測結果是否代表未來會賺錢？</strong> 不代表。回測只是在指定資料和規則下重放歷史，仍需要檢查資料來源、成本、滑價、過度擬合、look-ahead bias 和 WFA 結果。</p>
+
+<h2>術語表</h2>
+<div class="table-scroll"><table class="metric-table glossary-table">
+<tr><th>術語</th><th>意思</th><th>注意事項</th></tr>
+<tr><td>配置檔 (config)</td><td>描述策略、資料、成本、執行方式和回測範圍的檔案。</td><td>AI 不應自行發明配置欄位。</td></tr>
+<tr><td>Parameter Matrix 參數矩陣</td><td>一次測試多組參數，例如不同均線長度。</td><td>最佳參數不是 WFA 證明。</td></tr>
+<tr><td>WFA 滾動驗證</td><td>把歷史切成訓練區間和樣本外區間，觀察策略是否穩定。</td><td>仍然不是未來收益保證。</td></tr>
+<tr><td>Benchmark 基準</td><td>用來比較策略的參考表現，例如買入並持有 QQQ。</td><td>基準要和策略的資產、時間、價格口徑相配。</td></tr>
+<tr><td>Transaction Cost 交易成本</td><td>每次買賣扣除的成本假設。</td><td>成本太低會令結果過度樂觀。</td></tr>
+<tr><td>Slippage 滑價</td><td>成交價和理想價格之間的差距假設。</td><td>流動性差或高頻策略尤其需要留意。</td></tr>
+<tr><td>Look-ahead Bias 偷看未來</td><td>回測用了當時尚未知道的資料。</td><td>外部資料必須說明何時可見、何時可交易。</td></tr>
+<tr><td>Sharpe 夏普率</td><td>以波動調整後的報酬指標。</td><td>不能單獨代表策略可靠。</td></tr>
+<tr><td>Max Drawdown 最大回撤</td><td>資金曲線由高位跌到低位的最大跌幅。</td><td>是理解風險的重要指標。</td></tr>
+</table></div>
+
+<h2>常用檢查指令</h2>
+<p>出錯時可以請 AI 先跑以下檢查，確認設定檔、工作區和基本品質門檻沒有明顯問題。</p>
+<ul>
+<li><code>python scripts/doctor.py</code></li>
+<li><code>python scripts/workspace_doctor.py</code></li>
+<li><code>python scripts/indicator_doctor.py workspace/indicators/extensions</code></li>
+<li><code>python scripts/project_consistency_audit.py</code></li>
+<li><code>python -m pytest tests/test_strategy_run_config.py tests/test_app_api_payloads.py -q</code></li>
+</ul>
+
+<div class="pager"><a href="../Lab_04_Provider_Check/index.html">上一章</a><a href="../index.html">目錄</a></div>
+</article></main></div><script src="../assets/lecture.js"></script></body></html>

@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lo2cin4BT Lecture</title>
+  <link rel="stylesheet" href="assets/lecture.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <strong>Lo2cin4BT Lecture</strong>
+        <span>專案內建 HTML 教學系統</span>
+      </div>
+      <input class="search" data-search placeholder="搜尋章節">
+      <nav class="nav-list" data-nav></nav>
+    </aside>
+
+    <main class="content">
+      <article class="hero">
+        <p class="kicker">Lecture Home</p>
+        <h1>用 Lo2cin4BT 2.0 建立、回測與驗證策略</h1>
+        <p>
+          從安裝、資料來源、策略描述、config 寫法、回測報告、Parameter Matrix 參數矩陣到
+          WFA 滾動驗證，這裡用一條完整路線帶你讀懂 Lo2cin4BT。
+        </p>
+
+        <div class="status-strip">
+          <span class="chip good">AI Manual 已完成</span>
+          <span class="chip good">統一回測引擎已完成</span>
+          <span class="chip good">WFA 滾動驗證已教學</span>
+          <span class="chip warn">Factor Analysis 因子分析尚未開發完成</span>
+        </div>
+
+        <section class="mermaid-panel">
+          <h2>學習路線總覽</h2>
+          <pre class="mermaid">
+flowchart LR
+  A["開始使用&lt;br/&gt;AI Manual / 安裝"] --> B["系統地圖&lt;br/&gt;資料、因子、回測、報告"]
+  B --> C["StrategyRun Config&lt;br/&gt;把策略寫成可執行設定"]
+  C --> D["Backtest 回測 / Parameter Matrix 參數矩陣&lt;br/&gt;單次結果與候選參數"]
+  D --> E["WFA 滾動驗證&lt;br/&gt;時間切片驗證"]
+  E --> F["報告閱讀&lt;br/&gt;風險、成本、資料健康"]
+  F --> G["擴充資料來源&lt;br/&gt;provider adapter"]
+          </pre>
+          <p class="diagram-caption">先理解整條工作流，再進入單一章節；這樣讀報告時不會只盯着一個績效數字。</p>
+        </section>
+
+        <div class="note">
+          <strong>AI 使用原則：</strong>
+          先請你的 AI 閱讀 <code>docs/ai/AI_MANUAL_SKILL.md</code>，
+          再讀 README、refactor 文件、相關 config、tests 與輸出檔案。
+          若答案超出 repo 內證據，AI 將會標示為 AI 推論、外部建議或未來設計。
+        </div>
+
+        <h2>學習路線</h2>
+        <div class="grid">
+          <section class="card">
+            <h3>1. 新手啟動</h3>
+            <p>Module 00 到 04：如何準備 AI Manual、安裝依賴、啟動平台、完成第一次回測。</p>
+          </section>
+          <section class="card">
+            <h3>2. 策略設計</h3>
+            <p>Module 03 到 06：理解 strategy run 設定、自然語言策略如何轉換成 config、如何做 Parameter Matrix 參數矩陣。</p>
+          </section>
+          <section class="card">
+            <h3>3. 報告閱讀</h3>
+            <p>Module 07 到 09：逐項閱讀 Metrics 概覽、Backtests 回測、WFA 滾動驗證、Risk Gate、Portfolio Invariant 與各類數字。</p>
+          </section>
+          <section class="card">
+            <h3>4. 擴充與未來</h3>
+            <p>Module 10 說明資料來源擴充；Module 11 標註 FactorHandler / Factor Analysis 因子分析的尚未開發功能邊界；Module 12 到 13 說明驗收工具與 C4 架構圖。</p>
+          </section>
+        </div>
+
+        <h2>用戶可以學會什麼</h2>
+        <div class="workflow">
+          <div class="workflow-step">
+            <strong>1</strong>
+            <div>
+              <h3>用自然語言描述策略</h3>
+              <p>例如「BTC 和 ETH 各自收盤價高於 50 日均線才持有」或「每個月第一個星期一開市交易QQQ，收市平倉」。</p>
+            </div>
+          </div>
+          <div class="workflow-step">
+            <strong>2</strong>
+            <div>
+              <h3>確認策略是否支援</h3>
+              <p>AI 將會依 Manual 回報 <code>supported</code>、<code>needs_clarification</code> 或 <code>unsupported</code>，不會編造功能。</p>
+            </div>
+          </div>
+          <div class="workflow-step">
+            <strong>3</strong>
+            <div>
+              <h3>生成與執行 config</h3>
+              <p>用 strategy run config 表達 provider、universe、features、signals、allocation、rebalance、fill model、risk 與 parameter domains。</p>
+            </div>
+          </div>
+          <div class="workflow-step">
+            <strong>4</strong>
+            <div>
+              <h3>閱讀報告與驗證穩健性</h3>
+              <p>從 Metrics 概覽到 Backtests 回測，再到 Parameter Matrix 參數矩陣與 WFA 滾動驗證，逐步確認績效、風險、成本與資料健康。</p>
+            </div>
+          </div>
+        </div>
+
+        <h2>專案證據入口</h2>
+        <ul class="evidence">
+          <li><code>README.md</code>：產品定位、啟動、策略、資料來源、WFA。</li>
+          <li><code>docs/ai/AI_MANUAL_SKILL.md</code>：AI 操作規則與能力邊界。</li>
+          <li><code>docs/ai/AI_SKILL_LECTURE_GUIDE.md</code>：Lecture 教學規格。</li>
+          <li><code>docs/backtest-architecture.md</code>：回測架構總覽。</li>
+          <li><code>backtester/contracts/strategy/strategy-run.schema.json</code>：正式 config sections。</li>
+          <li><code>workspace/runs/</code>、<code>workspace/wfa/</code>：當前 config 範例。</li>
+        </ul>
+
+        <div class="pager">
+          <span></span>
+          <a href="Module_00_Getting_Started/index.html">下一章：開始使用</a>
+        </div>
+      </article>
+    </main>
+  </div>
+  <script src="assets/lecture.js"></script>
+</body>
+</html>

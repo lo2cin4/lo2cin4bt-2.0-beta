@@ -1,0 +1,53 @@
+{
+  "schema_version": "wfa_run",
+  "strategy_config_path": "workspace/runs/strategy-run-btcusdt-binance-monthly-nth-weekday-same-session-matrix-example.json",
+  "engine": "unified_portfolio_wfa",
+  "platform": {
+    "run_type": "example",
+    "display_label": "WFA | BTCUSDT | Monthly Nth Weekday Same Session | Binance | Example"
+  },
+  "windowing": {
+    "mode": "rolling",
+    "size_mode": "ratio",
+    "target_window_count": 6,
+    "train_ratio": 0.6,
+    "test_ratio": 0.2,
+    "step_size": 180
+  },
+  "optimizer": {
+    "type": "grid",
+    "objectives": ["sharpe", "calmar"],
+    "primary_objective": "sharpe",
+    "candidate_limit": 28,
+    "random_seed": 42,
+    "selection_constraints": {
+      "enabled": true,
+      "min_is_active_rebalances": 2,
+      "min_is_exposure_ratio": 0.01,
+      "min_is_nonzero_return_days": 2,
+      "max_lookback_fraction_of_train": 0.95
+    }
+  },
+  "acceptance": {
+    "require_positive_oos": false,
+    "min_oos_sharpe": 0.0,
+    "min_oos_calmar": 0.0,
+    "min_oos_is_ratio": 0.0
+  },
+  "outputs": {
+    "selected_optimum": true,
+    "candidate_diagnostics": true,
+    "window_backtests": true
+  },
+  "metadata": {
+    "example": true,
+    "local_research_only": true,
+    "strategy_id": "btcusdt_monthly_nth_weekday_same_session_wfa_binance_example",
+    "notes": [
+      "References the BTCUSDT monthly nth-weekday same-session parameter matrix example in workspace/runs.",
+      "The parameter grid is month_week 1-4 times weekday Monday-Sunday.",
+      "Daily crypto candles approximate same-session open/close under exchange UTC candle conventions and are not executable fill guarantees.",
+      "This example is for WFA mechanics and local research only; it is not a calendar-anomaly claim, live-trading signal, broker instruction, or investment advice."
+    ]
+  }
+}

@@ -1,0 +1,52 @@
+# lo2cin4bt Semgrep rules.
+# lo2cin4bt 的 Semgrep 安全掃描規則。
+#
+# This is not a user strategy config. It is used by local/CI security checks to
+# block common public-repo mistakes such as account-promo wording, private
+# Company paths, or changing the local app to bind to the public network.
+#
+# 這不是用戶策略設定檔。它供本機 / CI 安全檢查使用，用來阻止常見公開 repo 錯誤，
+# 例如開戶優惠語氣、私人 Company 路徑，或把本機 app 改成對外網路開放。
+rules:
+  - id: lo2cin4bt-no-account-promo-language-in-public-readme
+    message: Public README data-source wording must stay read-only and avoid account-opening promo language.
+    severity: ERROR
+    languages: [generic]
+    paths:
+      include:
+        - README.md
+        - README.en.md
+    patterns:
+      - pattern-regex: (?i)(account-opening offer|futures discount|spot discount|\x{958B}\x{6236}\x{512A}\x{60E0}|\x{5408}\x{7D04}\s*10%|\x{73FE}\x{8CA8}\s*20%)
+
+  - id: lo2cin4bt-no-private-company-paths
+    message: Public repo files must not include private Company absolute paths.
+    severity: ERROR
+    languages: [generic]
+    paths:
+      include:
+        - "**/*.md"
+        - "**/*.py"
+        - "**/*.yml"
+        - "**/*.yaml"
+        - "**/*.json"
+      exclude:
+        - ".semgrep/**"
+        - docs/phase6-factor-strategy-development-plan.md
+    patterns:
+      - pattern-regex: (?i)d:[\\/]+company
+
+  - id: lo2cin4bt-no-open-network-bind
+    message: The local app must not be changed to bind publicly without an explicit auth/security contract.
+    severity: ERROR
+    languages: [python]
+    paths:
+      include:
+        - main.py
+        - app/**/*.py
+    patterns:
+      - pattern-either:
+          - pattern: host="0.0.0.0"
+          - pattern: host='0.0.0.0'
+          - pattern: APP_HOST = "0.0.0.0"
+          - pattern: APP_HOST = '0.0.0.0'

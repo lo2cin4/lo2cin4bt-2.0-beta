@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>02 資料來源與安裝要求</title>
+  <link rel="stylesheet" href="../assets/lecture.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand"><strong>Lo2cin4BT Lecture</strong><span>Module 02</span></div>
+      <input class="search" data-search placeholder="搜尋章節">
+      <nav class="nav-list" data-nav></nav>
+    </aside>
+
+    <main class="content">
+      <article class="module">
+        <p class="kicker">Module 02</p>
+        <h1>資料來源與安裝要求</h1>
+        <p>
+          Lo2cin4BT 的資料來源統一經過 <code>dataloader/</code>。Backtester、WFA、前端不會直接呼叫 broker、
+          exchange 或外部資料 API。這個邊界讓策略、回測與前端報告可以共用同一套資料健康檢查。
+        </p>
+
+        <section class="mermaid-panel">
+          <h2>資料如何進入回測</h2>
+          <pre class="mermaid">
+flowchart LR
+  Request["config data section<br/>provider / symbols / benchmark"] --> Adapter["dataloader adapter"]
+  Adapter --> Standard["標準 OHLCV<br/>date / open / high / low / close / volume"]
+  Standard --> Health["data health<br/>effective start / missing assets"]
+  Health --> Cache["cache / managed artifacts"]
+  Cache --> Engine["backtester / WFA"]
+  Health --> Rules["Strategy Rules<br/>前端可讀摘要"]
+          </pre>
+          <p class="diagram-caption">
+            不同資料來源的差異留在 adapter；引擎只處理標準化後的資料與資料健康報告。
+          </p>
+        </section>
+
+        <h2>正式資料來源規則</h2>
+        <div class="table-scroll">
+          <table class="detail-table">
+            <tr>
+              <th>Provider</th>
+              <th>用途</th>
+              <th>資產代號例子</th>
+              <th>需要什麼</th>
+              <th>常見錯誤</th>
+            </tr>
+            <tr>
+              <td>yfinance</td>
+              <td>公開每日 ETF / 股票資料。</td>
+              <td><code>QQQ</code>、<code>SPY</code>、<code>VOO</code></td>
+              <td><code>requirements.txt</code> 內的 <code>yfinance</code> / <code>curl_cffi</code>。</td>
+              <td>資產代號不存在、Yahoo 缺資料、比較基準與策略市場不一致。</td>
+            </tr>
+            <tr>
+              <td>binance</td>
+              <td>crypto spot kline。</td>
+              <td><code>BTCUSDT</code>、<code>ETHUSDT</code></td>
+              <td><code>python-binance</code>、網絡、正確 時間週期。</td>
+              <td>不會在未說明下改用 Yahoo benchmark；Binance symbol 不使用連字號。</td>
+            </tr>
+            <tr>
+              <td>coinbase</td>
+              <td>Coinbase Exchange 公開 K 線資料。</td>
+              <td><code>BTC-USD</code>、<code>ETH-USD</code></td>
+              <td><code>dataloader/coinbase_loader.py</code>、網絡、Coinbase product 格式。</td>
+              <td>Coinbase 用 <code>BASE-QUOTE</code> 格式，不使用 Binance 的 <code>BTCUSDT</code> 寫法。</td>
+            </tr>
+            <tr>
+              <td>file</td>
+              <td>本地 CSV / parquet。</td>
+              <td>本地路徑與 資產代號對應</td>
+              <td>日期欄、OHLCV 欄位、timezone / calendar 定義。</td>
+              <td>欄位名不一致、日期不是交易日、缺 benchmark、adjustment 未說明。</td>
+            </tr>
+            <tr>
+              <td>futu</td>
+              <td>FUTU OpenD 轉接器框架。</td>
+              <td>依 Futu market prefix</td>
+              <td><code>futu-api</code>、Futu OpenD、host/port、行情權限。</td>
+              <td>套件裝好不等於 OpenD 已開，也不等於有行情權限。</td>
+            </tr>
+            <tr>
+              <td>ibkr</td>
+              <td>IBKR TWS / IB Gateway 轉接器框架。</td>
+              <td>依 IBKR contract / 資產代號對應</td>
+              <td><code>ib-insync</code>、TWS/Gateway、API enabled、port、market-data entitlements。</td>
+              <td>Gateway 未開、API port 錯、market data entitlement 不足。</td>
+            </tr>
+          </table>
+        </div>
+
+        <h2>Data config 要寫什麼</h2>
+        <pre><code>{
+  "data": {
+    "provider": "binance",
+    "frequency": "1D",
+    "calendar": "CRYPTO_24_7",
+    "timezone": "UTC",
+    "benchmark": "BTCUSDT"
+  },
+  "universe": {
+    "symbols": ["BTCUSDT", "ETHUSDT"]
+  }
+}</code></pre>
+
+        <h2>Benchmark 原則</h2>
+        <ul>
+          <li>單資產策略可由同一資料來源的買入持有 推斷，但仍建議明確寫入。</li>
+          <li>多資產 portfolio 應明確指定 benchmark，例如 <code>SPY</code>、<code>BTCUSDT</code> 或同市場代表資產。</li>
+          <li>crypto 資料來源不會在未說明下切到 Yahoo ticker；如果要跨資料來源 benchmark，AI 將會先向用戶說明。</li>
+          <li>若比較基準缺資料，報告會影響 Benchmark Return、Excess Return、Benchmark Correlation。</li>
+        </ul>
+
+        <h2>Data Health（資料健康） 解讀</h2>
+        <div class="grid">
+          <section class="card">
+            <h3>Effective Start（有效起始日）</h3>
+            <p>所有必要資產、benchmark、features 可共同開始的日期。多資產會被最晚可用資產拖後。</p>
+          </section>
+          <section class="card">
+            <h3>Loaded Assets（已載入資產）</h3>
+            <p>實際成功載入的資產。應與 universe 對照。</p>
+          </section>
+          <section class="card">
+            <h3>Missing Assets（缺失資產）</h3>
+            <p>要求但未成功載入的資產。若存在，策略結果通常需要先檢查資料缺口。</p>
+          </section>
+          <section class="card">
+            <h3>Data Provider Error（資料來源錯誤）</h3>
+            <p>例如 端點、閘道程式、權限、資產代號或時間週期 問題。這不是策略邏輯錯誤。</p>
+          </section>
+        </div>
+
+        <section class="evidence">
+          <h2>專案證據</h2>
+          <ul>
+            <li><code>dataloader/market_data_loader.py</code></li>
+            <li><code>dataloader/coinbase_loader.py</code></li>
+            <li><code>dataloader/futu_loader.py</code></li>
+            <li><code>dataloader/ibkr_loader.py</code></li>
+            <li><code>autorunner/DataLoader_autorunner.py</code></li>
+            <li><code>wfanalyser/DataLoader_wfanalyser.py</code></li>
+          </ul>
+        </section>
+
+        <div class="pager">
+          <a href="../Module_01_System_Map/index.html">上一章</a>
+          <a href="../Module_03_Strategy_Run_Config/index.html">下一章</a>
+        </div>
+      </article>
+    </main>
+  </div>
+  <script src="../assets/lecture.js"></script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>12 Validation Tools 驗收工具</title>
+  <link rel="stylesheet" href="../assets/lecture.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand"><strong>Lo2cin4BT Lecture</strong><span>Module 12</span></div>
+      <input class="search" data-search placeholder="搜尋章節">
+      <nav class="nav-list" data-nav></nav>
+    </aside>
+    <main class="content">
+      <article class="module">
+        <p class="kicker">Module 12</p>
+        <h1>Validation Tools 驗收工具</h1>
+        <p>
+          這一章給進階用戶與維護者閱讀，用來理解測試、覆蓋率、安全掃描、golden regression 與量化有效性 gate。新手只需要知道如何做健康檢查，已放在 Module 00。
+        </p>
+
+        <h2>進階：兩個總入口</h2>
+        <table>
+          <tr><th>情況</th><th>指令</th><th>用途</th></tr>
+          <tr>
+            <td>日常修改後</td>
+            <td><code>python scripts/quality_gate.py --quick</code></td>
+            <td>跑快速品質檢查，適合大部分本機改動。</td>
+          </tr>
+          <tr>
+            <td>公開或重要版本前</td>
+            <td><code>python scripts/quality_gate.py --full</code></td>
+            <td>跑完整驗收，包括覆蓋率、安全、前端建置、Rust 與更多測試。</td>
+          </tr>
+        </table>
+
+        <h2>進階：背後包含的工具</h2>
+        <table>
+          <tr><th>工具</th><th>檢查甚麼</th><th>為何存在</th></tr>
+          <tr><td><code>pytest</code></td><td>Python 測試、oracle 測試、golden regression</td><td>防止核心行為被改壞。</td></tr>
+          <tr><td><code>coverage</code></td><td>測試覆蓋到多少代碼</td><td>避免重要代碼完全無測試。</td></tr>
+          <tr><td><code>ruff</code></td><td>Python 明顯錯誤、未用變數、重複 import</td><td>提早捉低級錯誤。</td></tr>
+          <tr><td><code>Bandit</code></td><td>Python 安全壞味道</td><td>降低公開 repo 的安全風險。</td></tr>
+          <tr><td><code>pip-audit</code> / <code>npm audit</code></td><td>第三方套件已知漏洞</td><td>避免引用有高風險漏洞的依賴。</td></tr>
+          <tr><td>Rust gates</td><td><code>cargo fmt</code>、<code>cargo check</code>、<code>cargo test</code>、<code>cargo clippy</code></td><td>確認 Rust 部分格式、編譯、測試和 lint 正常。</td></tr>
+          <tr><td>GitHub Summary</td><td>在 GitHub Actions 顯示驗收摘要</td><td>讓維護者不用打開每個 log 也能看到結果。</td></tr>
+        </table>
+
+        <h2>進階：golden regression 是甚麼</h2>
+        <p>
+          Golden regression 是「固定答案測試」。系統用固定本機假資料重跑內建策略範例，然後對比預先鎖住的結果，例如 final equity、交易次數、參數組合數和成本狀態。
+        </p>
+        <p>
+          如果日後改 engine、config 或前端 payload 時，回測結果偷偷變了，這個測試會失敗。它不是用來證明策略會賺錢，只是用來證明軟件計算沒有無聲漂移。
+        </p>
+        <ul>
+          <li>均線策略：BTCUSDT dual MA、QQQ SMA cross。</li>
+          <li>日曆效應：每月第 N 個星期幾 same-session。</li>
+          <li>特定日子調倉：年度固定資產配置再平衡。</li>
+          <li>Momentum：VOO / GLD momentum rotation。</li>
+        </ul>
+
+        <h2>進階：量化有效性 gate</h2>
+        <ul>
+          <li>open / close 與 delay bars 必須清楚定義，避免訊號和成交時間混亂。</li>
+          <li>成本與滑價必須真的進入計算，不能只顯示在文字上。</li>
+          <li>外部資料必須說明資料在現實中何時才知道，避免回測偷看未來。</li>
+          <li>benchmark 必須清楚，否則策略表現沒有合理參照。</li>
+          <li>Parameter Matrix 必須真的是多組參數；單一參數應使用單次回測。</li>
+          <li>WFA 只是驗證流程，不是盈利保證。</li>
+        </ul>
+
+        <h2>Workspace-only 原則</h2>
+        <p>
+          普通策略、資料、indicator、WFA 設定，應在 <code>workspace/</code> 內完成。自訂 indicator 屬於程式碼，需要 doctor 檢查和 runtime 支援；如果未支援，AI 應停下回報缺少功能。只有當現有 engine 不支援新能力時，才應改 <code>backtester/</code>、<code>app/</code>、<code>autorunner/</code> 或 <code>scripts/</code>，並交由進階維護流程驗收。
+        </p>
+
+        <div class="pager">
+          <a href="../Module_11_Factor_Analysis_Preview/index.html">上一章</a>
+          <a href="../Module_13_C4_Architecture/index.html">下一章</a>
+        </div>
+      </article>
+    </main>
+  </div>
+  <script src="../assets/lecture.js"></script>
+</body>
+</html>

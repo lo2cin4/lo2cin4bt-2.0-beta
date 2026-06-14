@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lo2cin4bt/contracts/wfa-run.schema.json",
+  "title": "lo2cin4bt WFA Run Config",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "windowing", "optimizer", "acceptance", "outputs"],
+  "properties": {
+    "schema_version": {"const": "wfa_run"},
+    "strategy_config_path": {
+      "type": "string",
+      "pattern": "^(?![A-Za-z]:)(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?:workspace/runs/)?[A-Za-z0-9._/-]+\\.json$",
+      "description": "Path to the strategy_run config. Seeded/public runnable WFA configs must use workspace/runs/<strategy-config>.json instead of a bare filename."
+    },
+    "legacy_embedded_strategy_config": {"type": ["object", "null"]},
+    "windowing": {
+      "type": "object",
+      "properties": {
+        "mode": {"type": "string"},
+        "size_mode": {"type": ["string", "null"]},
+        "target_window_count": {"type": ["integer", "null"]},
+        "train_size": {"type": ["integer", "null"]},
+        "test_size": {"type": ["integer", "null"]},
+        "train_ratio": {"type": ["number", "null"]},
+        "test_ratio": {"type": ["number", "null"]},
+        "step_size": {"type": ["integer", "null"]}
+      }
+    },
+    "optimizer": {
+      "type": "object",
+      "properties": {
+        "selection_constraints": {"type": "object"}
+      },
+      "additionalProperties": true
+    },
+    "acceptance": {"type": "object"},
+    "outputs": {
+      "type": "object",
+      "properties": {
+        "selected_optimum": {"type": "boolean"},
+        "candidate_diagnostics": {"type": "boolean"},
+        "window_backtests": {"type": "boolean"}
+      }
+    },
+    "platform": {"type": "object"},
+    "engine": {"type": ["string", "object"]},
+    "metadata": {"type": "object"}
+  },
+  "anyOf": [
+    {"required": ["strategy_config_path"]},
+    {"required": ["legacy_embedded_strategy_config"]}
+  ]
+}

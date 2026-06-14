@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>13 C4 Architecture 架構圖</title>
+  <link rel="stylesheet" href="../assets/lecture.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand"><strong>Lo2cin4BT Lecture</strong><span>Module 13</span></div>
+      <input class="search" data-search placeholder="搜尋課程">
+      <nav class="nav-list" data-nav></nav>
+    </aside>
+    <main class="content">
+      <article class="module">
+        <p class="kicker">Module 13</p>
+        <h1>C4 Architecture 架構圖</h1>
+        <p>
+          C4 是一種由外至內理解系統的方法。先看誰使用系統，再看系統由哪些大模組組成，
+          最後才看每個模組內部如何協作。
+        </p>
+
+        <h2>Context：誰在用這個系統</h2>
+        <pre class="mermaid">
+flowchart LR
+  User["用戶 / 研究員"] --> AI["AI 助手"]
+  AI --> Repo["lo2cin4bt 開源框架"]
+  Repo --> Browser["本機瀏覽器前端"]
+  Repo --> Data["行情 / 本機資料"]
+  Repo --> Reports["回測、WFA、AI 證據包"]
+        </pre>
+
+        <h2>Container：主要大模組</h2>
+        <pre class="mermaid">
+flowchart TB
+  Workspace["workspace/<br/>策略、資料、indicator、WFA"] --> Autorunner["autorunner/<br/>讀 config 並啟動流程"]
+  Autorunner --> Backtester["backtester/<br/>交易邏輯、成本、滑價、open/close、delay bars"]
+  Backtester --> Metrics["metricstracker / statanalyser<br/>績效與統計分析"]
+  Metrics --> App["app/<br/>API payload"]
+  App --> Frontend["plotter/web<br/>本機瀏覽器畫面"]
+  Verification["verification / scripts<br/>一致性、品質與安全檢查"] --> Workspace
+  Verification --> Backtester
+  Verification --> Frontend
+        </pre>
+
+        <h2>Component：主要模組內部架構</h2>
+        <p>
+          以下仍然用 Context 同一種畫風，只是把太長的流程拆成多段，避免文字太小。
+          重點是：普通策略開發應停留在 workspace，核心程式只在新增 engine 能力時才需要修改。分享 workspace 時，設定、資料、feature 和 WFA 需要路徑一致並通過檢查；自訂 indicator 還需要 runtime 支援。
+        </p>
+
+        <h3>workspace：用戶與 AI 的唯一行動位置</h3>
+        <pre class="mermaid">
+flowchart LR
+  Datasets["datasets<br/>本機資料"] --> Features["features<br/>外部資料合約"]
+  Features --> Indicators["indicators<br/>自訂指標"]
+  Indicators --> Runs["runs<br/>回測設定"]
+  Runs --> WFA["wfa<br/>走勢外驗證設定"]
+        </pre>
+
+        <h3>autorunner：讀取設定並啟動流程</h3>
+        <pre class="mermaid">
+flowchart LR
+  ConfigLoader["ConfigLoader<br/>讀取設定檔"] --> DataLoader["DataLoader<br/>準備價格與外部資料"]
+  DataLoader --> StrategyCompiler["StrategyCompiler<br/>轉成 engine 可用格式"]
+  StrategyCompiler --> Runner["Runner<br/>派發單次回測、矩陣或 WFA"]
+        </pre>
+
+        <h3>backtester：核心回測引擎</h3>
+        <div class="c4-snake-diagram" aria-label="backtester component snake diagram">
+          <div class="c4-snake-row">
+            <div class="c4-node c4-arrow-right">
+              <strong>StrategyRunConfig</strong>
+              <span>檢查 schema、fill_model、參數矩陣</span>
+            </div>
+            <div class="c4-node c4-arrow-right">
+              <strong>NodeIRExecutor</strong>
+              <span>執行訊號節點</span>
+            </div>
+            <div class="c4-node c4-turn-down">
+              <strong>IndicatorParams / Indicators</strong>
+              <span>計算 MA、BOLL、HL、NDAY、PERC</span>
+            </div>
+          </div>
+          <div class="c4-snake-row c4-row-reverse">
+            <div class="c4-node c4-turn-down-left">
+              <strong>RiskGate / PortfolioInvariant</strong>
+              <span>檢查曝險、權重、現金與持倉</span>
+            </div>
+            <div class="c4-node c4-arrow-left">
+              <strong>MultiAssetPortfolioEngine</strong>
+              <span>處理 entry / exit、open / close、delay bars</span>
+            </div>
+            <div class="c4-node c4-arrow-left">
+              <strong>Feature materializer</strong>
+              <span>接入 workspace feature contract</span>
+            </div>
+          </div>
+          <div class="c4-snake-row c4-row-short">
+            <div class="c4-node c4-arrow-right">
+              <strong>RustCoreBridge</strong>
+              <span>高速 accounting 檢查</span>
+            </div>
+            <div class="c4-node">
+              <strong>TradeRecorder / Exporter</strong>
+              <span>輸出交易、持倉、證據包</span>
+            </div>
+          </div>
+        </div>
+
+        <h3>dataloader：行情與本機資料入口</h3>
+        <pre class="mermaid">
+flowchart LR
+  Providers["provider loaders<br/>yfinance / binance / coinbase / file"] --> Validator["validator<br/>檢查欄位、日期、缺值"]
+  Validator --> Exporter["exporter<br/>交給 backtester 使用"]
+        </pre>
+
+        <h3>wfanalyser：走勢外驗證</h3>
+        <pre class="mermaid">
+flowchart LR
+  Loader["ConfigLoader<br/>讀取 WFA 設定"] --> Windows["rolling windows<br/>切分訓練期與測試期"]
+  Windows --> Exporter["ResultsExporter<br/>輸出 WFA 結果與診斷"]
+        </pre>
+
+        <h3>metricstracker / statanalyser：結果分析</h3>
+        <pre class="mermaid">
+flowchart LR
+  Metrics["MetricsCalculator<br/>計算回報、風險、Sharpe"] --> Importer["DataImporter<br/>讀取 run 產物"]
+  Importer --> Report["ReportGenerator<br/>整理成前端可讀結果"]
+        </pre>
+
+        <h3>app / frontend：只顯示後端正式 payload</h3>
+        <pre class="mermaid">
+flowchart LR
+  Runtime["runtime registry<br/>整理 run history 與 artifact path"] --> API["API payload<br/>提供正式 display fields"]
+  API --> Frontend["React pages<br/>Run Center、Metrics、Matrix、WFA"]
+        </pre>
+
+        <h3>verification / scripts：代碼鎖與驗收</h3>
+        <pre class="mermaid">
+flowchart LR
+  Doctor["doctor scripts<br/>workspace / indicator / public release"] --> Architecture["architecture audit<br/>檢查模組邊界"]
+  Architecture --> FrontendParity["frontend payload parity audit<br/>防止前端自行猜策略語義"]
+  FrontendParity --> Release["pre-release audit<br/>總驗收報告"]
+        </pre>
+
+        <h2>Component：策略從想法到結果</h2>
+        <div class="c4-snake-diagram strategy-result-snake" aria-label="strategy idea to result component snake diagram">
+          <div class="c4-snake-row">
+            <div class="c4-node c4-arrow-right">
+              <strong>策略想法</strong>
+              <span>用戶描述想測試的交易規則</span>
+            </div>
+            <div class="c4-node c4-arrow-right">
+              <strong>StrategyBuilder skill</strong>
+              <span>把想法整理成可檢查的設定</span>
+            </div>
+            <div class="c4-node c4-turn-down">
+              <strong>schema / contract</strong>
+              <span>限制 config 欄位與格式</span>
+            </div>
+          </div>
+          <div class="c4-snake-row c4-row-reverse">
+            <div class="c4-node c4-turn-down-left">
+              <strong>backtest engine</strong>
+              <span>計算交易、成本與持倉</span>
+            </div>
+            <div class="c4-node c4-arrow-left">
+              <strong>runtime dispatch</strong>
+              <span>選擇正確 engine path</span>
+            </div>
+            <div class="c4-node c4-arrow-left">
+              <strong>doctor gates</strong>
+              <span>不通過就打回重做</span>
+            </div>
+          </div>
+          <div class="c4-snake-row c4-row-short">
+            <div class="c4-node c4-arrow-right">
+              <strong>display payload</strong>
+              <span>後端提供正式顯示欄位</span>
+            </div>
+            <div class="c4-node">
+              <strong>frontend</strong>
+              <span>只顯示 payload，不自行猜策略</span>
+            </div>
+          </div>
+        </div>
+
+        <h2>Code-level gate：防止說法與實際不一致</h2>
+        <ul>
+          <li>前端只能顯示後端 payload 的正式欄位，不應自行猜策略語義。</li>
+          <li>schema、validator、runtime、docs、lecture 必須描述同一套欄位。</li>
+          <li>普通策略和 indicator 開發應只在 workspace 內完成；自訂 indicator 通過 doctor 不代表一定可跑，還要有 runtime dispatch 支援。</li>
+          <li>需要改核心時，才升級為 engine feature request。</li>
+          <li>Quant gate 檢查 open / close、delay bars、成本、滑價、benchmark、look-ahead、WFA 和 parameter matrix。</li>
+        </ul>
+
+        <div class="pager">
+          <a href="../Module_12_Validation_Tools/index.html">上一課</a>
+          <a href="../Lab_01_Run_A_Backtest/index.html">下一課</a>
+        </div>
+      </article>
+    </main>
+  </div>
+  <script src="../assets/lecture.js"></script>
+</body>
+</html>

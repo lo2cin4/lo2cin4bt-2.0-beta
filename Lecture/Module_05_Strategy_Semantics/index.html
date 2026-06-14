@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>05 策略類型與系統對應</title>
+  <link rel="stylesheet" href="../assets/lecture.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand"><strong>Lo2cin4BT Lecture</strong><span>Module 05</span></div>
+      <input class="search" data-search placeholder="搜尋章節">
+      <nav class="nav-list" data-nav></nav>
+    </aside>
+    <main class="content">
+      <article class="module">
+        <p class="kicker">Module 05</p>
+        <h1>策略類型與系統對應</h1>
+        <p>Lo2cin4BT 支援的是能轉換為設定合約、資料來源、回測引擎與輸出檔案的策略。使用時，AI 將會先判斷支援狀態，再產生 config。</p>
+        <h2>目前支援</h2>
+        <ul>
+          <li>單資產作為投資組合：MA cross、MA-above、入場 / 出場 signal。</li>
+          <li>日曆 / 交易時段事件：weekday / ordinal event、同交易時段開倉到收市平倉、自訂事件日期 CSV。</li>
+          <li>多資產投資組合：固定權重配置、VOO/GLD 輪動、top-N 排名、再平衡。</li>
+          <li>配置方案、Parameter Matrix 參數矩陣、WFA 滾動驗證。</li>
+          <li>資料來源：yfinance、Binance、Coinbase、file、FUTU 轉接器框架、IBKR 轉接器框架。</li>
+        </ul>
+        <h2>策略描述與系統對應</h2>
+        <table>
+          <tr><th>使用者說法</th><th>Lo2cin4BT 對應</th></tr>
+          <tr><td>QQQ 快慢均線交叉，掃描 10 到 200 天。</td><td><code>single_asset_signal</code> + <code>parameter_matrix</code> + 單資產投資組合。</td></tr>
+          <tr><td>每個月第一個星期一開市交易 QQQ，收市平倉。</td><td><code>calendar_event_session</code> + 交易所交易日曆 + 開盤 / 收盤執行。</td></tr>
+          <tr><td>VOO/GLD momentum 排名，只持 top 1。</td><td><code>multi_asset_portfolio</code> + ranking + eligibility + allocation。</td></tr>
+          <tr><td>固定權重年度再平衡。</td><td>固定權重配置；無參數範圍時使用 Rolling Validation 滾動驗證。</td></tr>
+        </table>
+        <h2>不支援策略的處理</h2>
+        <p>如果提出完整實盤下單路由、tax lot/corporate action、完整 factor IC/Fama-MacBeth/risk model、未實作券商成交模型，AI 將會說明不支援、需要澄清或需要開發。</p>
+        <section class="evidence">
+          <h2>專案證據</h2>
+          <ul>
+            <li><code>README.md</code> Supported Strategy Types</li>
+            <li><code>workspace/runs/</code></li>
+            <li><code>docs/backtest-architecture.md</code></li>
+          </ul>
+        </section>
+        <div class="pager">
+          <a href="../Module_04_Backtest_Basics/index.html">上一章</a>
+          <a href="../Module_06_Parameter_Matrix/index.html">下一章</a>
+        </div>
+      </article>
+    </main>
+  </div>
+  <script src="../assets/lecture.js"></script>
+</body>
+</html>

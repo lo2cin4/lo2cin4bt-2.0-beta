@@ -1,0 +1,86 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  release-gates:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: plotter/web/package-lock.json
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy,rustfmt
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip wheel setuptools
+          python -m pip install -r requirements-dev.txt
+
+      - name: Python lint
+        run: |
+          python -m ruff check . --select F401,F841,F811 --exclude plotter/web --exclude workspace --exclude outputs --exclude logs
+
+      - name: Frontend lint, test, and build
+        working-directory: plotter/web
+        run: |
+          npm ci
+          npm run lint
+          npm test
+          npm run build
+
+      - name: Public and architecture audits
+        run: |
+          python scripts/public_release_audit.py
+          python scripts/frontend_payload_parity_audit.py
+          python scripts/architecture_audit.py --format text
+          python scripts/workspace_doctor.py
+          python scripts/indicator_doctor.py workspace/indicators/extensions
+          python verification/scripts/run_consistency_gate.py
+
+      - name: Security audits
+        run: |
+          python -m bandit -q -r app autorunner backtester dataloader metricstracker statanalyser utils verification wfanalyser -ll
+          pip-audit -r requirements-dev.txt
+          cd plotter/web
+          npm audit --audit-level=high
+
+      - name: Pre-release quick audit
+        run: |
+          python scripts/pre_release_maintenance_audit.py --quick
+          cat outputs/release/pre_release_maintenance_report.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Release coverage gate
+        run: |
+          python -m pytest --cov=app --cov=autorunner --cov=backtester --cov=dataloader --cov=metricstracker --cov=statanalyser --cov=utils --cov=verification --cov=wfanalyser --cov-report=term --cov-report=xml --cov-fail-under=50 -q
+
+      - name: Core backtest coverage gate
+        run: |
+          python -m pytest tests/test_multi_asset_portfolio_engine.py tests/test_cost_slippage_regression.py tests/test_risk_gate_backtester.py tests/test_single_asset_portfolio_adapter.py tests/test_rust_accounting_golden.py --cov=backtester.MultiAssetPortfolioEngine_backtester --cov-report=term --cov-fail-under=80 -q
+
+      - name: Quant reproducibility oracle
+        run: |
+          python -m pytest tests/test_backtester_oracle_cases.py tests/test_backtester_pseudo_fuzz.py tests/test_exporter_snapshot_backtester.py tests/test_rust_accounting_golden.py -q
+
+      - name: Rust crate gates
+        run: |
+          cargo fmt --manifest-path rust/lo2cin4bt_core/Cargo.toml -- --check
+          cargo check --manifest-path rust/lo2cin4bt_core/Cargo.toml
+          cargo test --manifest-path rust/lo2cin4bt_core/Cargo.toml
+          cargo clippy --manifest-path rust/lo2cin4bt_core/Cargo.toml -- -D warnings
+          cargo fmt --manifest-path backtester/rust_sim_kernel_rs/Cargo.toml -- --check
+          cargo check --manifest-path backtester/rust_sim_kernel_rs/Cargo.toml
+          cargo test --manifest-path backtester/rust_sim_kernel_rs/Cargo.toml
+          cargo clippy --manifest-path backtester/rust_sim_kernel_rs/Cargo.toml -- -D warnings

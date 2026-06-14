@@ -1,0 +1,10 @@
+{
+  "auto": {
+    "ratio_key": "node_ir_auto_relative_speed",
+    "max_ratio": 1.1
+  },
+  "rust": {
+    "ratio_key": "node_ir_relative_speed",
+    "max_ratio": 1.1
+  }
+}

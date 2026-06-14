@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>00 開始使用與 AI Manual</title>
+  <link rel="stylesheet" href="../assets/lecture.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand"><strong>Lo2cin4BT Lecture</strong><span>Module 00</span></div>
+      <input class="search" data-search placeholder="搜尋章節">
+      <nav class="nav-list" data-nav></nav>
+    </aside>
+
+    <main class="content">
+      <article class="module">
+        <p class="kicker">Module 00</p>
+        <h1>開始使用與 AI Manual</h1>
+        <p>
+          Lo2cin4BT 2.0 是以瀏覽器為主要入口的量化研究與回測 workspace。
+          使用者以結構化 config 描述策略，再執行 單資產、多資產投資組合、
+          Parameter Matrix 參數矩陣、WFA 滾動驗證。
+        </p>
+
+        <h2>準備 AI Manual</h2>
+        <p>開源使用者最重要的第一步，是先準備好 AI 要讀的正確規則，而不是憑一般量化常識亂補功能。</p>
+        <ol>
+          <li>把 AI 工作目錄指到 repo 根目錄，例如 <code>lo2cin4bt</code>。</li>
+          <li>第一個讀 <code>skills/lo2cin4bt/SKILL.md</code>。</li>
+          <li>再按需要讀 <code>skills/lo2cin4bt/references/</code>、<code>docs/ai/AI_MANUAL_SKILL.md</code>、相關 config、tests 與輸出檔案。</li>
+          <li>要求 AI 區分 repo 已實作、尚未開發階段、外部建議或 AI 推論。</li>
+          <li>若缺 universe、provider、frequency、calendar、benchmark、入場 / 出場、allocation、risk gate 或 parameter domain，AI 將會先列出缺口，不會編造。</li>
+        </ol>
+
+        <pre><code>請先閱讀 skills/lo2cin4bt/SKILL.md。
+任何 repo 內沒有證據的內容，請標示為 AI 推論、外部建議或未來設計。
+如果我描述的策略目前 Lo2cin4BT 做不到，請直接說明缺口，不要強行寫 config。</code></pre>
+
+        <h2>安裝與啟動</h2>
+        <p>以下命令是 repo 內建 的基本路線。若環境有不同 Python / Node 管理方式，需按本機情況調整。</p>
+        <pre><code>cd lo2cin4bt
+python -m pip install -r requirements.txt
+cd plotter/web
+npm ci
+npm run build
+cd ../..
+python main.py</code></pre>
+
+        <div class="callout-grid">
+          <section class="note">
+            <h3>打開平台</h3>
+            <p>啟動後打開 <code>http://127.0.0.1:2424/</code>。Run Center 執行中心會讀取 <code>workspace/runs/</code> 與 <code>workspace/wfa/</code>。</p>
+          </section>
+          <section class="phase">
+            <h3>外部 gateway</h3>
+            <p>FUTU / IBKR 需要本機 套件、閘道程式、host/port 與資料權限。這不是純 config 能解決的問題。</p>
+          </section>
+        </div>
+
+        <h2>第一次使用順序</h2>
+        <div class="workflow">
+          <div class="workflow-step">
+            <strong>1</strong>
+            <div><h3>Run Center 執行中心</h3><p>先選一份已存在的 Backtests 回測 config，不要一開始就寫全新策略。</p></div>
+          </div>
+          <div class="workflow-step">
+            <strong>2</strong>
+            <div><h3>Metrics 概覽</h3><p>確認 Total Return、CAGR、Sharpe、MDD、Calmar、Benchmark 比較基準與 Data Health（資料健康）。</p></div>
+          </div>
+          <div class="workflow-step">
+            <strong>3</strong>
+            <div><h3>Backtests 回測</h3><p>看 equity、allocation changes、target holdings、asset contribution、risk gate audit 與 invariant。</p></div>
+          </div>
+          <div class="workflow-step">
+            <strong>4</strong>
+            <div><h3>Parameter Matrix 參數矩陣 / WFA 滾動驗證</h3><p>有參數範圍才看 Parameter Matrix 參數矩陣；要驗證穩健性再看 WFA 滾動驗證。</p></div>
+          </div>
+        </div>
+
+        <h2>出錯時先做健康檢查</h2>
+        <p>
+          平常研究策略時，你主要在 <code>workspace/</code> 內工作。當前端看不到結果、策略跑不出來，或者 AI 改完檔案後想確認沒有弄壞東西，就請 AI 跑一次健康檢查。
+        </p>
+        <div class="note">
+          <strong>可以直接複製給 AI：</strong><br>
+          請在 lo2cin4bt 專案內跑一次健康檢查：<code>python scripts/quality_gate.py --quick</code>。如果有錯，請用簡單語言告訴我哪一步失敗、代表甚麼、下一步如何修。
+        </div>
+
+        <h2>前端入口</h2>
+        <ul>
+          <li>Run Center 執行中心：選擇 Factor Analysis 因子分析、Backtests 回測、Walk-Forward config。</li>
+          <li>Metrics 概覽：總覽 Total Return、CAGR、Sharpe、MDD、Calmar。</li>
+          <li>Parameter Matrix 參數矩陣：檢查候選、ranking、no-domain。</li>
+          <li>Backtests 回測：閱讀 portfolio evidence、risk gate audit、trade / 再平衡 / holdings。</li>
+          <li>WFA 滾動驗證：閱讀 selected optimum OOS window、滾動驗證、portfolio evidence。</li>
+        </ul>
+
+        <section class="evidence">
+          <h2>專案證據</h2>
+          <ul>
+            <li><code>README.md</code></li>
+            <li><code>main.py</code></li>
+            <li><code>skills/lo2cin4bt/SKILL.md</code></li>
+            <li><code>docs/ai/AI_MANUAL_SKILL.md</code></li>
+            <li><code>app/api/</code>、<code>plotter/web/</code></li>
+          </ul>
+        </section>
+
+        <div class="pager">
+          <a href="../index.html">上一章：首頁</a>
+          <a href="../Module_01_System_Map/index.html">下一章：系統地圖</a>
+        </div>
+      </article>
+    </main>
+  </div>
+  <script src="../assets/lecture.js"></script>
+</body>
+</html>

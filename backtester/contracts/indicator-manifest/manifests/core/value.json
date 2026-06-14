@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0",
+  "indicator_id": "core.value.family",
+  "family_code": "VALUE",
+  "name": "Value Threshold Family",
+  "version": "1.0.0",
+  "api_version": "indicator-api-1",
+  "kind": "core",
+  "entry_supported": true,
+  "exit_supported": true,
+  "stateful_execution_required": false,
+  "aliases": ["VALUE1", "VALUE2", "VALUE3", "VALUE4", "VALUE5", "VALUE6"],
+  "signal_contract": {
+    "value_type": "int",
+    "allowed_values": [-1, 0, 1],
+    "semantics": {
+      "long_open": 1,
+      "short_open": -1,
+      "long_close": -1,
+      "short_close": 1
+    }
+  },
+  "params_schema": [
+    {"name": "n_range", "type": "string", "required": false},
+    {"name": "m_range", "type": "string", "required": false},
+    {"name": "m1_range", "type": "string", "required": false},
+    {"name": "m2_range", "type": "string", "required": false}
+  ],
+  "implementation": {
+    "default_backend": "py-core",
+    "backends": [
+      {
+        "backend_id": "py-core",
+        "language": "python",
+        "entrypoint": "backtester.VALUE_Indicator_backtester:VALUEIndicator",
+        "priority": 10
+      }
+    ]
+  },
+  "tests": {
+    "unit_test_path": "tests/test_indicator_manifest_registry_backtester.py"
+  }
+}

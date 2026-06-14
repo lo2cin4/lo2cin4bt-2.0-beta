@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>11 Factor Analysis 因子分析尚未開發功能</title>
+  <link rel="stylesheet" href="../assets/lecture.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand"><strong>Lo2cin4BT Lecture</strong><span>Module 11</span></div>
+      <input class="search" data-search placeholder="搜尋章節">
+      <nav class="nav-list" data-nav></nav>
+    </aside>
+    <main class="content">
+      <article class="module">
+        <p class="kicker">Module 11</p>
+        <h1>Factor Analysis 因子分析尚未開發功能預覽</h1>
+        <div class="phase"><strong>狀態：</strong>FactorHandler 執行基礎已有，但完整 Factor Analysis 因子分析仍屬尚未開發階段，尚未列為正式發布完成功能。</div>
+        <h2>已存在基礎</h2>
+        <ul>
+          <li><code>strategy_run.factor_pipeline</code> 與 <code>factor-pipeline-v1.schema.json</code>。</li>
+          <li><code>factorhandler/</code> 產生原始因子、清洗後因子與因子分數資料框。</li>
+          <li><code>FactorArtifactExporter</code> 與 <code>FactorArtifactAnalyser_statanalyser</code> 基礎功能。</li>
+          <li>多資產引擎橋接可讓 selection 參考 factorhandler 輸出資料框。</li>
+        </ul>
+        <h2>尚未開發階段 / 未完成</h2>
+        <ul>
+          <li>IC、Rank IC、IC decay、IC-IR、IC t-stat。</li>
+          <li>winsorize、standardize、neutralize、missing value、lag audit 完整工作流。</li>
+          <li>Fama-MacBeth、factor correlation、VIF、bucket return、factor turnover。</li>
+          <li>risk model、factor covariance、idiosyncratic risk、optimization / quadratic programming。</li>
+        </ul>
+        <p><code>app/api/labels.py</code> 仍可看到 legacy <code>Predictor Analysis</code>；refactor 文件要求前端改名為 Factor Analysis 因子分析。</p>
+        <section class="evidence">
+          <h2>專案證據</h2>
+          <ul>
+            <li><code>factorhandler/</code></li>
+            <li><code>backtester/contracts/strategy/factor-pipeline-v1.schema.json</code></li>
+            <li><code>statanalyser/FactorArtifactAnalyser_statanalyser.py</code></li>
+          </ul>
+        </section>
+        <div class="pager">
+          <a href="../Module_10_Data_Provider_Extension/index.html">上一章</a>
+          <a href="../Module_12_Validation_Tools/index.html">下一章</a>
+        </div>
+      </article>
+    </main>
+  </div>
+  <script src="../assets/lecture.js"></script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lab 02 Parameter Matrix 參數矩陣</title>
+  <link rel="stylesheet" href="../assets/lecture.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand"><strong>Lo2cin4BT Lecture</strong><span>Lab 02</span></div>
+      <input class="search" data-search placeholder="搜尋章節">
+      <nav class="nav-list" data-nav></nav>
+    </aside>
+    <main class="content">
+      <article class="module">
+        <p class="kicker">Lab 02</p>
+        <h1>Parameter Matrix 參數矩陣</h1>
+        <ol>
+          <li>選 <code>workspace/runs/</code> 中 filename 含 <code>matrix</code> 的 config。</li>
+          <li>確認 <code>platform.workflow_id = "parameter_matrix"</code>。</li>
+          <li>找到 <code>parameter_domains</code>，列出哪些參數會展開。</li>
+          <li>到 Parameter Matrix 參數矩陣頁看候選排名、portfolio-native chips、risk gate chips。</li>
+          <li>若顯示 <code>no_parameter_domain</code>，回 Backtests 回測讀單一 policy。</li>
+        </ol>
+        <p>Parameter Matrix 參數矩陣是候選研究，不是 WFA OOS evidence。</p>
+        <section class="evidence">
+          <h2>專案證據</h2>
+          <ul>
+            <li><code>workspace/runs/*matrix*.json</code></li>
+            <li><code>plotter/web/src/pages/ParameterMatrixPage.tsx</code></li>
+          </ul>
+        </section>
+        <div class="pager">
+          <a href="../Lab_01_Run_A_Backtest/index.html">上一個 Lab</a>
+          <a href="../Lab_03_WFA_Rolling/index.html">下一個 Lab</a>
+        </div>
+      </article>
+    </main>
+  </div>
+  <script src="../assets/lecture.js"></script>
+</body>
+</html>

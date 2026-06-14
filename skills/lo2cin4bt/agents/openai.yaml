@@ -1,0 +1,4 @@
+interface:
+  display_name: "Lo2cin4BT"
+  short_description: "Run and explain Lo2cin4BT backtests"
+  default_prompt: "Use $lo2cin4bt to run a local backtest and explain the result from repo evidence."
