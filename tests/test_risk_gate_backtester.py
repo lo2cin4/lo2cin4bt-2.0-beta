@@ -38,7 +38,7 @@ def _daily_rank_config():
     return {
         "strategy_id": "risk_gate_daily_rank_probe",
         "universe": {"symbols": ["AAA", "BBB", "CCC"]},
-        "features": [{"name": "momentum_1", "op": "indicator.momentum", "source": "close", "period": 1}],
+        "computed_fields": [{"name": "momentum_1", "op": "indicator.momentum", "source": "close", "period": 1}],
         "rebalance": {"trigger": {"op": "calendar.every_session"}},
         "selection": {
             "eligible": {"field": "close", "op": "gt", "value": 0},
@@ -47,7 +47,7 @@ def _daily_rank_config():
             "top_n": 3,
         },
         "allocation": {"method": "equal_weight", "position_limit": 1.0},
-        "execution": {"cost": {"transaction_cost": 0.0, "slippage": 0.0}},
+        "fill_model": {"cost": {"transaction_cost": 0.0, "slippage": 0.0}},
     }
 
 
@@ -56,10 +56,10 @@ def _target_weight_config(symbols=None):
     return {
         "strategy_id": "risk_gate_target_weight_probe",
         "universe": {"symbols": symbols},
-        "features": [],
+        "computed_fields": [],
         "rebalance": {"trigger": {"op": "calendar.every_session"}},
         "allocation": {"method": "target_weight_frame", "frame": "target_weight"},
-        "execution": {"cost": {"transaction_cost": 0.0, "slippage": 0.0}},
+        "fill_model": {"cost": {"transaction_cost": 0.0, "slippage": 0.0}},
     }
 
 

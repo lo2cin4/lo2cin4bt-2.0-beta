@@ -995,7 +995,7 @@ class UnifiedPortfolioWFARunner:
             if parsed > 0:
                 values.append(parsed)
 
-        visit(config.get("features", []))
+        visit(config.get("computed_fields", []))
         if isinstance(params, dict):
             visit(params)
         return max(values) if values else 0

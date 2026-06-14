@@ -21,7 +21,7 @@ def test_multi_asset_engine_accepts_explicit_target_weight_frame():
         "universe": {"symbols": ["QQQ"]},
         "allocation": {"method": "target_weight_frame", "frame": "target_weight"},
         "rebalance": {"trigger": {"op": "calendar.every_session"}},
-        "execution": {"cost": {"transaction_cost": 0.0, "slippage": 0.0}},
+        "fill_model": {"cost": {"transaction_cost": 0.0, "slippage": 0.0}},
         "risk": {"max_positions": 1, "max_gross_exposure": 1.0},
     }
 
@@ -125,7 +125,7 @@ def test_multi_asset_engine_can_materialize_single_asset_signal_state():
     config = {
         "strategy_id": "signal_state_single_asset_probe",
         "universe": {"symbols": ["QQQ"]},
-        "features": [{"name": "sma_2", "op": "indicator.sma", "source": "close", "period": 2}],
+        "computed_fields": [{"name": "sma_2", "op": "indicator.sma", "source": "close", "period": 2}],
         "signals": {
             "entry": {"field": "close", "op": "gt", "right_field": "sma_2"},
             "exit": {"field": "close", "op": "lt", "right_field": "sma_2"},
@@ -133,7 +133,7 @@ def test_multi_asset_engine_can_materialize_single_asset_signal_state():
         },
         "allocation": {"method": "signal_state"},
         "rebalance": {"trigger": {"op": "calendar.every_session"}},
-        "execution": {"cost": {"transaction_cost": 0.0, "slippage": 0.0}},
+        "fill_model": {"cost": {"transaction_cost": 0.0, "slippage": 0.0}},
     }
 
     result = mod.MultiAssetPortfolioEngineBacktester({"close": close}, config).run()

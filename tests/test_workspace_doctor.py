@@ -119,6 +119,7 @@ def test_workspace_doctor_rejects_feature_without_data_availability() -> None:
     target = REPO_ROOT / "workspace" / "features" / ".doctor-missing-data-availability.json"
     payload = copy.deepcopy(base)
     payload["features"][0].pop("data_availability", None)
+    target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(json.dumps(payload), encoding="utf-8")
     try:
         result = _run_doctor("--config", "workspace/features/.doctor-missing-data-availability.json")
@@ -135,6 +136,7 @@ def test_workspace_doctor_rejects_close_data_used_at_same_open() -> None:
     payload = copy.deepcopy(base)
     payload["features"][0]["data_availability"]["observed_at"] = "bar_close"
     payload["features"][0]["data_availability"]["usable_from"] = "same_bar_open"
+    target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(json.dumps(payload), encoding="utf-8")
     try:
         result = _run_doctor("--config", "workspace/features/.doctor-lookahead-data-availability.json")
@@ -155,6 +157,8 @@ def test_workspace_doctor_rejects_local_market_data_without_time_column() -> Non
             "path": "workspace/datasets/.doctor-close.csv",
         }
     }
+    target.parent.mkdir(parents=True, exist_ok=True)
+    dataset.parent.mkdir(parents=True, exist_ok=True)
     dataset.write_text("Time,QQQ\n2024-01-02,100\n", encoding="utf-8")
     target.write_text(json.dumps(payload), encoding="utf-8")
     try:
@@ -176,6 +180,8 @@ def test_workspace_doctor_rejects_file_provider_without_explicit_columns() -> No
     payload["data"]["file_path"] = "workspace/datasets/.doctor-price.csv"
     payload["data"].pop("date_column", None)
     payload["data"].pop("price_column", None)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    dataset.parent.mkdir(parents=True, exist_ok=True)
     dataset.write_text("Time,Close\n2024-01-02,100\n", encoding="utf-8")
     target.write_text(json.dumps(payload), encoding="utf-8")
     try:

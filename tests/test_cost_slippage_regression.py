@@ -22,9 +22,9 @@ def _engine_mod():
 
 def _run_portfolio(market_data, config, *, transaction_cost=0.0, slippage=0.0):
     cfg = dict(config)
-    execution = dict(cfg.get("execution", {}))
+    execution = dict(cfg.get("fill_model", {}))
     execution["cost"] = {"transaction_cost": transaction_cost, "slippage": slippage}
-    cfg["execution"] = execution
+    cfg["fill_model"] = execution
     return _engine_mod().MultiAssetPortfolioEngineBacktester(market_data, cfg).run()
 
 
@@ -65,7 +65,7 @@ def test_cost_accounting_validation_rejects_zero_trade_cost_with_nonzero_cost_ra
             "rebalance": {"trigger": {"op": "calendar.every_session"}},
             "selection": {"eligible": {"field": "close", "op": "gt", "value": 0}, "rank_by": "close", "top_n": 1},
             "allocation": {"method": "equal_weight", "position_limit": 1.0},
-            "execution": {"cost": {"transaction_cost": 0.001, "slippage": 0.0005}},
+            "fill_model": {"cost": {"transaction_cost": 0.001, "slippage": 0.0005}},
         },
     )
     report = engine._attach_cost_accounting_validation(  # pylint: disable=protected-access
@@ -93,7 +93,7 @@ def test_cost_accounting_validation_allows_nonzero_cost_when_no_turnover():
             "rebalance": {"trigger": {"op": "calendar.every_session"}},
             "selection": {"eligible": {"field": "close", "op": "gt", "value": 0}, "rank_by": "close", "top_n": 1},
             "allocation": {"method": "equal_weight", "position_limit": 1.0},
-            "execution": {"cost": {"transaction_cost": 0.001, "slippage": 0.0005}},
+            "fill_model": {"cost": {"transaction_cost": 0.001, "slippage": 0.0005}},
         },
     )
     report = engine._attach_cost_accounting_validation(  # pylint: disable=protected-access
@@ -191,7 +191,7 @@ def test_same_session_path_charges_nonzero_entry_and_exit_costs():
         "universe": {"symbols": ["AAA"]},
         "rebalance": {"trigger": {"op": "calendar.every_session"}},
         "allocation": {"method": "signal_target_weight", "frame": "target_weight"},
-        "execution": {"session_scope": "same_session", "entry_price": "open", "exit_price": "close"},
+        "fill_model": {"session_scope": "same_session", "entry_price": "open", "exit_price": "close"},
     }
 
     no_cost = _run_portfolio({"open": open_, "close": close, "target_weight": target_weight}, config)
@@ -229,7 +229,7 @@ def test_unified_portfolio_wfa_snapshot_reports_nonzero_cost_drag():
         "strategy_id": "wfa_cost_probe",
         "universe": {"symbols": ["AAA", "BBB"]},
         "parameter_domains": {"lookback": [2, 4]},
-        "features": [
+        "computed_fields": [
             {
                 "name": "momentum",
                 "op": "indicator.momentum",
@@ -245,7 +245,7 @@ def test_unified_portfolio_wfa_snapshot_reports_nonzero_cost_drag():
             "top_n": 1,
         },
         "allocation": {"method": "equal_weight", "position_limit": 1.0},
-        "execution": {"cost": {"transaction_cost": 0.001, "slippage": 0.0005}},
+        "fill_model": {"cost": {"transaction_cost": 0.001, "slippage": 0.0005}},
     }
 
     result = runner_mod.UnifiedPortfolioWFARunner(

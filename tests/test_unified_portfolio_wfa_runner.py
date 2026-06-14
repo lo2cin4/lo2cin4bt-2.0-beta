@@ -32,7 +32,7 @@ def test_unified_portfolio_wfa_exports_selected_optimum_per_window():
         "strategy_id": "unified_wfa_probe",
         "universe": {"symbols": ["AAA", "BBB"]},
         "parameter_domains": {"lookback": {"type": "range", "start": 2, "end": 4, "step": 2}},
-        "features": [
+        "computed_fields": [
             {
                 "name": "momentum",
                 "op": "indicator.momentum",
@@ -48,7 +48,7 @@ def test_unified_portfolio_wfa_exports_selected_optimum_per_window():
             "top_n": 1,
         },
         "allocation": {"method": "equal_weight", "position_limit": 1.0},
-        "execution": {"cost": {"transaction_cost": 0.0, "slippage": 0.0}},
+        "fill_model": {"cost": {"transaction_cost": 0.0, "slippage": 0.0}},
     }
     wfa_config = {
         "windowing": {"train_size": 35, "test_size": 10, "step_size": 20},
@@ -105,7 +105,7 @@ def test_unified_portfolio_wfa_candidate_budget_is_reported():
         "strategy_id": "budget_probe",
         "universe": {"symbols": ["AAA", "BBB"]},
         "parameter_domains": {"lookback": [2, 4, 6, 8, 10]},
-        "features": [
+        "computed_fields": [
             {
                 "name": "momentum",
                 "op": "indicator.momentum",
@@ -121,7 +121,7 @@ def test_unified_portfolio_wfa_candidate_budget_is_reported():
             "top_n": 1,
         },
         "allocation": {"method": "equal_weight", "position_limit": 1.0},
-        "execution": {"cost": {"transaction_cost": 0.0, "slippage": 0.0}},
+        "fill_model": {"cost": {"transaction_cost": 0.0, "slippage": 0.0}},
     }
 
     result = runner_mod.UnifiedPortfolioWFARunner(
@@ -155,7 +155,7 @@ def test_unified_portfolio_wfa_sampled_single_candidate_remains_wfa_and_preserve
         "strategy_id": "budget_one_probe",
         "universe": {"symbols": ["AAA", "BBB"]},
         "parameter_domains": {"lookback": [2, 4, 6]},
-        "features": [
+        "computed_fields": [
             {
                 "name": "momentum",
                 "op": "indicator.momentum",
@@ -171,7 +171,7 @@ def test_unified_portfolio_wfa_sampled_single_candidate_remains_wfa_and_preserve
             "top_n": 1,
         },
         "allocation": {"method": "equal_weight", "position_limit": 1.0},
-        "execution": {"cost": {"transaction_cost": 0.0, "slippage": 0.0}},
+        "fill_model": {"cost": {"transaction_cost": 0.0, "slippage": 0.0}},
     }
 
     result = runner_mod.UnifiedPortfolioWFARunner(
@@ -198,7 +198,7 @@ def test_unified_portfolio_wfa_full_grid_budget_policy_is_reported():
         "strategy_id": "full_grid_budget_probe",
         "universe": {"symbols": ["AAA", "BBB"]},
         "parameter_domains": {"lookback": [2, 4]},
-        "features": [
+        "computed_fields": [
             {
                 "name": "momentum",
                 "op": "indicator.momentum",
@@ -214,7 +214,7 @@ def test_unified_portfolio_wfa_full_grid_budget_policy_is_reported():
             "top_n": 1,
         },
         "allocation": {"method": "equal_weight", "position_limit": 1.0},
-        "execution": {"cost": {"transaction_cost": 0.0, "slippage": 0.0}},
+        "fill_model": {"cost": {"transaction_cost": 0.0, "slippage": 0.0}},
     }
 
     result = runner_mod.UnifiedPortfolioWFARunner(
@@ -236,7 +236,7 @@ def test_unified_portfolio_wfa_manual_ratio_windowing_is_reported():
         "strategy_id": "ratio_window_probe",
         "universe": {"symbols": ["AAA", "BBB"]},
         "parameter_domains": {"lookback": [2, 4]},
-        "features": [
+        "computed_fields": [
             {
                 "name": "momentum",
                 "op": "indicator.momentum",
@@ -252,7 +252,7 @@ def test_unified_portfolio_wfa_manual_ratio_windowing_is_reported():
             "top_n": 1,
         },
         "allocation": {"method": "equal_weight", "position_limit": 1.0},
-        "execution": {"cost": {"transaction_cost": 0.0, "slippage": 0.0}},
+        "fill_model": {"cost": {"transaction_cost": 0.0, "slippage": 0.0}},
     }
 
     result = runner_mod.UnifiedPortfolioWFARunner(
@@ -290,7 +290,7 @@ def test_unified_portfolio_wfa_auto_windowing_uses_parameter_domain_lookback():
         "strategy_id": "auto_window_probe",
         "universe": {"symbols": ["AAA", "BBB"]},
         "parameter_domains": {"lookback": {"type": "range", "start": 10, "end": 30, "step": 10}},
-        "features": [
+        "computed_fields": [
             {
                 "name": "momentum",
                 "op": "indicator.momentum",
@@ -306,7 +306,7 @@ def test_unified_portfolio_wfa_auto_windowing_uses_parameter_domain_lookback():
             "top_n": 1,
         },
         "allocation": {"method": "equal_weight", "position_limit": 1.0},
-        "execution": {"cost": {"transaction_cost": 0.0, "slippage": 0.0}},
+        "fill_model": {"cost": {"transaction_cost": 0.0, "slippage": 0.0}},
     }
 
     result = runner_mod.UnifiedPortfolioWFARunner(
@@ -327,7 +327,7 @@ def test_unified_portfolio_wfa_filters_low_viability_is_candidates_before_rankin
         "strategy_id": "viability_filter_probe",
         "universe": {"symbols": ["AAA", "BBB"]},
         "parameter_domains": {"lookback": [2, 80]},
-        "features": [
+        "computed_fields": [
             {
                 "name": "momentum",
                 "op": "indicator.momentum",
@@ -343,7 +343,7 @@ def test_unified_portfolio_wfa_filters_low_viability_is_candidates_before_rankin
             "top_n": 1,
         },
         "allocation": {"method": "equal_weight", "position_limit": 1.0},
-        "execution": {"cost": {"transaction_cost": 0.0, "slippage": 0.0}},
+        "fill_model": {"cost": {"transaction_cost": 0.0, "slippage": 0.0}},
     }
 
     result = runner_mod.UnifiedPortfolioWFARunner(
@@ -378,7 +378,7 @@ def test_unified_portfolio_wfa_rejects_selection_constraint_fallback_by_default(
         "strategy_id": "fallback_honesty_probe",
         "universe": {"symbols": ["AAA", "BBB"]},
         "parameter_domains": {"lookback": [80]},
-        "features": [
+        "computed_fields": [
             {
                 "name": "momentum",
                 "op": "indicator.momentum",
@@ -394,7 +394,7 @@ def test_unified_portfolio_wfa_rejects_selection_constraint_fallback_by_default(
             "top_n": 1,
         },
         "allocation": {"method": "equal_weight", "position_limit": 1.0},
-        "execution": {"cost": {"transaction_cost": 0.0, "slippage": 0.0}},
+        "fill_model": {"cost": {"transaction_cost": 0.0, "slippage": 0.0}},
     }
 
     result = runner_mod.UnifiedPortfolioWFARunner(
@@ -427,7 +427,7 @@ def test_unified_portfolio_wfa_bool_strings_do_not_enable_constraints_or_fallbac
         "strategy_id": "bool_string_probe",
         "universe": {"symbols": ["AAA", "BBB"]},
         "parameter_domains": {"lookback": [80]},
-        "features": [
+        "computed_fields": [
             {
                 "name": "momentum",
                 "op": "indicator.momentum",
@@ -443,7 +443,7 @@ def test_unified_portfolio_wfa_bool_strings_do_not_enable_constraints_or_fallbac
             "top_n": 1,
         },
         "allocation": {"method": "equal_weight", "position_limit": 1.0},
-        "execution": {"cost": {"transaction_cost": 0.0, "slippage": 0.0}},
+        "fill_model": {"cost": {"transaction_cost": 0.0, "slippage": 0.0}},
     }
 
     result = runner_mod.UnifiedPortfolioWFARunner(
@@ -473,7 +473,7 @@ def test_unified_portfolio_wfa_allows_selection_constraint_fallback_only_with_op
         "strategy_id": "fallback_opt_in_probe",
         "universe": {"symbols": ["AAA", "BBB"]},
         "parameter_domains": {"lookback": [80]},
-        "features": [
+        "computed_fields": [
             {
                 "name": "momentum",
                 "op": "indicator.momentum",
@@ -489,7 +489,7 @@ def test_unified_portfolio_wfa_allows_selection_constraint_fallback_only_with_op
             "top_n": 1,
         },
         "allocation": {"method": "equal_weight", "position_limit": 1.0},
-        "execution": {"cost": {"transaction_cost": 0.0, "slippage": 0.0}},
+        "fill_model": {"cost": {"transaction_cost": 0.0, "slippage": 0.0}},
     }
 
     result = runner_mod.UnifiedPortfolioWFARunner(
@@ -525,7 +525,7 @@ def test_unified_portfolio_wfa_carries_risk_gate_counts():
         "strategy_id": "risk_gate_wfa_probe",
         "universe": {"symbols": ["AAA", "BBB"]},
         "parameter_domains": {"lookback": [2, 4]},
-        "features": [
+        "computed_fields": [
             {
                 "name": "momentum",
                 "op": "indicator.momentum",
@@ -541,7 +541,7 @@ def test_unified_portfolio_wfa_carries_risk_gate_counts():
             "top_n": 2,
         },
         "allocation": {"method": "equal_weight", "position_limit": 1.0},
-        "execution": {"cost": {"transaction_cost": 0.0, "slippage": 0.0}},
+        "fill_model": {"cost": {"transaction_cost": 0.0, "slippage": 0.0}},
         "risk": {"gates": {"max_positions": 1, "gate_action": "block_new_orders"}},
     }
 
@@ -563,10 +563,10 @@ def test_unified_portfolio_wfa_treats_fixed_policy_as_rolling_validation():
     strategy_config = {
         "strategy_id": "fixed_policy_probe",
         "universe": {"symbols": ["AAA", "BBB"]},
-        "features": [],
+        "computed_fields": [],
         "rebalance": {"trigger": {"op": "calendar.month_start"}},
         "allocation": {"method": "fixed_weights", "weights": {"AAA": 0.5, "BBB": 0.5}},
-        "execution": {"cost": {"transaction_cost": 0.0, "slippage": 0.0}},
+        "fill_model": {"cost": {"transaction_cost": 0.0, "slippage": 0.0}},
     }
     wfa_config = {
         "windowing": {"train_size": 30, "test_size": 10, "step_size": 25},
@@ -596,7 +596,7 @@ def test_unified_portfolio_wfa_can_optimize_single_asset_signal_state_strategy()
         "strategy_id": "single_signal_wfa_probe",
         "universe": {"symbols": ["QQQ"]},
         "parameter_domains": {"ma_period": [2, 4]},
-        "features": [
+        "computed_fields": [
             {
                 "name": "entry_ma",
                 "op": "indicator.sma",
@@ -611,7 +611,7 @@ def test_unified_portfolio_wfa_can_optimize_single_asset_signal_state_strategy()
         },
         "allocation": {"method": "signal_state"},
         "rebalance": {"trigger": {"op": "calendar.every_session"}},
-        "execution": {"cost": {"transaction_cost": 0.0, "slippage": 0.0}},
+        "fill_model": {"cost": {"transaction_cost": 0.0, "slippage": 0.0}},
     }
     wfa_config = {
         "windowing": {"train_size": 30, "test_size": 10, "step_size": 20},
@@ -639,7 +639,7 @@ def test_unified_portfolio_wfa_exporter_separates_selected_and_diagnostics(tmp_p
         "strategy_id": "export_probe",
         "universe": {"symbols": ["AAA", "BBB"]},
         "parameter_domains": {"lookback": [2, 4]},
-        "features": [
+        "computed_fields": [
             {
                 "name": "momentum",
                 "op": "indicator.momentum",
@@ -655,7 +655,7 @@ def test_unified_portfolio_wfa_exporter_separates_selected_and_diagnostics(tmp_p
             "top_n": 1,
         },
         "allocation": {"method": "equal_weight", "position_limit": 1.0},
-        "execution": {"cost": {"transaction_cost": 0.0, "slippage": 0.0}},
+        "fill_model": {"cost": {"transaction_cost": 0.0, "slippage": 0.0}},
     }
     result = runner_mod.UnifiedPortfolioWFARunner(
         market_data=_market_data(),
@@ -687,10 +687,10 @@ def test_unified_portfolio_wfa_requires_positive_oos_for_acceptance():
     strategy_config = {
         "strategy_id": "negative_oos_probe",
         "universe": {"symbols": ["AAA"]},
-        "features": [],
+        "computed_fields": [],
         "rebalance": {"trigger": {"op": "calendar.every_session"}},
         "allocation": {"method": "fixed_weights", "weights": {"AAA": 1.0}},
-        "execution": {"cost": {"transaction_cost": 0.0, "slippage": 0.0}},
+        "fill_model": {"cost": {"transaction_cost": 0.0, "slippage": 0.0}},
     }
     result = runner_mod.UnifiedPortfolioWFARunner(
         market_data={"close": close},
@@ -736,7 +736,7 @@ def test_walk_forward_engine_routes_multi_asset_config_to_unified_runner(tmp_pat
                 "strategy_id": "managed_unified_wfa_probe",
                 "universe": {"symbols": ["AAA", "BBB"]},
                 "parameter_domains": {"lookback": [2, 4]},
-                "features": [
+                "computed_fields": [
                     {
                         "name": "momentum",
                         "op": "indicator.momentum",
@@ -752,7 +752,7 @@ def test_walk_forward_engine_routes_multi_asset_config_to_unified_runner(tmp_pat
                     "top_n": 1,
                 },
                 "allocation": {"method": "equal_weight", "position_limit": 1.0},
-                "execution": {"cost": {"transaction_cost": 0.0, "slippage": 0.0}},
+                "fill_model": {"cost": {"transaction_cost": 0.0, "slippage": 0.0}},
             },
         },
         "metricstracker": {},

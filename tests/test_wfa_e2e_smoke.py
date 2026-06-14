@@ -71,6 +71,12 @@ def test_wfa_e2e_smoke_exports_plotter_ready_fields(tmp_path: Path) -> None:
                         "dtype": "float",
                         "fill_policy": "none",
                         "lag_bars": 0,
+                        "data_availability": {
+                            "observed_at": "bar_close",
+                            "usable_from": "next_bar_open",
+                            "point_in_time": False,
+                            "revision_policy": "revised_history",
+                        },
                         "calendar": "CRYPTO",
                     },
                     {
@@ -86,6 +92,12 @@ def test_wfa_e2e_smoke_exports_plotter_ready_fields(tmp_path: Path) -> None:
                         "dtype": "float",
                         "fill_policy": "ffill",
                         "lag_bars": 1,
+                        "data_availability": {
+                            "observed_at": "bar_close",
+                            "usable_from": "next_bar_open",
+                            "point_in_time": False,
+                            "revision_policy": "revised_history",
+                        },
                         "calendar": "CRYPTO",
                         "staleness_max_bars": 1,
                     },
@@ -227,6 +239,12 @@ def test_wfa_e2e_smoke_supports_external_multisource_feature_contract(tmp_path: 
                         "dtype": "float",
                         "fill_policy": "none",
                         "lag_bars": 0,
+                        "data_availability": {
+                            "observed_at": "bar_close",
+                            "usable_from": "next_bar_open",
+                            "point_in_time": False,
+                            "revision_policy": "revised_history",
+                        },
                         "calendar": "XNYS",
                     },
                     {
@@ -243,6 +261,12 @@ def test_wfa_e2e_smoke_supports_external_multisource_feature_contract(tmp_path: 
                         "dtype": "float",
                         "fill_policy": "none",
                         "lag_bars": 0,
+                        "data_availability": {
+                            "observed_at": "bar_close",
+                            "usable_from": "next_bar_open",
+                            "point_in_time": False,
+                            "revision_policy": "revised_history",
+                        },
                         "calendar": "CBOE",
                         "staleness_max_bars": 1,
                     },

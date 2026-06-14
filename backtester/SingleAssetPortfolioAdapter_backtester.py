@@ -89,7 +89,7 @@ def run_single_asset_signals_as_portfolio(
             "workflow_id": "single_backtest",
         },
         "universe": {"symbols": [str(symbol)]},
-        "features": [],
+        "computed_fields": [],
         "selection": {},
         "allocation": {
             "method": "target_weight_frame",
@@ -97,7 +97,7 @@ def run_single_asset_signals_as_portfolio(
             "normalize_if_overweight": True,
         },
         "rebalance": {"trigger": {"op": "calendar.every_session"}},
-        "execution": execution or {"cost": {"transaction_cost": 0.0, "slippage": 0.0}},
+        "fill_model": execution or {"cost": {"transaction_cost": 0.0, "slippage": 0.0}},
         "risk": {
             "max_positions": 1,
             "max_gross_exposure": max(1.0, abs(float(target_weight))),
