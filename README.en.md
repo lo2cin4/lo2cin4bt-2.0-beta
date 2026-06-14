@@ -194,10 +194,10 @@ If a strategy needs behavior the engine does not support yet, AI should stop and
 | Logo | Source | Data | Status | Entry / Notes |
 | --- | --- | --- | --- | --- |
 | <img src="assets/readme/logos/yfinance.svg" alt="Yahoo Finance" height="26"> | `yfinance` | ETF, stocks, beginner examples | ✅ | No account required for market data. |
-| <img src="assets/readme/logos/binance.svg" alt="Binance" height="26"> | `binance` | Crypto spot klines / OHLCV, such as BTCUSDT | ✅ | No account required for market data. If you need an account, [this referral link](https://accounts.binance.com/zh-TC/register?ref=LO2CIN4) may provide account-opening benefits. |
+| <img src="assets/readme/logos/binance.svg" alt="Binance" height="26"> | `binance` | Crypto spot klines / OHLCV, such as BTCUSDT | ✅ | No account is required for market data. |
 | <img src="assets/readme/logos/coinbase.svg" alt="Coinbase" height="26"> | `coinbase` | Coinbase product format, such as `BTC-USD` | ✅ | No account required for market data. |
 | <img src="assets/readme/logos/files.svg" alt="Local files" height="26"> | Local files | CSV, Parquet, research datasets | ✅ | Put private datasets under `workspace/datasets/`. |
-| <img src="assets/readme/logos/futu-display.svg" alt="FUTU" height="26"> | `futu` | Advanced HK / US market data | 🧪 | Enter `AZ57KU` in the redeem center for account-opening benefits. |
+| <img src="assets/readme/logos/futu-display.svg" alt="FUTU" height="26"> | `futu` | Advanced HK / US market data | 🧪 | Market-data use only; follow the official documentation for read-only data setup. |
 | <img src="assets/readme/logos/ibkr.svg" alt="IBKR" height="26"> | `ibkr` | Advanced stocks, ETFs, futures market data | 🧪 | Official link: <https://www.interactivebrokers.com/> |
 
 lo2cin4bt currently does not support order placement.

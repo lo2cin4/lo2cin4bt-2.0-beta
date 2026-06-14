@@ -196,10 +196,10 @@ cp backtester/contracts/strategy/examples/strategy-run-vti-avuv-vxus-sgol-dbmf-y
 | Logo | 數據源 | 數據 | 狀態 | 連結 |
 | --- | --- | --- | --- | --- |
 | <img src="assets/readme/logos/yfinance.svg" alt="Yahoo Finance" height="26"> | `yfinance` | ETF、股票、新手教學和美股範例 | ✅ | 無須開戶亦可連結行情數據。 |
-| <img src="assets/readme/logos/binance.svg" alt="Binance" height="26"> | `binance` | 加密貨幣現貨 K 線 / OHLCV，例如 BTCUSDT | ✅ | 無須開戶亦可連結行情數據。如需開戶可點擊[此連結](https://accounts.binance.com/zh-TC/register?ref=LO2CIN4)享現貨 20% 合約 10% 折扣。 |
+| <img src="assets/readme/logos/binance.svg" alt="Binance" height="26"> | `binance` | 加密貨幣現貨 K 線 / OHLCV，例如 BTCUSDT | ✅ | 無須開戶亦可連結行情數據。 |
 | <img src="assets/readme/logos/coinbase.svg" alt="Coinbase" height="26"> | `coinbase` | 加密貨幣 product 格式，例如 `BTC-USD` | ✅ | 無須開戶亦可連結行情數據。 |
 | <img src="assets/readme/logos/files.svg" alt="Local files" height="26"> | 本機檔案 | CSV、Parquet、研究資料集 | ✅ | 放在 `workspace/datasets/`，適合私有資料。 |
-| <img src="assets/readme/logos/futu-display.svg" alt="FUTU" height="26"> | `futu` | 港股、美股等進階行情數據 | 🧪 | 到兌換中心輸入 `AZ57KU` 享開戶優惠。 |
+| <img src="assets/readme/logos/futu-display.svg" alt="FUTU" height="26"> | `futu` | 港股、美股等進階行情數據 | 🧪 | 只作行情資料用途；需按官方文件完成只讀資料設定。 |
 | <img src="assets/readme/logos/ibkr.svg" alt="IBKR" height="26"> | `ibkr` | 股票、ETF、期貨等進階行情數據 | 🧪 | 官方連結：<https://www.interactivebrokers.com/> |
 
 lo2cin4bt 目前尚不支持下單功能。
