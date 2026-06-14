@@ -10,6 +10,8 @@ Beta patch release for public testing.
   - `scripts/start_lo2cin4bt.ps1`
   - `scripts/create_windows_shortcut.ps1`
 - Added a lo2cin4bt icon asset for the Windows shortcut.
+- Updated the shortcut icon to use the lo2cin4bt logo asset.
+- Added README and PM/first-run guidance for when to suggest the optional shortcut.
 
 ## Safety Notice
 

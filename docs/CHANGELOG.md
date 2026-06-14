@@ -18,6 +18,8 @@ Release type: patch release for the public beta.
 - Added README update instructions for users who already cloned the repo.
 - Added optional Windows desktop shortcut scripts.
 - Added a lo2cin4bt desktop icon asset for the Windows shortcut.
+- Updated the shortcut icon to use the lo2cin4bt logo asset and avoided Windows icon-cache reuse by pointing the shortcut to a stable logo icon filename.
+- Added PM and first-run guidance so AI assistants mention the optional shortcut only after the app starts successfully.
 
 ## 2.0.1 - Metrics Page Rendering Fix
 

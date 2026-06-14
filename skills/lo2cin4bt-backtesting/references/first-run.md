@@ -43,6 +43,14 @@ Open:
 http://127.0.0.1:2424/
 ```
 
+Optional Windows desktop shortcut after the app starts successfully:
+
+```powershell
+.\scripts\create_windows_shortcut.ps1
+```
+
+The shortcut points to the current repo folder. Recreate it if the folder moves.
+
 ## macOS / Linux Setup
 
 ```bash

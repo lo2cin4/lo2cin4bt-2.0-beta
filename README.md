@@ -115,13 +115,13 @@ git pull
 .\scripts\setup.ps1
 ```
 
-如果你常用 Windows，可以建立桌面捷徑：
+你亦可以使用以下指令建立 lo2cin4bt 桌面捷徑：
 
 ```powershell
 .\scripts\create_windows_shortcut.ps1
 ```
 
-之後雙擊桌面上的 `lo2cin4bt` 捷徑即可啟動本機回測平台。
+之後雙擊桌面上的 `lo2cin4bt` 捷徑即可啟動本機回測平台。如果你之後移動了專案資料夾，請重新執行一次捷徑建立指令。
 
 安裝容量參考：Windows 乾淨安裝實測約需 1.2 GB 本機空間，其中 `.venv/` 約 800 MB，`plotter/web/node_modules/` 約 350 MB；回測結果會另外寫入 `outputs/`。這些本機產物已被 `.gitignore` 忽略，不會上傳到 GitHub。
 

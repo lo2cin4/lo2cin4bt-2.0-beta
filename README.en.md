@@ -115,13 +115,13 @@ git pull
 .\scripts\setup.ps1
 ```
 
-On Windows, you can create an optional desktop shortcut:
+You can also create a lo2cin4bt desktop shortcut:
 
 ```powershell
 .\scripts\create_windows_shortcut.ps1
 ```
 
-After that, double-click the `lo2cin4bt` desktop shortcut to start the local backtesting app.
+After that, double-click the `lo2cin4bt` desktop shortcut to start the local backtesting app. If you move the project folder later, run the shortcut command again.
 
 Storage reference: a Windows clean install used about 1.2 GB of local disk space, including about 800 MB for `.venv/` and about 350 MB for `plotter/web/node_modules/`. Backtest results are written under `outputs/` and grow over time. These local artifacts are gitignored and should not be uploaded to GitHub.
 

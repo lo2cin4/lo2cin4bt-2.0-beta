@@ -40,6 +40,7 @@ Load the target agent/sub-agent and matching skill only when that route is selec
 7. Strategy capability verdicts must use `supported`, `needs_clarification`, or `unsupported_needs_new_building_block`.
 8. Normal strategy, data, WFA, and indicator work stays inside `workspace/`. If a custom indicator is needed, route StrategyBuilder to create or request a `workspace/indicators/extensions/<slug>/` package and require `indicator_doctor` plus runtime support before any runnable config is claimed.
 9. If performance, WFA, look-ahead, survivorship, universe provenance, cost/slippage, or benchmark interpretation is involved, require quant review before final claims.
+10. When helping a Windows beginner finish setup, mention the optional desktop shortcut only after the app can start successfully. Use `.\scripts\create_windows_shortcut.ps1` and explain that the shortcut points to the current repo folder; if the folder moves, recreate the shortcut.
 
 ## Route Selection
 | User request | Route |

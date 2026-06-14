@@ -7,7 +7,7 @@ param(
 $ErrorActionPreference = "Stop"
 $RepoRoot = Split-Path -Parent $PSScriptRoot
 $StartScript = Join-Path $RepoRoot "scripts\start_lo2cin4bt.ps1"
-$IconPath = Join-Path $RepoRoot "assets\desktop\lo2cin4bt.ico"
+$IconPath = Join-Path $RepoRoot "assets\desktop\lo2cin4bt-logo.ico"
 $Desktop = [Environment]::GetFolderPath("Desktop")
 $ShortcutPath = Join-Path $Desktop "$Name.lnk"
 $PowerShellExe = Join-Path $PSHOME "powershell.exe"
@@ -28,6 +28,9 @@ if ($NoBrowser) {
 }
 
 $shell = New-Object -ComObject WScript.Shell
+if (Test-Path $ShortcutPath) {
+    Remove-Item -LiteralPath $ShortcutPath -Force
+}
 $shortcut = $shell.CreateShortcut($ShortcutPath)
 $shortcut.TargetPath = $PowerShellExe
 $shortcut.Arguments = $arguments -join " "
