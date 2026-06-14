@@ -8,6 +8,22 @@ Version policy follows `MAJOR.MINOR.PATCH`:
 - MINOR: meaningful user-facing feature changes.
 - MAJOR: large compatibility-breaking changes.
 
+## 2.0.1 - Metrics Page Rendering Fix
+
+Release type: patch release for the public beta.
+
+### Fixed
+
+- Fixed blank metrics, WFA, parameter matrix, and backtest pages caused by
+  Plotly React component loading in production browser bundles.
+- Updated the public beta release version after the rendering fix.
+
+### Validation
+
+- Frontend tests and production build passed.
+- Browser route verification confirmed metrics and related pages render.
+- GitHub Actions passed: CI, CodeQL, and Semgrep.
+
 ## 2.0.0 - Public Baseline
 
 Release type: initial public GitHub baseline for the 2.x line.
