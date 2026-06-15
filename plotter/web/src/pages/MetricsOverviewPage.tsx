@@ -455,7 +455,7 @@ export function MetricsOverviewPage() {
                     />
                   </td>
                   <td>{(page - 1) * pageSize + index + 1}</td>
-                  <td>{row.label}</td>
+                  <td><span className="mosaic-private-text" data-private-strategy="identity">{row.label}</span></td>
                   <td>{formatMetricValue(objective.key, row[objective.key])}</td>
                   <td>{row.trade_count}</td>
                   <td>{formatMetricValue('exposure_time', row.exposure_time)}</td>
@@ -924,7 +924,7 @@ function PortfolioMetricsOverview({
                     />
                   </td>
                   <td>{(portfolioPage - 1) * portfolioPageSize + index + 1}</td>
-                  <td>{row.label}</td>
+                  <td><span className="mosaic-private-text" data-private-strategy="identity">{row.label}</span></td>
                   <td>{formatCell(row.sharpe)}</td>
                   <td>{formatMetricValue('rebalance_count', row.rebalance_count)}</td>
                   <td>{formatPortfolioPercent(portfolioExposure(row))}</td>
@@ -973,14 +973,14 @@ function PortfolioMetricsOverview({
           <div className="portfolio-logic-layout">
             <div className="portfolio-flow-panel">
               <div className="portfolio-flow-title">{labelText(language, 'Strategy Logic')}</div>
-              <div className="portfolio-strategy-sentence">{strategyNarrative}</div>
+              <div className="portfolio-strategy-sentence" data-private-strategy="rules">{strategyNarrative}</div>
             </div>
             <div className="portfolio-flow-panel">
               <div className="portfolio-flow-rail">
                 {strategyFlow.map(([label, value]) => (
                   <div key={label} className="portfolio-flow-node">
                     <span className="portfolio-flow-label">{labelText(language, label)}</span>
-                    <span className="portfolio-flow-value">{value}</span>
+                    <span className="portfolio-flow-value" data-private-strategy="rules">{value}</span>
                   </div>
                 ))}
               </div>

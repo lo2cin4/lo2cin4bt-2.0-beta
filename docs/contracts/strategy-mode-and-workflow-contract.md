@@ -104,7 +104,7 @@ Current workflow ids:
 
 The same strategy mode can appear in multiple workflows. For example, the QQQ MA strategy remains `single_asset_signal` in both Metrics and WFA.
 
-`walk_forward_analysis` means rolling IS optimization followed by paired OOS testing of the selected policy. It requires tunable `parameter_domains`. A fixed strategy with no tunable parameters should use `rolling_validation`; it may share the same window runner, but it must not be described as WFA optimization.
+`walk_forward_analysis` means rolling IS optimization followed by paired OOS testing of the selected policy. It requires tunable `parameter_domains` that expand to at least two candidate combinations. A fixed strategy with no tunable parameters must not be wrapped as `wfa_run`; run a normal single backtest, or ask the user to define the parameters to test first.
 
 ## Strategy Rules Sources
 

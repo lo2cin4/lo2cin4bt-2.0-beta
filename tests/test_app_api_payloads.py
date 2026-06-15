@@ -231,6 +231,38 @@ def _latest_run(service: AppAPIService, module: str) -> str:
     pytest.skip(f"No completed run found for module={module}")
 
 
+def test_metrics_runs_excludes_walk_forward_history(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    service = AppAPIService(tmp_path)
+    common = {
+        "status": "completed",
+        "created_at": "2026-06-15T00:00:00",
+        "completed_at": "2026-06-15T00:01:00",
+        "config_filename": "strategy-run-example.json",
+        "symbol": "QQQ",
+        "frequency": "1D",
+    }
+    service.registry.write_registry_entry(
+        {
+            **common,
+            "run_id": "autorunner_run",
+            "module": "autorunner",
+        }
+    )
+    service.registry.write_registry_entry(
+        {
+            **common,
+            "run_id": "wfa_run",
+            "module": "wfanalyser",
+            "config_filename": "wfa-run-example.json",
+        }
+    )
+    monkeypatch.setattr(service, "_has_metrics_renderable_output", lambda run_id: True)
+    monkeypatch.setattr(service, "_has_renderable_wfa", lambda run_id: True)
+
+    assert [row["run_id"] for row in service.metrics_runs()] == ["autorunner_run"]
+    assert [row["run_id"] for row in service.wfa_runs()] == ["wfa_run"]
+
+
 def _latest_classic_metrics_run(service: AppAPIService) -> str:
     for row in service.metrics_runs():
         if row.get("status") not in {"completed", "partial"}:

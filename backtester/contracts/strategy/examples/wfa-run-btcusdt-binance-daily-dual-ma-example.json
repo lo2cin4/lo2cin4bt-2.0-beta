@@ -1,0 +1,54 @@
+{
+  "schema_version": "wfa_run",
+  "strategy_config_path": "workspace/runs/strategy-run-btcusdt-binance-daily-dual-ma-example.json",
+  "engine": "unified_portfolio_wfa",
+  "platform": {
+    "run_type": "public_example",
+    "display_label": "WFA | BTCUSDT | Daily Dual MA | Binance | Public Example"
+  },
+  "windowing": {
+    "mode": "rolling",
+    "size_mode": "ratio",
+    "target_window_count": 6,
+    "train_ratio": 0.6,
+    "test_ratio": 0.2,
+    "step_size": 180
+  },
+  "optimizer": {
+    "type": "grid",
+    "objectives": ["sharpe", "calmar"],
+    "primary_objective": "sharpe",
+    "candidate_limit": 60,
+    "random_seed": 42,
+    "selection_constraints": {
+      "enabled": true,
+      "min_is_active_rebalances": 2,
+      "min_is_exposure_ratio": 0.05,
+      "min_is_nonzero_return_days": 5,
+      "max_lookback_fraction_of_train": 0.7
+    }
+  },
+  "acceptance": {
+    "require_positive_oos": false,
+    "min_oos_sharpe": 0.0,
+    "min_oos_calmar": 0.0,
+    "min_oos_is_ratio": 0.0
+  },
+  "outputs": {
+    "selected_optimum": true,
+    "candidate_diagnostics": true,
+    "window_backtests": true
+  },
+  "metadata": {
+    "example": true,
+    "public_example": true,
+    "local_research_only": true,
+    "strategy_id": "btcusdt_daily_dual_ma_binance_wfa_public_example",
+    "notes": [
+      "References the BTCUSDT daily dual moving average parameter matrix example in workspace/runs.",
+      "The parameter grid is sampled deterministically for rolling validation diagnostics.",
+      "Daily Binance candles use UTC exchange candle conventions and are not executable fill guarantees.",
+      "This WFA example is for local research mechanics only; it is not a profitability claim, broker instruction, live-trading setup, or investment advice."
+    ]
+  }
+}

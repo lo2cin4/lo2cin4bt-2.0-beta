@@ -361,7 +361,7 @@ input {
   position: relative;
 }
 
-.share-mosaic-mode [data-private-strategy] strong,
+.share-mosaic-mode .metrics-strategy-summary[data-private-strategy] strong,
 .share-mosaic-mode [data-private-strategy] .kpi-compact-value,
 .share-mosaic-mode [data-private-strategy].snapshot-strategy-title,
 .share-mosaic-mode [data-private-strategy].snapshot-strategy-subtitle,
@@ -369,6 +369,13 @@ input {
 .share-mosaic-mode [data-private-strategy].section-subtitle,
 .share-mosaic-mode [data-private-strategy].custom-select-label,
 .share-mosaic-mode [data-private-strategy].custom-select-option,
+.share-mosaic-mode [data-private-strategy].mosaic-private-text,
+.share-mosaic-mode [data-private-strategy].portfolio-strategy-sentence,
+.share-mosaic-mode [data-private-strategy].portfolio-flow-value,
+.share-mosaic-mode [data-private-strategy].candidate-card-title,
+.share-mosaic-mode [data-private-strategy].research-diagnostics-hero,
+.share-mosaic-mode [data-private-strategy].research-diagnostics-copy,
+.share-mosaic-mode [data-private-strategy].research-diagnostics-row,
 .share-mosaic-mode .custom-select-group [data-private-strategy] {
   color: transparent;
   text-shadow: none;

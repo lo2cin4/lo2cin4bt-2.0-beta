@@ -445,6 +445,7 @@ function MetricsLayout() {
                       search: { runId: resolvedRunId, backtestId: nextBacktestId },
                     })
                   }}
+                  redactValues
                 />
               </div>
             ) : null}

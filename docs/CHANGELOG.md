@@ -8,6 +8,16 @@ Version policy follows `MAJOR.MINOR.PATCH`:
 - MINOR: meaningful user-facing feature changes.
 - MAJOR: large compatibility-breaking changes.
 
+## 2.0.3 - WFA Filtering, Shortcut Startup, And Mosaic Privacy
+
+Release type: patch release for the public beta.
+
+### Fixed
+
+- Kept Walk-Forward Analysis results out of the Strategy Performance run picker.
+- Improved the optional Windows desktop shortcut launcher so stale local backend processes are stopped before the app starts.
+- Extended Mosaic screenshot mode to hide strategy names, strategy logic, parameter-candidate names, top-ranked parameter summaries, and parameter importance.
+
 ## 2.0.2 - Version Badge And Windows Shortcut
 
 Release type: patch release for the public beta.

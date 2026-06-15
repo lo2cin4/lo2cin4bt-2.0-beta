@@ -75,6 +75,7 @@ Before writing a config, decide whether the user supplied fixed values or tunabl
 7. Run `python scripts/workspace_doctor.py --config <path>` before calling any config runnable.
 8. Route strategy, data, WFA, cost/slippage, look-ahead, or backtest validity changes to Quant review.
 9. If a needed indicator is not built in, tell the user a custom indicator is required, keep it under `workspace/indicators/extensions/<slug>/`, and require `indicator_doctor` plus runtime dispatch support before producing a runnable config.
+10. Do not create `wfa_run` for a strategy with no tunable `parameter_domains` or only one candidate combination. Ask for at least two candidate parameter combinations, or keep the request as a normal single backtest.
 
 ## Workspace Intake Gate
 For user-provided data that affects signals, selection, allocation, universe membership, benchmark, or WFA, a formal description is required.
@@ -116,6 +117,11 @@ When an idea needs a missing OP, unsupported pattern/setup, order model, or cale
 - If the user confirms a parameter sweep or "all matrix params", write one `workflow_id = "parameter_matrix"` config with all tunable axes in `parameter_domains`. Do not split each parameter combination into separate `single_backtest` configs.
 - `workflow_id = "parameter_matrix"` must expand to at least two candidate combinations. A one-combo matrix is a mislabelled single policy and must be corrected before running.
 - `workflow_id = "single_backtest"` must not carry non-empty `parameter_domains`; use resolved literal values in the strategy body instead.
+
+## WFA Shape Rules
+- `wfa_run` requires the referenced `strategy_run` to have `parameter_domains` that expand to at least two candidate combinations.
+- A fixed strategy with no tunable parameter is not a WFA candidate. Return `needs_clarification` and ask which values should be tested, or run a single backtest instead.
+- Do not describe a no-parameter fixed strategy as WFA, rolling validation, selected optimum, or optimized OOS evidence.
 
 
 ## Repo-Local Report Output

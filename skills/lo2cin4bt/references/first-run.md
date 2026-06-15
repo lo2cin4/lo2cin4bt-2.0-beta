@@ -63,6 +63,8 @@ Optional Windows desktop shortcut after the app starts successfully:
 .\scripts\create_windows_shortcut.ps1
 ```
 
+Recreate the shortcut if the project folder moves.
+
 The shortcut points to the current repo folder. Recreate it if the folder moves.
 
 ## macOS / Linux Setup

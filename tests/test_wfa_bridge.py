@@ -89,9 +89,8 @@ def test_wfa_loader_accepts_wfa_run_primary_config(tmp_path) -> None:
                     "cash_policy": "keep_unallocated_cash",
                 },
                 "rebalance": {"trigger": {"op": "signal.change"}},
-                "execution": {
+                "fill_model": {
                     "timing": "same_session",
-                    "price": "open",
                     "entry_price": "open",
                     "exit_price": "close",
                     "session_scope": "same_session",

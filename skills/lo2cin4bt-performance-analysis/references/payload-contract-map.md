@@ -37,7 +37,7 @@ These folders are local runtime output and ignored by Git.
 - `portfolio_rebalance_audit_parquet`: rebalance checkpoints.
 - `portfolio_rebalance_trades_parquet`: per-asset rebalance trade rows.
 - `portfolio_metadata_json`: config, data health, universe/provenance, summary.
-- `wfa_parquet`: WFA/rolling validation selected and diagnostic rows.
+- `wfa_parquet`: WFA selected and diagnostic rows.
 
 ## AI Review Procedure
 

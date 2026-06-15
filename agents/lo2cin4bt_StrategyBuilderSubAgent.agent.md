@@ -46,6 +46,9 @@ When the user confirms a sweep, grid search, or "all matrix params", produce one
 
 Reject or revise any draft where `parameter_matrix` expands to only one candidate combination, or where `single_backtest` carries non-empty `parameter_domains`.
 
+## WFA Gate
+Only create `wfa_run` when the referenced strategy has tunable `parameter_domains` that expand to at least two candidate combinations. If the user asks for WFA on a fixed strategy, return `needs_clarification` and ask for the parameters to test, or suggest a normal single backtest instead. Do not label a fixed no-parameter strategy as WFA or rolling validation.
+
 ## Do Not Use This Agent For
 - executing runs
 - interpreting performance as good or bad

@@ -14,7 +14,6 @@ BTC_MONTHLY_NTH_WEEKDAY_EXAMPLE = "backtester/contracts/strategy/examples/strate
 VOO_GLD_ROTATION_EXAMPLE = "backtester/contracts/strategy/examples/strategy-run-voo-gld-yfinance-daily-momentum90-sma250-rotation-example.json"
 ANNUAL_FIXED_ETF_EXAMPLE = "backtester/contracts/strategy/examples/strategy-run-vti-avuv-vxus-sgol-dbmf-yfinance-yearly-rebalance-example.json"
 QQQ_SMA_WFA_EXAMPLE = "backtester/contracts/strategy/examples/wfa-run-qqq-yfinance-daily-sma-cross-example.json"
-VOO_GLD_ROTATION_WFA_EXAMPLE = "backtester/contracts/strategy/examples/wfa-run-voo-gld-yfinance-daily-momentum90-sma250-rotation-example.json"
 BTC_MONTHLY_NTH_WEEKDAY_WFA_EXAMPLE = "backtester/contracts/strategy/examples/wfa-run-btcusdt-binance-monthly-nth-weekday-same-session-example.json"
 BTCUSDT_PUBLIC_DUAL_MA_EXAMPLE = "backtester/contracts/strategy/examples/strategy-run-btcusdt-binance-daily-dual-ma-example.json"
 
@@ -143,7 +142,6 @@ def test_strategy_and_wfa_examples_validate_against_public_schemas():
 
     for example in [
         QQQ_SMA_WFA_EXAMPLE,
-        VOO_GLD_ROTATION_WFA_EXAMPLE,
         BTC_MONTHLY_NTH_WEEKDAY_WFA_EXAMPLE,
     ]:
         Draft202012Validator(wfa_schema).validate(_load(example))
@@ -266,18 +264,20 @@ def test_normalizes_multi_asset_portfolio_matrix_config():
     assert any("not a profitability claim" in note for note in normalized["metadata"]["notes"])
 
 
-def test_fixed_allocation_without_parameters_plans_as_rolling_validation_for_wfa():
+def test_wfa_rejects_strategy_without_parameter_domains(tmp_path):
     mod = __import__("backtester.StrategyRunConfig_backtester", fromlist=["dummy"])
-    path = _REPO_ROOT / VOO_GLD_ROTATION_EXAMPLE
-    normalized = mod.normalize_strategy_run_config(_load(str(path.relative_to(_REPO_ROOT))), source_path=path)
-    normalized["platform"]["workflow_id"] = "walk_forward_analysis"
-    plan = mod.plan_strategy_execution(normalized)
+    strategy_path = tmp_path / "fixed-strategy.json"
+    strategy = _load(VOO_GLD_ROTATION_EXAMPLE)
+    strategy["parameter_domains"] = {}
+    strategy_path.write_text(json.dumps(strategy), encoding="utf-8")
 
-    assert normalized["parameter_domains"] == {}
-    assert plan["is_rolling_validation"] is True
-    assert plan["workflow_id"] == "rolling_validation"
-    assert plan["execution_backend"] == "vector_hybrid"
-    assert plan["accounting_backend"] == "sequential"
+    wfa_path = tmp_path / "wfa.json"
+    wfa = _load(QQQ_SMA_WFA_EXAMPLE)
+    wfa["strategy_config_path"] = strategy_path.name
+    wfa_path.write_text(json.dumps(wfa), encoding="utf-8")
+
+    with pytest.raises(mod.StrategyRunConfigError, match="at least 2 combinations"):
+        mod.normalize_wfa_run_config(wfa, source_path=wfa_path)
 
 
 def test_annual_fixed_etf_allocation_example_is_strategy_run_contract():
@@ -423,7 +423,6 @@ def test_wfa_config_normalizes_to_wfa_run_with_strategy_reference():
     mod = __import__("backtester.StrategyRunConfig_backtester", fromlist=["dummy"])
     cases = [
         (QQQ_SMA_WFA_EXAMPLE, QQQ_SMA_EXAMPLE, 60, "research diagnostics only"),
-        (VOO_GLD_ROTATION_WFA_EXAMPLE, VOO_GLD_ROTATION_EXAMPLE, 1, "rolling validation"),
         (BTC_MONTHLY_NTH_WEEKDAY_WFA_EXAMPLE, BTC_MONTHLY_NTH_WEEKDAY_EXAMPLE, 28, "month_week 1-4"),
     ]
 

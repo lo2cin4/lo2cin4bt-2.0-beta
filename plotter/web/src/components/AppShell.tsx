@@ -10,7 +10,7 @@ const NAV_ITEMS = [
   { to: '/wfa', labelKey: 'nav.walkForward' },
 ] as const
 
-const APP_VERSION = '2.0.2 beta'
+const APP_VERSION = '2.0.3 beta'
 
 export function AppShell() {
   const pathname = useRouterState({ select: (state) => state.location.pathname })

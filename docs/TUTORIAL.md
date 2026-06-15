@@ -137,9 +137,9 @@ Use it to find stable regions, not just the best-looking row. Check:
 - drawdown;
 - shortlist / accepted candidate reasons.
 
-The next step after a promising matrix result is WFA or rolling validation.
+The next step after a promising matrix result is WFA.
 
-## 6. Use WFA / Rolling Validation
+## 6. Use WFA
 
 WFA means:
 
@@ -147,8 +147,8 @@ WFA means:
 2. select one policy;
 3. test only that selected policy in the paired out-of-sample window.
 
-Fixed strategies without tunable parameters should use rolling validation
-instead of WFA optimization.
+Fixed strategies without tunable parameters are not WFA candidates. Run a
+normal single backtest, or define the parameters to test first.
 
 Read WFA in this order:
 
@@ -193,7 +193,7 @@ Start with a supported family:
 - calendar/session event;
 - multi-asset portfolio;
 - rotation or top-N selection;
-- fixed strategy for rolling validation;
+- fixed strategy for single backtest;
 - parameterized strategy for Parameter Matrix / WFA.
 
 Then define:

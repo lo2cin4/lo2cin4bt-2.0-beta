@@ -77,7 +77,7 @@ Expected config shape:
 
 - `allocation.method` is fixed/static weights.
 - No parameter domain means no Parameter Matrix optimization.
-- Use rolling validation, not WFA optimization, when there are no tunable parameters.
+- Do not create WFA for fixed strategies with no tunable parameters; run a single backtest or define tunable parameters first.
 
 Read after run:
 

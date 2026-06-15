@@ -128,7 +128,7 @@ def normalize_wfa_run_config(
 
     raw = deepcopy(dict(raw_config or {}))
     if raw.get("schema_version") == WFA_SCHEMA_VERSION:
-        return _finalize_wfa(raw)
+        return _finalize_wfa(raw, source_path=source_path, repo_root=repo_root)
 
     wfa_config = _dict(raw.get("wfa_config"))
     if not wfa_config:
@@ -172,7 +172,48 @@ def normalize_wfa_run_config(
     objectives = wfa_config.get("optimization_objectives")
     if objectives and "objectives" not in normalized["optimizer"]:
         normalized["optimizer"]["objectives"] = deepcopy(objectives)
-    return _finalize_wfa(normalized)
+    return _finalize_wfa(normalized, source_path=source_path, repo_root=repo_root)
+
+
+def _resolve_wfa_strategy_config_path(
+    strategy_config_path: str,
+    *,
+    source_path: Optional[Path | str] = None,
+    repo_root: Optional[Path | str] = None,
+) -> Optional[Path]:
+    if not strategy_config_path or not source_path:
+        return None
+    source = Path(source_path).resolve()
+    if repo_root is not None:
+        root = Path(repo_root).resolve()
+    else:
+        root = source.parent
+        for parent in [source.parent, *source.parents]:
+            if (parent / "workspace").exists() or (parent / "backtester").exists():
+                root = parent
+                break
+    candidate = Path(strategy_config_path)
+    if candidate.is_absolute():
+        resolved = candidate.resolve()
+    else:
+        resolved = (root / PurePosixPath(strategy_config_path).as_posix()).resolve()
+    try:
+        resolved.relative_to(root)
+    except ValueError as exc:
+        raise StrategyRunConfigError("wfa_run strategy_config_path escaped repo root") from exc
+    if not resolved.exists():
+        raise StrategyRunConfigError(f"wfa_run strategy_config_path not found: {strategy_config_path}")
+    return resolved
+
+
+def _require_wfa_strategy_parameter_domains(config: Dict[str, Any]) -> None:
+    parameter_domains = _dict(config.get("parameter_domains"))
+    combo_count = _parameter_combo_count(parameter_domains)
+    if combo_count <= 1:
+        raise StrategyRunConfigError(
+            "wfa_run requires the referenced strategy parameter_domains to expand "
+            "to at least 2 combinations; use single_backtest for fixed strategies"
+        )
 
 
 def validate_repo_relative_json_path(path_text: Any, *, field_name: str = "path") -> str:
@@ -557,7 +598,12 @@ def _validate_workflow_parameter_shape(workflow_id: str, parameter_domains: Any)
         )
 
 
-def _finalize_wfa(config: Dict[str, Any]) -> Dict[str, Any]:
+def _finalize_wfa(
+    config: Dict[str, Any],
+    *,
+    source_path: Optional[Path | str] = None,
+    repo_root: Optional[Path | str] = None,
+) -> Dict[str, Any]:
     out = deepcopy(config)
     out["schema_version"] = WFA_SCHEMA_VERSION
     out["windowing"] = _dict(out.get("windowing"))
@@ -575,6 +621,22 @@ def _finalize_wfa(config: Dict[str, Any]) -> Dict[str, Any]:
         )
     if not out.get("strategy_config_path") and not out.get("legacy_embedded_strategy_config"):
         raise StrategyRunConfigError("wfa_run requires strategy_config_path or legacy_embedded_strategy_config")
+    if out.get("legacy_embedded_strategy_config"):
+        _require_wfa_strategy_parameter_domains(out["legacy_embedded_strategy_config"])
+    else:
+        strategy_path = _resolve_wfa_strategy_config_path(
+            str(out.get("strategy_config_path") or ""),
+            source_path=source_path,
+            repo_root=repo_root,
+        )
+        if strategy_path is not None:
+            strategy_config = json.loads(strategy_path.read_text(encoding="utf-8-sig"))
+            normalized_strategy = normalize_strategy_run_config(
+                strategy_config,
+                source_path=strategy_path,
+                repo_root=repo_root,
+            )
+            _require_wfa_strategy_parameter_domains(normalized_strategy)
     return out
 
 

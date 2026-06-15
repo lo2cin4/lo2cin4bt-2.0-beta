@@ -43,13 +43,13 @@ If universe provenance is weak, lead with the risk before quoting performance.
 - Parameter Matrix ranks candidates from available backtest evidence.
 - It is not out-of-sample proof by itself.
 - Robust score, cluster, plateau, and accepted candidate status are screening aids.
-- A top row should lead to WFA/rolling validation or additional review.
+- A top row should lead to WFA or additional review.
 
 ## WFA Risk
 
 - Official WFA evidence is selected optimum per IS/OOS window.
 - Candidate diagnostics and legacy grid rows are inspectable but not formal pass/fail rows.
-- Fixed strategies use rolling validation and should not be described as optimized in IS.
+- Fixed strategies with no tunable parameters are not WFA candidates and should not be described as optimized in IS.
 - Low candidate count, fallback constraints, or unstable selected parameters require caution.
 
 ## Portfolio Accounting Risk

@@ -286,15 +286,14 @@ class AppAPIService:
 
     def metrics_runs(self) -> List[Dict[str, Any]]:
         rows: List[Dict[str, Any]] = []
-        for module in ("autorunner", "wfanalyser"):
-            for row in self.registry.list_run_history(module=module):
-                if (
-                    row.get("status") in {"completed", "partial"}
-                    and str(row.get("config_filename", "")).strip()
-                    and not self._is_hidden_sample_run(row)
-                    and self._has_metrics_renderable_output(str(row.get("run_id", "")))
-                ):
-                    rows.append(self._decorate_run(row))
+        for row in self.registry.list_run_history(module="autorunner"):
+            if (
+                row.get("status") in {"completed", "partial"}
+                and str(row.get("config_filename", "")).strip()
+                and not self._is_hidden_sample_run(row)
+                and self._has_metrics_renderable_output(str(row.get("run_id", "")))
+            ):
+                rows.append(self._decorate_run(row))
         return rows
 
     def wfa_runs(self) -> List[Dict[str, Any]]:

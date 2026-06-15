@@ -1097,7 +1097,7 @@ def _strategy_template_blocks() -> List[Dict[str, Any]]:
                 availability_time="known from config and local market data",
                 earliest_trade_time="configured rebalance execution time",
                 lookback_bars=_lookback("none", "fixed weights do not need indicator lookback"),
-                leakage_warnings=["Fixed allocations without tunable parameters should use rolling validation, not WFA optimization claims."],
+                leakage_warnings=["Fixed allocations without tunable parameters are not WFA candidates; run a single backtest or define tunable parameters first."],
             ),
             implementation=_implementation(
                 "backtester/contracts/strategy/examples/strategy-run-vti-avuv-vxus-sgol-dbmf-yfinance-yearly-rebalance-example.json",

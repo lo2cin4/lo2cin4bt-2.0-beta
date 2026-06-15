@@ -55,7 +55,7 @@ class ConfigValidator:
             if config is None:
                 return False
             if self._is_wfa_run(config):
-                return self._validate_wfa_run_config(config)
+                return self._validate_wfa_run_config(config, config_file=config_file)
             if not self._validate_structure(config):
                 return False
             if not self._validate_content(config):
@@ -74,7 +74,7 @@ class ConfigValidator:
         if config is None:
             return ["Failed to load config"]
         if self._is_wfa_run(config):
-            return self._check_wfa_run_errors(config)
+            return self._check_wfa_run_errors(config, config_file=config_file)
         errors.extend(self._check_structure_errors(config))
         errors.extend(self._check_content_errors(config))
         return errors
@@ -519,17 +519,17 @@ class ConfigValidator:
     def _is_wfa_run(config: Dict[str, Any]) -> bool:
         return dict(config or {}).get("schema_version") == "wfa_run"
 
-    def _validate_wfa_run_config(self, config: Dict[str, Any]) -> bool:
-        errors = self._check_wfa_run_errors(config)
+    def _validate_wfa_run_config(self, config: Dict[str, Any], *, config_file: str | None = None) -> bool:
+        errors = self._check_wfa_run_errors(config, config_file=config_file)
         if errors:
             self._display_validation_error(errors[0], "wfa_run")
             return False
         return True
 
     @staticmethod
-    def _check_wfa_run_errors(config: Dict[str, Any]) -> List[str]:
+    def _check_wfa_run_errors(config: Dict[str, Any], *, config_file: str | None = None) -> List[str]:
         try:
-            normalize_wfa_run_config(config)
+            normalize_wfa_run_config(config, source_path=config_file)
             return []
         except StrategyRunConfigError as exc:
             return [str(exc)]
