@@ -575,7 +575,8 @@ def test_wfa_dashboard_links_selected_window_backtests(tmp_path: Path) -> None:
     assert wfa_payload["combo_groups"][0]["accepted"] is False
     assert wfa_payload["combo_groups"][0]["review_status"] == "Review"
     assert "selection_constraints_fallback" in ";".join(wfa_payload["combo_groups"][0]["acceptance_reasons"])
-    assert run_id in {row["run_id"] for row in service.metrics_runs()}
+    assert run_id not in {row["run_id"] for row in service.metrics_runs()}
+    assert run_id in {row["run_id"] for row in service.wfa_runs()}
     overview = service.metrics_overview(run_id)
     assert any(row["backtest_id"] == backtest_id for row in overview["rows"])
     detail = service.backtest_detail(run_id, backtest_id)
